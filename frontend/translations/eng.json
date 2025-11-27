@@ -1,0 +1,87 @@
+{
+    "site": {
+        "title": "BiomeXplore: Gut Microbiota and Exposome Data Integration",
+        "description": "Advanced platform integrating gut microbiome genetic data with environmental factors for transformative health insights"
+    },
+    "header": {
+        "home": "Home",
+        "applications": "Applications",
+        "solutions": "Solutions",
+        "about": "About Us",
+        "contact": "Contact"
+    },
+    "hero": {
+        "title": "Integrating Gut Microbiota and Exposome Data",
+        "subtitle": "BiomeXplore is an innovative platform connecting gut microbiome genetic data with environmental factors to unlock new perspectives in human health.",
+        "cta": "Discover Our Solutions"
+    },
+    "intro": {
+        "text": "<strong>BiomeXplore is an advanced tool for integrating gut microbiota genetic data and the exposome.</strong> We combine microbiome analysis with environmental data to provide transformative insights in health, nutrition, and wellbeing."
+    },
+    "applications": {
+        "title": "Applications",
+        "subtitle": "Our platform offers innovative solutions for various areas of health and research",
+        "health": {
+            "title": "Human Health",
+            "description": "Understand how the gut microbiome influences conditions like obesity, diabetes, autoimmune diseases, and mental health.",
+            "learnMore": "Learn More"
+        },
+        "nutrition": {
+            "title": "Personalized Nutrition",
+            "description": "Develop dietary plans based on each individual's unique gut microbiome profile to optimize health.",
+            "learnMore": "Learn More"
+        },
+        "research": {
+            "title": "Clinical Research",
+            "description": "Accelerate scientific discoveries by integrating microbiome data with environmental factors in clinical studies.",
+            "learnMore": "Learn More"
+        }
+    },
+    "solutions": {
+        "title": "Solutions",
+        "subtitle": "Our tools and services for data analysis and integration",
+        "platform": {
+            "title": "BiomeXplore Platform",
+            "description": "Intuitive interface for analyzing and visualizing gut microbiome data integrated with exposome information.",
+            "learnMore": "Learn More"
+        },
+        "consulting": {
+            "title": "Expert Consulting",
+            "description": "Our team of specialists provides personalized support for your research project or clinical application.",
+            "learnMore": "Learn More"
+        },
+        "analysis": {
+            "title": "Data Analysis",
+            "description": "Complete services for processing and interpreting gut microbiome sequencing data.",
+            "learnMore": "Learn More"
+        }
+    },
+    "partners": {
+        "title": "Partners",
+        "subtitle": "We collaborate with research institutions and innovative companies"
+    },
+    "news": {
+        "title": "News & Updates",
+        "subtitle": "Stay informed with the latest research and platform developments"
+    },
+    "newsletter": {
+        "title": "Subscribe to Our Newsletter",
+        "subtitle": "Receive the latest updates on gut microbiome research, events, and BiomeXplore platform updates.",
+        "placeholder": "Your email",
+        "button": "Subscribe"
+    },
+    "contact": {
+        "title": "Contact Us",
+        "name": "Name *",
+        "email": "Email *",
+        "message": "Message *",
+        "send": "Send Message"
+    },
+    "footer": {
+        "applications": "Applications",
+        "solutions": "Solutions",
+        "bioinformatics": "Bioinformatics",
+        "contact": "Contact",
+        "copyright": "All rights reserved."
+    }
+}

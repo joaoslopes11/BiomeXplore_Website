@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiomeXplore: Gut Microbiota and Exposome Data Integration</title>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/qYB65cyg/logo-biomexplore.png">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #1e40af;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid #1e40af;
+            color: #1e40af;
+        }
+        
+        .btn-outline:hover {
+            background-color: #1e40af;
+            color: white;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-main {
+            padding: 15px 0;
+        }
+        
+        .header-main .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+        }
+        
+        .logo-text {
+            margin-left: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e40af;
+        }
+        
+        nav ul {
+            display: flex;
+            align-items: center;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            font-weight: 600;
+            padding: 10px 0;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #1e40af;
+        }
+
+        /* Language Selector Styles */
+        .language-selector {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            gap: 8px;
+        }
+        
+        .language-flag {
+            width: 24px;
+            height: 16px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            border-radius: 3px;
+        }
+        
+        .language-flag:hover {
+            opacity: 0.8;
+            transform: scale(1.1);
+        }
+        
+        .language-flag.active {
+            opacity: 1;
+            border-color: #1e40af;
+            transform: scale(1.1);
+        }
+
+        /* Contact Button in Header */
+        .contact-btn {
+            background-color: #1e40af;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .contact-btn:hover {
+            background-color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.8));
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Introduction */
+        .intro {
+            background-color: #1e40af;
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .intro p {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Cards */
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 350px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 4px solid #1e40af;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .card.expanded {
+            max-width: 800px;
+            min-height: 400px;
+            text-align: left;
+        }
+
+        .card.expanded .card-content {
+            display: block;
+        }
+
+        .card.expanded .card-icon {
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 0;
+        }
+
+        .card.expanded h3 {
+            margin-bottom: 15px;
+        }
+        
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background-color: #dbeafe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .card.expanded .card-icon {
+            width: 100px;
+            height: 100px;
+            font-size: 40px;
+        }
+        
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+        
+        .card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .card-content {
+            display: none;
+        }
+
+        .card-content h4 {
+            color: #1e3a8a;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+
+        .card-content ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .card.expanded .card-actions {
+            justify-content: flex-start;
+        }
+        
+        /* Partners Section */
+        .partners {
+            text-align: center;
+            background-color: #f8fafc;
+        }
+
+        .partner-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .partner-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+            width: 220px;
+            height: 140px;
+        }
+
+        .partner-logo:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        .partner-logo img {
+            width: auto;
+            height: auto;
+            max-width: 160px;
+            max-height: 70px;
+            object-fit: contain;
+        }
+
+        .partner-name {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #4b5563;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Loading and empty states */
+        .no-partners {
+            text-align: center;
+            padding: 60px 40px;
+            color: #666;
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .no-partners h3 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .no-partners p {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .loading-partners {
+            text-align: center;
+            padding: 60px 40px;
+            color: #666;
+            font-style: italic;
+            font-size: 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .partner-logos {
+                gap: 30px;
+            }
+            
+            .partner-logo {
+                width: 200px;
+                height: 130px;
+                padding: 20px;
+            }
+            
+            .partner-logo img {
+                max-width: 140px;
+                max-height: 60px;
+            }
+
+            .card.expanded {
+                max-width: 100%;
+                margin: 0 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .partner-logos {
+                gap: 20px;
+            }
+            
+            .partner-logo {
+                width: 160px;
+                height: 120px;
+                padding: 15px;
+            }
+            
+            .partner-logo img {
+                max-width: 120px;
+                max-height: 50px;
+            }
+            
+            .partner-name {
+                font-size: 12px;
+                margin-top: 10px;
+            }
+
+            nav ul li {
+                margin-left: 15px;
+            }
+
+            .language-selector {
+                margin-left: 10px;
+                gap: 5px;
+            }
+            
+            .language-flag {
+                width: 20px;
+                height: 14px;
+            }
+
+            .card.expanded .card-icon {
+                float: none;
+                margin: 0 auto 20px;
+            }
+
+            .card.expanded {
+                text-align: center;
+            }
+
+            .card-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .partner-logos {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .partner-logo {
+                width: 100%;
+                max-width: 250px;
+                height: 100px;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+            }
+            
+            .language-selector {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+
+        /* News Section Styles */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .news-image {
+            height: 200px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+        }
+
+        .news-image.placeholder {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        }
+
+        .news-content {
+            padding: 25px;
+        }
+
+        .news-content h3 {
+            font-size: 20px;
+            color: #1e3a8a;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .news-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .news-date {
+            color: #999;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .loading-news {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .no-news {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+        
+        /* Newsletter */
+        .newsletter {
+            background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.8));
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .newsletter h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .newsletter p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 18px;
+        }
+        
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        
+        .newsletter-form button {
+            background-color: #1e40af;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .newsletter-form button:hover {
+            background-color: #1e3a8a;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #1e293b;
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #cbd5e1;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #60a5fa;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #334155;
+            padding-top: 20px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        
+        /* Messages */
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .cards {
+                flex-direction: column;
+            }
+            
+            .partner-logos {
+                flex-direction: column;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-form input {
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+            
+            .newsletter-form button {
+                border-radius: 4px;
+                padding: 15px;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                padding: 20px;
+            }
+
+            .contact-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-main">
+            <div class="container">
+                <div class="logo">
+                    <img src="https://i.ibb.co/qYB65cyg/logo-biomexplore.png" alt="BiomeXplore Logo">
+                    <div class="logo-text">BiomeXplore</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#applications">Applications</a></li>
+                        <li><a href="#solutions">Solutions</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><button class="contact-btn" onclick="openModal()">Contact</button></li>
+                        <!-- Language Selector -->
+                        <li class="language-selector">
+                            <img src="https://flagcdn.com/w40/eu.png" 
+                                 alt="English" 
+                                 class="language-flag active" 
+                                 data-lang="en"
+                                 onclick="changeLanguage('en')">
+                            <img src="https://flagcdn.com/w40/pt.png" 
+                                 alt="Português" 
+                                 class="language-flag" 
+                                 data-lang="pt"
+                                 onclick="changeLanguage('pt')">
+                            <img src="https://flagcdn.com/w40/es.png" 
+                                 alt="Español" 
+                                 class="language-flag" 
+                                 data-lang="es"
+                                 onclick="changeLanguage('es')">
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Integrating Gut Microbiota and Exposome Data</h1>
+            <p>BiomeXplore is an innovative platform connecting gut microbiome genetic data with environmental factors to unlock new perspectives in human health.</p>
+            <a href="#solutions" class="btn">Discover Our Solutions</a>
+        </div>
+    </section>
+
+    <!-- Introduction -->
+    <section class="intro">
+        <div class="container">
+            <p><strong>BiomeXplore is an advanced tool for integrating gut microbiota genetic data and the exposome.</strong> We combine microbiome analysis with environmental data to provide transformative insights in health, nutrition, and wellbeing.</p>
+        </div>
+    </section>
+
+    <!-- Applications -->
+    <section class="section" id="applications">
+        <div class="container">
+            <div class="section-title">
+                <h2>Applications</h2>
+                <p>Our platform offers innovative solutions for various areas of health and research</p>
+            </div>
+            <div class="cards">
+                <!-- Gut Microbiota Card -->
+                <div class="card" id="microbiota-card">
+                    <div class="card-icon">
+                        🦠
+                    </div>
+                    <h3>Gut Microbiota</h3>
+                    <p>Comprehensive analysis of gut microbiome composition and function to understand its role in health and disease.</p>
+                    <div class="card-content">
+                        <h4>Comprehensive Microbiome Analysis</h4>
+                        <p>Our platform provides in-depth analysis of gut microbiota composition, diversity, and functional potential through advanced sequencing technologies and bioinformatics pipelines.</p>
+                        
+                        <h4>Key Features:</h4>
+                        <ul>
+                            <li>16S rRNA and shotgun metagenomic sequencing analysis</li>
+                            <li>Taxonomic profiling and diversity metrics</li>
+                            <li>Functional pathway prediction and analysis</li>
+                            <li>Microbiome-host interaction studies</li>
+                            <li>Longitudinal tracking of microbiome changes</li>
+                        </ul>
+
+                        <h4>Applications:</h4>
+                        <ul>
+                            <li>Disease biomarker discovery</li>
+                            <li>Personalized nutrition recommendations</li>
+                            <li>Therapeutic intervention monitoring</li>
+                            <li>Microbiome-based diagnostic tools</li>
+                        </ul>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn" onclick="toggleCard('microbiota-card')">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Exposome Card -->
+                <div class="card" id="exposome-card">
+                    <div class="card-icon">
+                        🌍
+                    </div>
+                    <h3>Exposome</h3>
+                    <p>Integration of environmental exposure data with microbiome analysis to understand external factors influencing health.</p>
+                    <div class="card-content">
+                        <h4>Environmental Exposure Assessment</h4>
+                        <p>We integrate comprehensive environmental exposure data with microbiome analysis to understand how external factors shape human health and disease susceptibility.</p>
+                        
+                        <h4>Key Features:</h4>
+                        <ul>
+                            <li>Geospatial environmental data integration</li>
+                            <li>Lifestyle and dietary exposure tracking</li>
+                            <li>Chemical and pollutant exposure assessment</li>
+                            <li>Social and economic factor analysis</li>
+                            <li>Climate and seasonal variation studies</li>
+                        </ul>
+
+                        <h4>Applications:</h4>
+                        <ul>
+                            <li>Environmental health risk assessment</li>
+                            <li>Public health policy development</li>
+                            <li>Personalized exposure mitigation strategies</li>
+                            <li>Climate change health impact studies</li>
+                        </ul>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn" onclick="toggleCard('exposome-card')">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Wellness Index Card -->
+                <div class="card" id="wellness-card">
+                    <div class="card-icon">
+                        📊
+                    </div>
+                    <h3>Wellness Index</h3>
+                    <p>Development of comprehensive wellness indicators combining microbiome data, environmental factors, and health outcomes.</p>
+                    <div class="card-content">
+                        <h4>Holistic Health Assessment</h4>
+                        <p>Our Wellness Index integrates multiple data streams to provide a comprehensive assessment of individual and population health status, combining microbiome insights with environmental and lifestyle factors.</p>
+                        
+                        <h4>Key Features:</h4>
+                        <ul>
+                            <li>Multi-dimensional health scoring system</li>
+                            <li>Personalized health recommendations</li>
+                            <li>Longitudinal health tracking</li>
+                            <li>Risk prediction algorithms</li>
+                            <li>Intervention effectiveness monitoring</li>
+                        </ul>
+
+                        <h4>Applications:</h4>
+                        <ul>
+                            <li>Personalized wellness programs</li>
+                            <li>Corporate wellness initiatives</li>
+                            <li>Healthcare outcome optimization</li>
+                            <li>Preventive medicine strategies</li>
+                        </ul>
+
+                        <h4>Index Components:</h4>
+                        <ul>
+                            <li>Microbiome health score</li>
+                            <li>Environmental exposure index</li>
+                            <li>Lifestyle quality assessment</li>
+                            <li>Clinical health markers</li>
+                            <li>Wellbeing and quality of life metrics</li>
+                        </ul>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn" onclick="toggleCard('wellness-card')">Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions -->
+    <section class="section" id="solutions">
+        <div class="container">
+            <div class="section-title">
+                <h2>Solutions</h2>
+                <p>Our tools and services for data analysis and integration</p>
+            </div>
+            <div class="cards">
+                <!-- Data Space Card -->
+                <div class="card" id="dataspace-card">
+                    <div class="card-icon">
+                        💾
+                    </div>
+                    <h3>Data Space</h3>
+                    <p>Secure and scalable data infrastructure for storing and managing microbiome and exposome datasets.</p>
+                    <div class="card-content">
+                        <h4>Secure Data Infrastructure</h4>
+                        <p>Our Data Space provides a robust, scalable, and secure environment for storing, managing, and processing large-scale microbiome and exposome datasets with advanced data governance and privacy protection.</p>
+                        
+                        <h4>Key Features:</h4>
+                        <ul>
+                            <li>Secure cloud-based data storage</li>
+                            <li>Advanced data encryption and access controls</li>
+                            <li>Scalable computing infrastructure</li>
+                            <li>Data versioning and provenance tracking</li>
+                            <li>Automated backup and disaster recovery</li>
+                            <li>GDPR and HIPAA compliant architecture</li>
+                        </ul>
+
+                        <h4>Technical Capabilities:</h4>
+                        <ul>
+                            <li>Petabyte-scale data storage</li>
+                            <li>High-performance computing clusters</li>
+                            <li>Real-time data processing pipelines</li>
+                            <li>API-based data access and integration</li>
+                            <li>Multi-format data support (FASTQ, VCF, BAM, etc.)</li>
+                        </ul>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn" onclick="toggleCard('dataspace-card')">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Data Visualization Card -->
+                <div class="card" id="visualization-card">
+                    <div class="card-icon">
+                        📈
+                    </div>
+                    <h3>Data Visualization</h3>
+                    <p>Interactive tools and dashboards for exploring and visualizing complex microbiome-exposome relationships.</p>
+                    <div class="card-content">
+                        <h4>Interactive Data Exploration</h4>
+                        <p>Our visualization platform transforms complex microbiome and exposome data into intuitive, interactive visualizations that enable researchers and clinicians to discover patterns, relationships, and insights.</p>
+                        
+                        <h4>Key Features:</h4>
+                        <ul>
+                            <li>Interactive microbiome composition charts</li>
+                            <li>Geospatial exposure mapping</li>
+                            <li>Longitudinal data trend analysis</li>
+                            <li>Correlation and network visualization</li>
+                            <li>Real-time data filtering and exploration</li>
+                            <li>Customizable dashboard creation</li>
+                        </ul>
+
+                        <h4>Visualization Tools:</h4>
+                        <ul>
+                            <li>Taxonomic abundance heatmaps</li>
+                            <li>Alpha and beta diversity plots</li>
+                            <li>Principal coordinate analysis (PCoA)</li>
+                            <li>Volcano plots for differential abundance</li>
+                            <li>Interactive phylogenetic trees</li>
+                        </ul>
+
+                        <div class="card-actions">
+                            <button class="btn" onclick="openInteractiveMap()">Open Interactive Map</button>
+                            <button class="btn btn-outline" onclick="toggleCard('visualization-card')">Back</button>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn" onclick="toggleCard('visualization-card')">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Scientific Publications Card -->
+                <div class="card" id="publications-card">
+                    <div class="card-icon">
+                        📚
+                    </div>
+                    <h3>Scientific Publications</h3>
+                    <p>Access to curated scientific literature and research findings in the field of microbiome and exposome studies.</p>
+                    <div class="card-content">
+                        <h4>Knowledge Repository</h4>
+                        <p>Our comprehensive scientific publications database provides curated access to the latest research, reviews, and clinical studies in microbiome science, exposomics, and their intersection with human health.</p>
+                        
+                        <h4>Key Features:</h4>
+                        <ul>
+                            <li>Curated literature database with 50,000+ publications</li>
+                            <li>Advanced search and filtering capabilities</li>
+                            <li>Automated literature recommendation system</li>
+                            <li>Citation network analysis</li>
+                            <li>Research trend identification</li>
+                            <li>Collaboration opportunity discovery</li>
+                        </ul>
+
+                        <h4>Content Coverage:</h4>
+                        <ul>
+                            <li>Peer-reviewed journal articles</li>
+                            <li>Clinical trial results</li>
+                            <li>Systematic reviews and meta-analyses</li>
+                            <li>Conference proceedings</li>
+                            <li>Preprint publications</li>
+                            <li>Technical reports and white papers</li>
+                        </ul>
+
+                        <h4>Research Areas:</h4>
+                        <ul>
+                            <li>Gut-brain axis studies</li>
+                            <li>Microbiome and chronic diseases</li>
+                            <li>Environmental exposure health impacts</li>
+                            <li>Microbiome-based therapeutics</li>
+                            <li>Nutritional microbiome research</li>
+                            <li>Methodological advances in exposomics</li>
+                        </ul>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn" onclick="toggleCard('publications-card')">Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners -->
+    <section class="section partners">
+        <div class="container">
+            <div class="section-title">
+                <h2>Partners</h2>
+                <p>We collaborate with research institutions and innovative companies</p>
+            </div>
+            <div class="partner-logos" id="partnersContainer">
+                <!-- Partners will be loaded dynamically from API -->
+                <div class="loading-partners">Loading partners...</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- News Section -->
+    <section class="section" id="news">
+        <div class="container">
+            <div class="section-title">
+                <h2>News & Updates</h2>
+                <p>Stay informed with the latest research and platform developments</p>
+            </div>
+            <div class="news-grid" id="newsContainer">
+                <!-- News will be loaded dynamically from API -->
+                <div class="loading-news">Loading latest news...</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p>Receive the latest updates on gut microbiome research, events, and BiomeXplore platform updates.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" name="email" placeholder="Your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <div id="newsletterMessage"></div>
+        </div>
+    </section>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 style="color: #1e3a8a; margin-bottom: 20px;">Contact Us</h2>
+            <form id="contactForm">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Name *</label>
+                    <input type="text" name="name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Email *</label>
+                    <input type="email" name="email" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Message *</label>
+                    <textarea name="message" required rows="5" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Send Message</button>
+            </form>
+            <div id="contactMessage"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Applications</h4>
+                    <ul>
+                        <li><a href="#microbiota">Gut Microbiota</a></li>
+                        <li><a href="#exposome">Exposome</a></li>
+                        <li><a href="#wellness">Wellness Index</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Solutions</h4>
+                    <ul>
+                        <li><a href="#dataspace">Data Space</a></li>
+                        <li><a href="#visualization">Data Visualization</a></li>
+                        <li><a href="#publications">Scientific Publications</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="mailto:info@biomexplore.com">info@biomexplore.com</a></li>
+                        <li><a href="tel:+34986123456">+34 986 123 456</a></li>
+                        <li>Galicia Sur Health Research Institute<br>Vigo, Spain</li>
+                        <li><a href="#" onclick="openModal()" style="color: #60a5fa; font-weight: 600;">📧 Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BiomeXplore. All rights reserved. | Vigo, Spain</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============ CARD EXPANSION SYSTEM ============
+        
+        let expandedCard = null;
+
+        function toggleCard(cardId) {
+            const card = document.getElementById(cardId);
+            const allCards = document.querySelectorAll('.card');
+            
+            // If clicking the same card that's already expanded, close it
+            if (expandedCard === cardId) {
+                card.classList.remove('expanded');
+                expandedCard = null;
+                // Scroll the card back into view
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+            
+            // Close any other expanded card
+            allCards.forEach(c => {
+                if (c.id !== cardId) {
+                    c.classList.remove('expanded');
+                }
+            });
+            
+            // Expand the clicked card
+            card.classList.add('expanded');
+            expandedCard = cardId;
+            
+            // Scroll the expanded card into view
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function openInteractiveMap() {
+            // Open the Europe Health Interactive Map in a new tab
+            window.open('Europe_Health_Interactive_Map.html', '_blank');
+        }
+
+        // Close expanded card when clicking outside
+        document.addEventListener('click', function(e) {
+            if (expandedCard && !e.target.closest('.card') && !e.target.closest('.card-actions')) {
+                const card = document.getElementById(expandedCard);
+                if (card) {
+                    card.classList.remove('expanded');
+                    expandedCard = null;
+                }
+            }
+        });
+
+        // ============ SIMPLE LANGUAGE SELECTOR ============
+        
+        let currentLanguage = 'en';
+
+        // Simple language change function
+        function changeLanguage(lang) {
+            console.log(`Changing language to: ${lang}`);
+            
+            // Update current language
+            currentLanguage = lang;
+            
+            // Update active flag
+            updateLanguageSelector();
+            
+            // Save preference
+            localStorage.setItem('preferredLanguage', lang);
+            
+            console.log(`Language changed to: ${lang}`);
+        }
+
+        // Update language selector
+        function updateLanguageSelector() {
+            const flags = document.querySelectorAll('.language-flag');
+            
+            flags.forEach(flag => {
+                const flagLang = flag.getAttribute('data-lang');
+                if (flagLang === currentLanguage) {
+                    flag.classList.add('active');
+                } else {
+                    flag.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize language system
+        function initLanguage() {
+            // Get preferred language from storage or use default
+            const preferredLang = localStorage.getItem('preferredLanguage') || 'en';
+            
+            // Set initial language
+            currentLanguage = preferredLang;
+            updateLanguageSelector();
+            
+            console.log(`Language system initialized with: ${currentLanguage}`);
+        }
+
+        // ============ EXISTING FUNCTIONS ============
+
+        // Load News from API
+        async function loadNews() {
+            try {
+                console.log('🔄 Loading news from API...');
+                const response = await fetch('./api/news');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const news = await response.json();
+                console.log('📰 News loaded:', news);
+                
+                const newsContainer = document.getElementById('newsContainer');
+                
+                if (!news || news.length === 0) {
+                    newsContainer.innerHTML = `
+                        <div class="no-news">
+                            <h3>No news available</h3>
+                            <p>Check back later for updates and announcements.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                newsContainer.innerHTML = news.map(article => `
+                    <div class="news-card">
+                        <div class="news-image ${!article.image_url ? 'placeholder' : ''}">
+                            ${article.image_url 
+                                ? `<img src="${article.image_url}" alt="${article.title}" style="width:100%;height:100%;object-fit:cover;">`
+                                : '📰'
+                            }
+                        </div>
+                        <div class="news-content">
+                            <h3>${article.title}</h3>
+                            <p>${article.content}</p>
+                            <div class="news-date">
+                                ${new Date(article.created_at).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                console.log('✅ News displayed successfully');
+                
+            } catch (error) {
+                console.error('❌ Error loading news:', error);
+                const newsContainer = document.getElementById('newsContainer');
+                newsContainer.innerHTML = `
+                    <div class="no-news">
+                        <h3>Unable to load news</h3>
+                        <p>Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load Partners from API
+        async function loadPartners() {
+            try {
+                console.log('🔄 Loading partners from API...');
+                const response = await fetch('./api/partners');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const partners = await response.json();
+                console.log('🤝 Partners loaded:', partners);
+                
+                const partnersContainer = document.getElementById('partnersContainer');
+                
+                if (!partners || partners.length === 0) {
+                    partnersContainer.innerHTML = `
+                        <div class="no-partners">
+                            <h3>No partners available</h3>
+                            <p>We're currently establishing new partnerships. Check back soon!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                partnersContainer.innerHTML = partners.map(partner => `
+                    <div class="partner-logo">
+                        <img src="${partner.logo_url}" alt="${partner.name}" loading="lazy">
+                        <div class="partner-name">${partner.name}</div>
+                    </div>
+                `).join('');
+                
+                console.log('✅ Partners displayed successfully');
+                
+            } catch (error) {
+                console.error('❌ Error loading partners:', error);
+                const partnersContainer = document.getElementById('partnersContainer');
+                partnersContainer.innerHTML = `
+                    <div class="no-partners">
+                        <h3>Unable to load partners</h3>
+                        <p>Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Modal Functions
+        function openModal() {
+            document.getElementById('contactModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').style.display = 'none';
+            document.getElementById('contactMessage').innerHTML = '';
+        }
+
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            
+            // Show loading state
+            submitButton.innerHTML = 'Sending...';
+            submitButton.disabled = true;
+            
+            try {
+                const response = await fetch('./api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('contactMessage').innerHTML = `
+                        <div class="message success">
+                            Thank you for your message! We'll get back to you soon.
+                        </div>
+                    `;
+                    this.reset();
+                } else {
+                    throw new Error(result.message || 'Failed to send message');
+                }
+            } catch (error) {
+                document.getElementById('contactMessage').innerHTML = `
+                    <div class="message error">
+                        Sorry, there was an error sending your message. Please try again later.
+                    </div>
+                `;
+            } finally {
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+            }
+        });
+
+        // Newsletter Form Submission
+        document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            
+            // Show loading state
+            submitButton.innerHTML = 'Subscribing...';
+            submitButton.disabled = true;
+            
+            try {
+                const response = await fetch('./api/newsletter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('newsletterMessage').innerHTML = `
+                        <div class="message success">
+                            Thank you for subscribing to our newsletter!
+                        </div>
+                    `;
+                    this.reset();
+                } else {
+                    throw new Error(result.message || 'Failed to subscribe');
+                }
+            } catch (error) {
+                document.getElementById('newsletterMessage').innerHTML = `
+                    <div class="message error">
+                        Sorry, there was an error subscribing. Please try again later.
+                    </div>
+                `;
+            } finally {
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+            }
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('contactModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Initializing BiomeXplore website...');
+            
+            // Initialize simple language system
+            initLanguage();
+            
+            // Load dynamic content
+            loadNews();
+            loadPartners();
+            
+            console.log('✅ All systems initialized');
+        });
+
+    </script>
+</body>
+</html>

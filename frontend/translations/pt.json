@@ -1,0 +1,155 @@
+{
+    "site": {
+        "title": "BiomeXplore: Integração de Dados da Microbiota Intestinal e Exposoma",
+        "description": "Plataforma avançada que integra dados genéticos do microbioma intestinal com fatores ambientais para insights transformadores em saúde"
+    },
+    "header": {
+        "home": "Início",
+        "applications": "Aplicações",
+        "solutions": "Soluções",
+        "about": "Sobre Nós",
+        "contact": "Contato"
+    },
+    "hero": {
+        "title": "Integrando Dados da Microbiota Intestinal e Exposoma",
+        "subtitle": "BiomeXplore é uma plataforma inovadora que conecta dados genéticos do microbioma intestinal com fatores ambientais para desbloquear novas perspectivas na saúde humana.",
+        "cta": "Descubra Nossas Soluções"
+    },
+    "intro": {
+        "text": "<strong>BiomeXplore é uma ferramenta avançada para integrar dados genéticos da microbiota intestinal e o exposoma.</strong> Combinamos análise do microbioma com dados ambientais para fornecer insights transformadores em saúde, nutrição e bem-estar."
+    },
+    "applications": {
+        "title": "Aplicações",
+        "subtitle": "Nossa plataforma oferece soluções inovadoras para várias áreas da saúde e pesquisa",
+        "health": {
+            "title": "Saúde Humana",
+            "description": "Compreenda como o microbioma intestinal influencia condições como obesidade, diabetes, doenças autoimunes e saúde mental.",
+            "learnMore": "Saiba Mais"
+        },
+        "nutrition": {
+            "title": "Nutrição Personalizada",
+            "description": "Desenvolva planos alimentares baseados no perfil único do microbioma intestinal de cada indivíduo para otimizar a saúde.",
+            "learnMore": "Saiba Mais"
+        },
+        "research": {
+            "title": "Pesquisa Clínica",
+            "description": "Acelere descobertas científicas integrando dados do microbioma com fatores ambientais em estudos clínicos.",
+            "learnMore": "Saiba Mais"
+        }
+    },
+    "solutions": {
+        "title": "Soluções",
+        "subtitle": "Nossas ferramentas e serviços para análise e integração de dados",
+        "platform": {
+            "title": "Plataforma BiomeXplore",
+            "description": "Interface intuitiva para analisar e visualizar dados do microbioma intestinal integrados com informações do exposoma.",
+            "learnMore": "Saiba Mais"
+        },
+        "consulting": {
+            "title": "Consultoria Especializada",
+            "description": "Nossa equipe de especialistas fornece suporte personalizado para seu projeto de pesquisa ou aplicação clínica.",
+            "learnMore": "Saiba Mais"
+        },
+        "analysis": {
+            "title": "Análise de Dados",
+            "description": "Serviços completos para processamento e interpretação de dados de sequenciamento do microbioma intestinal.",
+            "learnMore": "Saiba Mais"
+        }
+    },
+    "partners": {
+        "title": "Parceiros",
+        "subtitle": "Colaboramos com instituições de pesquisa e empresas inovadoras"
+    },
+    "news": {
+        "title": "Notícias e Atualizações",
+        "subtitle": "Mantenha-se informado com as últimas pesquisas e desenvolvimentos da plataforma"
+    },
+    "newsletter": {
+        "title": "Assine Nossa Newsletter",
+        "subtitle": "Receba as últimas atualizações sobre pesquisa do microbioma intestinal, eventos e atualizações da plataforma BiomeXplore.",
+        "placeholder": "Seu email",
+        "button": "Assinar"
+    },
+    "contact": {
+        "title": "Entre em Contato",
+        "name": "Nome *",
+        "email": "Email *",
+        "message": "Mensagem *",
+        "send": "Enviar Mensagem"
+    },
+    "footer": {
+        "applications": "Aplicações",
+        "solutions": "Soluções",
+        "bioinformatics": "Bioinformática",
+        "contact": "Contato",
+        "copyright": "Todos os direitos reservados."
+    },
+    
+    "about": {
+        "backToSite": "Voltar ao Site",
+        "hero": {
+            "title": "Sobre o BiomeXplore",
+            "subtitle": "Conheça a equipa por trás da inovadora plataforma de microbioma intestinal e exposoma"
+        },
+        "mission": {
+            "title": "A Nossa Missão",
+            "text1": "<strong>BiomeXplore</strong> nasceu da necessidade de integrar dados complexos do microbioma intestinal com fatores ambientais para desbloquear novos insights na saúde humana. Combinamos experiência em bioinformática, microbiologia e ciência de dados para criar soluções transformadoras.",
+            "text2": "Acreditamos que a chave para avanços significativos na saúde reside na compreensão holística da interação entre os nossos microrganismos e o ambiente que nos rodeia."
+        },
+    "team": {
+        "title": "A Nossa Equipa",
+        "subtitle": "Especialistas dedicados à inovação na saúde intestinal",
+        "member1": {
+            "name": "João Serra Lopes",
+            "role": "Investigador",
+            "bio": "Doutorado em Microbiologia com 15 anos de experiência em investigação do microbioma intestinal. Publicou mais de 50 artigos científicos em revistas internacionais."
+        },
+        "member2": {
+            "name": "Nico Fernandez",
+            "role": "Investigador",
+            "bio": "Especialista em biologia computacional e análise de dados. Lidera a nossa equipa de bioinformática no desenvolvimento de algoritmos avançados para análise do microbioma."
+        },
+        "member3": {
+            "name": "Sara",
+            "role": "Investigadora",
+            "bio": "Médica especializada em gastroenterologia. Coordena estudos clínicos e garante que a investigação se traduz em soluções práticas de saúde."
+        },
+        "member4": {
+            "name": "Lorena",
+            "role": "Gestora de Projeto",
+            "bio": "Desenvolvedora full-stack com experiência na criação de plataformas intuitivas para visualização e análise de dados complexos."
+        }
+    },
+    "contact": {
+        "title": "Informações de Contacto",
+        "subtitle": "Entre em contacto com a nossa equipa",
+        "email": {
+            "title": "Email"
+        },
+        "phone": {
+            "title": "Telefone",
+            "hours": "Seg-Sex: 9:00-18:00"
+        },
+        "inquiries": {
+            "title": "Informações Gerais",
+            "description": "Para oportunidades de parceria e questões gerais"
+        },
+        "research": {
+            "title": "Colaboração em Investigação",
+            "description": "Para parcerias académicas e de investigação"
+        }
+    },
+    "location": {
+        "title": "A Nossa Localização",
+        "institute": "Instituto de Investigação Sanitaria Galicia Sur",
+        "address": "Morada:",
+        "addressDetails": "Instituto de Investigación Sanitaria Galicia Sur<br>Vigo, Galiza<br>Espanha",
+        "facilities": "Instalações de Investigação:",
+        "facilitiesList": "• Laboratório de Microbiologia Avançada<br>• Centro de Bioinformática<br>• Unidade de Investigação Clínica<br>• Centro de Análise de Dados",
+        "collaborations": "Colaborações:",
+        "collaborationsText": "Trabalhamos em estreita colaboração com universidades, instituições de investigação e prestadores de cuidados de saúde em toda a Europa.",
+        "map": "Mapa Interativo",
+        "mapLocation": "Vigo, Galiza - Espanha"
+    }
+    }
+}

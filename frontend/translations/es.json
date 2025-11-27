@@ -1,0 +1,109 @@
+{
+    "site": {
+        "title": "BiomeXplore: Integración de Datos de la Microbiota Intestinal y Exposoma",
+        "description": "Plataforma avanzada que integra datos genéticos del microbioma intestinal con factores ambientales para insights transformadores en salud"
+    },
+    "header": {
+        "home": "Inicio",
+        "applications": "Aplicaciones",
+        "solutions": "Soluciones",
+        "about": "Sobre Nosotros",
+        "contact": "Contacto"
+    },
+    "hero": {
+        "title": "Integrando Datos de la Microbiota Intestinal y Exposoma",
+        "subtitle": "BiomeXplore es una plataforma innovadora que conecta datos genéticos del microbioma intestinal con factores ambientales para desbloquear nuevas perspectivas en la salud humana.",
+        "cta": "Descubre Nuestras Soluciones"
+    },
+    "intro": {
+        "text": "<strong>BiomeXplore es una herramienta avanzada para integrar datos genéticos de la microbiota intestinal y el exposoma.</strong> Combinamos análisis del microbioma con datos ambientales para proporcionar insights transformadores en salud, nutrición y bienestar."
+    },
+    "applications": {
+        "title": "Aplicaciones",
+        "subtitle": "Nuestra plataforma ofrece soluciones innovadoras para diversas áreas de la salud e investigación",
+        "health": {
+            "title": "Salud Humana",
+            "description": "Comprenda cómo el microbioma intestinal influye en condiciones como obesidad, diabetes, enfermedades autoinmunes y salud mental.",
+            "learnMore": "Saber Más"
+        },
+        "nutrition": {
+            "title": "Nutrición Personalizada",
+            "description": "Desarrolle planes dietéticos basados en el perfil único del microbioma intestinal de cada individuo para optimizar la salud.",
+            "learnMore": "Saber Más"
+        },
+        "research": {
+            "title": "Investigación Clínica",
+            "description": "Acelere descubrimientos científicos integrando datos del microbioma con factores ambientales en estudios clínicos.",
+            "learnMore": "Saber Más"
+        }
+    },
+    "solutions": {
+        "title": "Soluciones",
+        "subtitle": "Nuestras herramientas y servicios para análisis e integración de datos",
+        "platform": {
+            "title": "Plataforma BiomeXplore",
+            "description": "Interfaz intuitiva para analizar y visualizar datos del microbioma intestinal integrados con información del exposoma.",
+            "learnMore": "Saber Más"
+        },
+        "consulting": {
+            "title": "Consultoría Especializada",
+            "description": "Nuestro equipo de especialistas proporciona soporte personalizado para su proyecto de investigación o aplicación clínica.",
+            "learnMore": "Saber Más"
+        },
+        "analysis": {
+            "title": "Análisis de Datos",
+            "description": "Servicios completos para procesamiento e interpretación de datos de secuenciación del microbioma intestinal.",
+            "learnMore": "Saber Más"
+        }
+    },
+    "partners": {
+        "title": "Socios",
+        "subtitle": "Colaboramos con instituciones de investigación y empresas innovadoras"
+    },
+    "news": {
+        "title": "Noticias y Actualizaciones",
+        "subtitle": "Manténgase informado con las últimas investigaciones y desarrollos de la plataforma"
+    },
+    "newsletter": {
+        "title": "Suscríbase a Nuestro Boletín",
+        "subtitle": "Reciba las últimas actualizaciones sobre investigación del microbioma intestinal, eventos y actualizaciones de la plataforma BiomeXplore.",
+        "placeholder": "Su email",
+        "button": "Suscribirse"
+    },
+    "contact": {
+        "title": "Contáctenos",
+        "name": "Nombre *",
+        "email": "Email *",
+        "message": "Mensaje *",
+        "send": "Enviar Mensaje"
+    },
+    "footer": {
+        "applications": "Aplicaciones",
+        "solutions": "Soluciones",
+        "bioinformatics": "Bioinformática",
+        "contact": "Contacto",
+        "copyright": "Todos los derechos reservados."
+    }
+
+    "about": {
+    "backToSite": "Volver al Sitio",
+    "hero": {
+        "title": "Sobre BiomeXplore",
+        "subtitle": "Conoce al equipo detrás de la innovadora plataforma de microbioma intestinal y exposoma"
+    },
+    "mission": {
+        "title": "Nuestra Misión",
+        "text1": "<strong>BiomeXplore</strong> nació de la necesidad de integrar datos complejos del microbioma intestinal con factores ambientales para desbloquear nuevos insights en la salud humana. Combinamos experiencia en bioinformática, microbiología y ciencia de datos para crear soluciones transformadoras.",
+        "text2": "Creemos que la clave para avances significativos en la salud reside en la comprensión holística de la interacción entre nuestros microorganismos y el ambiente que nos rodea."
+    },
+    "team": {
+        "title": "Nuestro Equipo",
+        "subtitle": "Expertos dedicados a la innovación en salud intestinal",
+        "member1": {
+            "name": "João Serra Lopes",
+            "role": "Investigador",
+            "bio": "Doctor en Microbiología con 15 años de experiencia en investigación del microbioma intestinal. Publicó más de 50 artículos científicos en revistas internacionales."
+    }
+    }
+    }
+}

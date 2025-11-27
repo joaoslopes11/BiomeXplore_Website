@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - BiomeXplore</title>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/qYB65cyg/logo-biomexplore.png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #1e40af;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-main {
+            padding: 15px 0;
+        }
+        
+        .header-main .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+        }
+        
+        .logo-text {
+            margin-left: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e40af;
+        }
+        
+        nav ul {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            list-style: none; 
+        }
+
+        nav ul li {
+            margin-left: 25px;
+            list-style: none;
+        }
+        
+        nav ul li a {
+            font-weight: 600;
+            padding: 10px 0;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+        
+        nav ul li a:hover {
+            color: #1e40af;
+        }
+
+        .contact-btn {
+            background-color: #1e40af;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .contact-btn:hover {
+            background-color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        /* Language Selector Styles */
+        .language-selector {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            gap: 8px;
+        }
+        
+        .language-flag {
+            width: 24px;
+            height: 16px;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            border-radius: 3px;
+        }
+        
+        .language-flag.active {
+            opacity: 1;
+            border-color: #1e40af;
+            transform: scale(1.1);
+        }
+
+        /* Hero Section */
+        .about-hero {
+            background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.9));
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .about-hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .about-hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Mission Section */
+        .mission {
+            background-color: #f1f5f9;
+        }
+
+        .mission-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        /* Cards */
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 350px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid #1e40af;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background-color: #dbeafe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+        
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+        
+        .card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 4px solid #1e40af;
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .member-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-name {
+            font-size: 20px;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .member-role {
+            color: #1e40af;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .member-bio {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .member-email {
+            margin-bottom: 15px;
+        }
+
+        .member-email a {
+            color: #1e40af;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .member-email a:hover {
+            color: #1e3a8a;
+            text-decoration: underline;
+        }
+
+        /* Contact Section */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .contact-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #1e40af;
+        }
+
+        .contact-card h3 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+        }
+
+        .contact-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Location Section */
+        .location {
+            background-color: #f1f5f9;
+        }
+
+        .location-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .location-info h3 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .location-info p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        #hospitalMap {
+            height: 400px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1e293b;
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #cbd5e1;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #60a5fa;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #334155;
+            padding-top: 20px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        /* Messages */
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .location-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-hero h1 {
+                font-size: 36px;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+            }
+            
+            .language-selector {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            nav ul li {
+                margin-left: 15px;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                padding: 20px;
+            }
+
+            .contact-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            nav ul {
+                flex-wrap: wrap;
+            }
+            
+            .language-selector {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-main">
+            <div class="container">
+                <div class="logo">
+                    <img src="https://i.ibb.co/qYB65cyg/logo-biomexplore.png" alt="BiomeXplore Logo">
+                    <div class="logo-text">BiomeXplore</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#applications">Applications</a></li>
+                        <li><a href="index.html#solutions">Solutions</a></li>
+                        <li><a href="index.html" class="btn">Back to Site</a></li>
+                        <!-- Language Selector (Cosmetic Only) -->
+                        <li class="language-selector">
+                            <img src="https://flagcdn.com/w40/eu.png" 
+                                 alt="European Union" 
+                                 class="language-flag active">
+                            <img src="https://flagcdn.com/w40/pt.png" 
+                                 alt="Português" 
+                                 class="language-flag">
+                            <img src="https://flagcdn.com/w40/es.png" 
+                                 alt="Español" 
+                                 class="language-flag">
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1>About BiomeXplore</h1>
+            <p>Meet the team behind the innovative gut microbiome and exposome platform</p>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="section mission">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Mission</h2>
+            </div>
+            <div class="mission-content">
+                <p><strong>BiomeXplore</strong> was born from the need to integrate complex gut microbiome data with environmental factors to unlock new insights in human health. We combine expertise in bioinformatics, microbiology, and data science to create transformative solutions.</p>
+                <p style="margin-top: 20px;">We believe the key to significant health advances lies in the holistic understanding of the interaction between our microorganisms and the environment around us.</p>
+            </div>
+        </div>
+    </section>
+
+        <!-- Team Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Team</h2>
+                <p>Experts dedicated to innovation in gut health</p>
+            </div>
+
+            <!-- Team Leaders -->
+            <div style="margin-bottom: 50px;">
+                <h3 style="text-align: center; color: #1e3a8a; margin-bottom: 30px; font-size: 28px;">Team Leaders</h3>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-photo">
+                            <img src="https://i.ibb.co/1Y0bnVdN/image.png" alt="Sonia Pérez Castro">
+                        </div>
+                        <h3 class="member-name">Sonia Pérez Castro</h3>
+                        <div class="member-role">Team Leader</div>
+                        <div class="member-email">
+                            <a href="mailto:sonia.maria.perez.castro@sergas.es">sonia.maria.perez.castro@sergas.es</a>
+                        </div>
+                        <p class="member-bio">Info Sonia</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-photo">
+                            <img src="https://i.ibb.co/1Y0bnVdN/image.png" alt="Jorge Julio Cabrera-Alvargonzález">
+                        </div>
+                        <h3 class="member-name">Jorge Julio Cabrera-Alvargonzález</h3>
+                        <div class="member-role">Team Leader</div>
+                        <div class="member-email">
+                            <a href="mailto:Jorge.Julio.Cabrera.Alvargonzalez@sergas.es">Jorge.Julio.Cabrera.Alvargonzalez@sergas.es</a>
+                        </div>
+                        <p class="member-bio">Info Xurxo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coordenadora -->
+            <div style="margin-bottom: 50px;">
+                <h3 style="text-align: center; color: #1e3a8a; margin-bottom: 30px; font-size: 28px;">Coordinator</h3>
+                <div class="team-grid" style="max-width: 400px; margin: 0 auto;">
+                    <div class="team-member">
+                        <div class="member-photo">
+                            <img src="https://i.ibb.co/1Y0bnVdN/image.png" alt="Lorena G. Calvo">
+                        </div>
+                        <h3 class="member-name">Lorena G. Calvo</h3>
+                        <div class="member-role">Coordinator</div>
+                        <div class="member-email">
+                            <a href="mailto:lorena.gomez@iisgaliciasur.es">lorena.gomez@iisgaliciasur.es</a>
+                        </div>
+                        <p class="member-bio">Info Lorena</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Researchers -->
+            <div>
+                <h3 style="text-align: center; color: #1e3a8a; margin-bottom: 30px; font-size: 28px;">Researchers</h3>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-photo">
+                            <img src="https://i.ibb.co/1Y0bnVdN/image.png" alt="João Serra Lopes">
+                        </div>
+                        <h3 class="member-name">João Serra Lopes</h3>
+                        <div class="member-role">Researcher</div>
+                        <div class="member-email">
+                            <a href="mailto:joao.serra@iisgaliciasur.es">joao.serra@iisgaliciasur.es</a>
+                        </div>
+                        <p class="member-bio">Master in Biomedical Engineering from the Instituto Superior de Engenharia de Lisboa. Responsible for exposome research and author of several scientific papers on metabolic analysis in cancer and biological systems.</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-photo">
+                            <img src="https://i.ibb.co/1Y0bnVdN/image.png" alt="Nicolás Sobral Fernández">
+                        </div>
+                        <h3 class="member-name">Nicolás Sobral Fernández</h3>
+                        <div class="member-role">Researcher</div>
+                        <div class="member-email">
+                            <a href="mailto:nicolas.sobral@iisgaliciasur.es">nicolas.sobral@iisgaliciasur.es</a>
+                        </div>
+                        <p class="member-bio">Info Nico.</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-photo">
+                            <img src="https://i.ibb.co/rRpq1q4C/image.png" alt="Sara Eguizábal">
+                        </div>
+                        <h3 class="member-name">Sara Eguizábal</h3>
+                        <div class="member-role">Researcher</div>
+                        <div class="member-email">
+                            <a href="mailto:sara.eguizabal@iisgaliciasur.es">sara.eguizabal@iisgaliciasur.es</a>
+                        </div>
+                        <p class="member-bio">Master's and Bachelor's in Biomedical Engineering from the University of Vigo. Responsible for AI models and data preparation, she brings experience from a research group in the USA and an industry placement in Germany, applying AI to biology and medicine.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+    <!-- Contact Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Information</h2>
+                <p>Get in touch with our team</p>
+            </div>
+            <div class="contact-info">
+                <div class="contact-card">
+                    <div class="contact-icon">📧</div>
+                    <h3>Email</h3>
+                    <p>info@biomexplore.com</p>
+                    <p>research@biomexplore.com</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">📞</div>
+                    <h3>Phone</h3>
+                    <p>+34 986 123 456</p>
+                    <p>Mon-Fri: 9:00-18:00</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">💬</div>
+                    <h3>General Inquiries</h3>
+                    <p>For partnership opportunities and general questions</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">🔬</div>
+                    <h3>Research Collaboration</h3>
+                    <p>For academic and research partnerships</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="section location">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Location</h2>
+            </div>
+            <div class="location-content">
+                <div class="location-info">
+                    <h3>Galicia Sur Health Research Institute</h3>
+                    <p><strong>Address:</strong><br>
+                    Instituto de Investigación Sanitaria Galicia Sur<br>
+                    Vigo, Galicia<br>
+                    Spain</p>
+                    
+                    <p><strong>Research Facilities:</strong><br>
+                    • Advanced Microbiology Lab<br>
+                    • Bioinformatics Center<br>
+                    • Clinical Research Unit<br>
+                    • Data Analysis Hub</p>
+                    
+                    <p><strong>Collaborations:</strong><br>
+                    We work closely with universities, research institutions, and healthcare providers across Europe.</p>
+                </div>
+                
+                <div id="hospitalMap"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Applications</h4>
+                    <ul>
+                        <li><a href="index.html#applications">Gut Microbiota</a></li>
+                        <li><a href="index.html#applications">Exposome</a></li>
+                        <li><a href="index.html#applications">Wellness Index</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Solutions</h4>
+                    <ul>
+                        <li><a href="index.html#solutions">Data Space</a></li>
+                        <li><a href="index.html#solutions">Data Visualization</a></li>
+                        <li><a href="index.html#solutions">Scientific Publications</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="mailto:info@biomexplore.com">info@biomexplore.com</a></li>
+                        <li><a href="tel:+34986123456">+34 986 123 456</a></li>
+                        <li>Galicia Sur Health Research Institute<br>Vigo, Spain</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BiomeXplore. All rights reserved. | Vigo, Spain</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 style="color: #1e3a8a; margin-bottom: 20px;">Contact Us</h2>
+            <form id="contactForm">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Name *</label>
+                    <input type="text" name="name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Email *</label>
+                    <input type="email" name="email" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Message *</label>
+                    <textarea name="message" required rows="5" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Send Message</button>
+            </form>
+            <div id="contactMessage"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // ============ SIMPLE FUNCTIONS ============
+
+        // Modal Functions
+        function openModal() {
+            document.getElementById('contactModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').style.display = 'none';
+            document.getElementById('contactMessage').innerHTML = '';
+        }
+
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            
+            // Show loading state
+            submitButton.innerHTML = 'Sending...';
+            submitButton.disabled = true;
+            
+            try {
+                const response = await fetch('./api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('contactMessage').innerHTML = `
+                        <div class="message success">
+                            Thank you for your message! We'll get back to you soon.
+                        </div>
+                    `;
+                    this.reset();
+                } else {
+                    throw new Error(result.message || 'Failed to send message');
+                }
+            } catch (error) {
+                document.getElementById('contactMessage').innerHTML = `
+                    <div class="message error">
+                        Sorry, there was an error sending your message. Please try again later.
+                    </div>
+                `;
+            } finally {
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+            }
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('contactModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize map
+        function initMap() {
+            // Coordinates for Hospital Álvaro Cunqueiro in Vigo
+            const hospitalCoords = [42.189491, -8.713703];
+            
+            // Create map
+            const map = L.map('hospitalMap').setView(hospitalCoords, 15);
+            
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // Add custom marker
+            const hospitalIcon = L.divIcon({
+                html: '<div style="background-color: #1e40af; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">🏥</div>',
+                className: 'hospital-marker',
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+            
+            // Add marker to map
+            const marker = L.marker(hospitalCoords, { icon: hospitalIcon })
+                .addTo(map)
+                .bindPopup(`
+                    <div style="text-align: center;">
+                        <h3 style="margin: 0 0 8px 0; color: #1e3a8a;">Hospital Álvaro Cunqueiro</h3>
+                        <p style="margin: 0;">Galicia Sur Health Research Institute<br>Vigo, Spain</p>
+                    </div>
+                `);
+            
+            // Open popup by default
+            marker.openPopup();
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 About page initialized');
+            initMap();
+        });
+
+    </script>
+</body>
+</html>

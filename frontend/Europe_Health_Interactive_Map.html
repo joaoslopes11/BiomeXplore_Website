@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_d1075beadc7f0eb4a93deefdb24fd2e4 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_d1075beadc7f0eb4a93deefdb24fd2e4" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_d1075beadc7f0eb4a93deefdb24fd2e4 = L.map(
+                "map_d1075beadc7f0eb4a93deefdb24fd2e4",
+                {
+                    center: [50.0, 10.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 4,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_4c6e2b099eac7183286fedd7fdbf9940 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_4c6e2b099eac7183286fedd7fdbf9940.addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var marker_3fff1c978533d2e747fbbd7d5fe5ea41 = L.marker(
+                [48.2082, 16.3738],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_7ac8aa026e53a050b2393fb5aa6e57e7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_145f50eefd09a6c373c71d6ad4a6fdeb = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_319c9f210511d9d2a098ee30c84c9ef5 = $(`<div id="html_319c9f210511d9d2a098ee30c84c9ef5" style="width: 100.0%; height: 100.0%;">             <b>Austria (AT)</b><br>             <b>Expectativa de Vida:</b> 82.0 anos<br>             <b>Insegurança Alimentar:</b> 3.7%<br>             <b>Tabagismo:</b> 25.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> OCIDENTAIS             </div>`)[0];
+                popup_145f50eefd09a6c373c71d6ad4a6fdeb.setContent(html_319c9f210511d9d2a098ee30c84c9ef5);
+            
+        
+
+        marker_3fff1c978533d2e747fbbd7d5fe5ea41.bindPopup(popup_145f50eefd09a6c373c71d6ad4a6fdeb)
+        ;
+
+        
+    
+    
+            marker_3fff1c978533d2e747fbbd7d5fe5ea41.bindTooltip(
+                `<div>
+                     Austria - 82.0 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3fff1c978533d2e747fbbd7d5fe5ea41.setIcon(icon_7ac8aa026e53a050b2393fb5aa6e57e7);
+            
+    
+            var marker_5b8db80e9e91dca01b6c03a27bb3e62d = L.marker(
+                [50.8503, 4.3517],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_2cc9bb9ee6435959b14622cbd0015886 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9c53d0fbac660620febc014130f690ae = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d34cb06a36f6c3d61ddeb46aca620368 = $(`<div id="html_d34cb06a36f6c3d61ddeb46aca620368" style="width: 100.0%; height: 100.0%;">             <b>Belgium (BE)</b><br>             <b>Expectativa de Vida:</b> 81.2 anos<br>             <b>Insegurança Alimentar:</b> 3.9%<br>             <b>Tabagismo:</b> 21.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> OCIDENTAIS             </div>`)[0];
+                popup_9c53d0fbac660620febc014130f690ae.setContent(html_d34cb06a36f6c3d61ddeb46aca620368);
+            
+        
+
+        marker_5b8db80e9e91dca01b6c03a27bb3e62d.bindPopup(popup_9c53d0fbac660620febc014130f690ae)
+        ;
+
+        
+    
+    
+            marker_5b8db80e9e91dca01b6c03a27bb3e62d.bindTooltip(
+                `<div>
+                     Belgium - 81.2 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5b8db80e9e91dca01b6c03a27bb3e62d.setIcon(icon_2cc9bb9ee6435959b14622cbd0015886);
+            
+    
+            var marker_1b2b1ad04e06352cb3657318a0c3f89a = L.marker(
+                [42.6977, 23.3219],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_092176a777653ba3232805b863df647b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_caf80d03f91c9984e7d8f72b0373f91c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ec9668fbe48f6f1771caf9cc91f30247 = $(`<div id="html_ec9668fbe48f6f1771caf9cc91f30247" style="width: 100.0%; height: 100.0%;">             <b>Bulgaria (BG)</b><br>             <b>Expectativa de Vida:</b> 72.9 anos<br>             <b>Insegurança Alimentar:</b> 27.7%<br>             <b>Tabagismo:</b> 36.0%<br>             <b>Ano:</b> 2019<br>             <b>Região:</b> LESTE             </div>`)[0];
+                popup_caf80d03f91c9984e7d8f72b0373f91c.setContent(html_ec9668fbe48f6f1771caf9cc91f30247);
+            
+        
+
+        marker_1b2b1ad04e06352cb3657318a0c3f89a.bindPopup(popup_caf80d03f91c9984e7d8f72b0373f91c)
+        ;
+
+        
+    
+    
+            marker_1b2b1ad04e06352cb3657318a0c3f89a.bindTooltip(
+                `<div>
+                     Bulgaria - 72.9 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1b2b1ad04e06352cb3657318a0c3f89a.setIcon(icon_092176a777653ba3232805b863df647b);
+            
+    
+            var marker_13572e1e0f351f7b118b7c20d899f902 = L.marker(
+                [46.948, 7.4474],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_77360944b2d04948445056ec77fea38c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_222686b5c360d3112b24b0604bcf854b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_84df0a6a72f33c43b5137101ca3b7bcd = $(`<div id="html_84df0a6a72f33c43b5137101ca3b7bcd" style="width: 100.0%; height: 100.0%;">             <b>Switzerland (CH)</b><br>             <b>Expectativa de Vida:</b> 85.0 anos<br>             <b>Insegurança Alimentar:</b> 1.8%<br>             <b>Tabagismo:</b> nan%<br>             <b>Ano:</b> 2013<br>             <b>Região:</b> OCIDENTAIS             </div>`)[0];
+                popup_222686b5c360d3112b24b0604bcf854b.setContent(html_84df0a6a72f33c43b5137101ca3b7bcd);
+            
+        
+
+        marker_13572e1e0f351f7b118b7c20d899f902.bindPopup(popup_222686b5c360d3112b24b0604bcf854b)
+        ;
+
+        
+    
+    
+            marker_13572e1e0f351f7b118b7c20d899f902.bindTooltip(
+                `<div>
+                     Switzerland - 85.0 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_13572e1e0f351f7b118b7c20d899f902.setIcon(icon_77360944b2d04948445056ec77fea38c);
+            
+    
+            var marker_b6dbe053bf01dc315c228245e79eb97a = L.marker(
+                [35.1856, 33.3823],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_c0417a97f8e54d62b845b8aa9df73309 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8117595e91228037523ace748e11dc5f = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_9bcb238705dde0859976de1e7fcaf242 = $(`<div id="html_9bcb238705dde0859976de1e7fcaf242" style="width: 100.0%; height: 100.0%;">             <b>Cyprus (CY)</b><br>             <b>Expectativa de Vida:</b> 83.5 anos<br>             <b>Insegurança Alimentar:</b> 1.0%<br>             <b>Tabagismo:</b> 28.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> SUL/MEDITERRÂNICOS             </div>`)[0];
+                popup_8117595e91228037523ace748e11dc5f.setContent(html_9bcb238705dde0859976de1e7fcaf242);
+            
+        
+
+        marker_b6dbe053bf01dc315c228245e79eb97a.bindPopup(popup_8117595e91228037523ace748e11dc5f)
+        ;
+
+        
+    
+    
+            marker_b6dbe053bf01dc315c228245e79eb97a.bindTooltip(
+                `<div>
+                     Cyprus - 83.5 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b6dbe053bf01dc315c228245e79eb97a.setIcon(icon_c0417a97f8e54d62b845b8aa9df73309);
+            
+    
+            var marker_b7fe0c161576aeffb951c28be766b182 = L.marker(
+                [50.0755, 14.4378],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_8957388c99921f4f2c2f112762c95eb1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "lightgreen",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d91665870869852115a6bee22eeb8db7 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_73fafa5830ec9095cd0e7d0ac636cfd1 = $(`<div id="html_73fafa5830ec9095cd0e7d0ac636cfd1" style="width: 100.0%; height: 100.0%;">             <b>Czechia (CZ)</b><br>             <b>Expectativa de Vida:</b> 76.7 anos<br>             <b>Insegurança Alimentar:</b> 4.2%<br>             <b>Tabagismo:</b> 30.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> LESTE             </div>`)[0];
+                popup_d91665870869852115a6bee22eeb8db7.setContent(html_73fafa5830ec9095cd0e7d0ac636cfd1);
+            
+        
+
+        marker_b7fe0c161576aeffb951c28be766b182.bindPopup(popup_d91665870869852115a6bee22eeb8db7)
+        ;
+
+        
+    
+    
+            marker_b7fe0c161576aeffb951c28be766b182.bindTooltip(
+                `<div>
+                     Czechia - 76.7 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b7fe0c161576aeffb951c28be766b182.setIcon(icon_8957388c99921f4f2c2f112762c95eb1);
+            
+    
+            var marker_b57391c861b2f18bb4eb7d3d55c2faf5 = L.marker(
+                [52.52, 13.405],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_6118c6af2ae73e68e55a0cecdc498c45 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3e768fec0b2cfb090268c58a0865355c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_fa841c45326445aa591d781dc93ef243 = $(`<div id="html_fa841c45326445aa591d781dc93ef243" style="width: 100.0%; height: 100.0%;">             <b>Germany (DE)</b><br>             <b>Expectativa de Vida:</b> 81.9 anos<br>             <b>Insegurança Alimentar:</b> 11.2%<br>             <b>Tabagismo:</b> 23.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> OCIDENTAIS             </div>`)[0];
+                popup_3e768fec0b2cfb090268c58a0865355c.setContent(html_fa841c45326445aa591d781dc93ef243);
+            
+        
+
+        marker_b57391c861b2f18bb4eb7d3d55c2faf5.bindPopup(popup_3e768fec0b2cfb090268c58a0865355c)
+        ;
+
+        
+    
+    
+            marker_b57391c861b2f18bb4eb7d3d55c2faf5.bindTooltip(
+                `<div>
+                     Germany - 81.9 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b57391c861b2f18bb4eb7d3d55c2faf5.setIcon(icon_6118c6af2ae73e68e55a0cecdc498c45);
+            
+    
+            var marker_17bd0a01becec9ad8cdab070ba6117d2 = L.marker(
+                [55.6761, 12.5683],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_e768063508f12ea87db492f5a8166d19 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3c4aa2e9fe88415e58f439d6beae6c9d = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d4049b19214226064632edc1f97b6cf2 = $(`<div id="html_d4049b19214226064632edc1f97b6cf2" style="width: 100.0%; height: 100.0%;">             <b>Denmark (DK)</b><br>             <b>Expectativa de Vida:</b> 82.6 anos<br>             <b>Insegurança Alimentar:</b> 2.6%<br>             <b>Tabagismo:</b> 16.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> NÓRDICOS             </div>`)[0];
+                popup_3c4aa2e9fe88415e58f439d6beae6c9d.setContent(html_d4049b19214226064632edc1f97b6cf2);
+            
+        
+
+        marker_17bd0a01becec9ad8cdab070ba6117d2.bindPopup(popup_3c4aa2e9fe88415e58f439d6beae6c9d)
+        ;
+
+        
+    
+    
+            marker_17bd0a01becec9ad8cdab070ba6117d2.bindTooltip(
+                `<div>
+                     Denmark - 82.6 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_17bd0a01becec9ad8cdab070ba6117d2.setIcon(icon_e768063508f12ea87db492f5a8166d19);
+            
+    
+            var marker_d5cd92fa6ed73cbed46aa1873447ea1c = L.marker(
+                [59.437, 24.7536],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_fe78f8c5dc268535bcc5243ac4559ec9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "lightgreen",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_07df6c94122e06e8c3916f94c20d0e16 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a38e3fd29601c1ce8c62ddcad91edf38 = $(`<div id="html_a38e3fd29601c1ce8c62ddcad91edf38" style="width: 100.0%; height: 100.0%;">             <b>Estonia (EE)</b><br>             <b>Expectativa de Vida:</b> 78.8 anos<br>             <b>Insegurança Alimentar:</b> 5.5%<br>             <b>Tabagismo:</b> 18.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> BÁLTICOS             </div>`)[0];
+                popup_07df6c94122e06e8c3916f94c20d0e16.setContent(html_a38e3fd29601c1ce8c62ddcad91edf38);
+            
+        
+
+        marker_d5cd92fa6ed73cbed46aa1873447ea1c.bindPopup(popup_07df6c94122e06e8c3916f94c20d0e16)
+        ;
+
+        
+    
+    
+            marker_d5cd92fa6ed73cbed46aa1873447ea1c.bindTooltip(
+                `<div>
+                     Estonia - 78.8 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d5cd92fa6ed73cbed46aa1873447ea1c.setIcon(icon_fe78f8c5dc268535bcc5243ac4559ec9);
+            
+    
+            var marker_a5f80b8657e4e70cb1d6381a763567ce = L.marker(
+                [40.4168, -3.7038],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_a563dedda1ed04ee910418efe7067ae4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f0a7d36611d63281d8bbf5de6d529cbe = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_b989414f4ae70011936af9b5a32e45bb = $(`<div id="html_b989414f4ae70011936af9b5a32e45bb" style="width: 100.0%; height: 100.0%;">             <b>Spain (ES)</b><br>             <b>Expectativa de Vida:</b> 83.7 anos<br>             <b>Insegurança Alimentar:</b> 5.3%<br>             <b>Tabagismo:</b> 24.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> SUL/MEDITERRÂNICOS             </div>`)[0];
+                popup_f0a7d36611d63281d8bbf5de6d529cbe.setContent(html_b989414f4ae70011936af9b5a32e45bb);
+            
+        
+
+        marker_a5f80b8657e4e70cb1d6381a763567ce.bindPopup(popup_f0a7d36611d63281d8bbf5de6d529cbe)
+        ;
+
+        
+    
+    
+            marker_a5f80b8657e4e70cb1d6381a763567ce.bindTooltip(
+                `<div>
+                     Spain - 83.7 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a5f80b8657e4e70cb1d6381a763567ce.setIcon(icon_a563dedda1ed04ee910418efe7067ae4);
+            
+    
+            var marker_d5a716f82a0b943cb58983130de7c9ac = L.marker(
+                [60.1699, 24.9384],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_929fedfe095dad13de0d3f0f8e4ef647 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c2fe5415722d291d644277892d1ecd82 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_aec5eb4abb741a9da892503838b33295 = $(`<div id="html_aec5eb4abb741a9da892503838b33295" style="width: 100.0%; height: 100.0%;">             <b>Finland (FI)</b><br>             <b>Expectativa de Vida:</b> 83.7 anos<br>             <b>Insegurança Alimentar:</b> 3.1%<br>             <b>Tabagismo:</b> 15.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> NÓRDICOS             </div>`)[0];
+                popup_c2fe5415722d291d644277892d1ecd82.setContent(html_aec5eb4abb741a9da892503838b33295);
+            
+        
+
+        marker_d5a716f82a0b943cb58983130de7c9ac.bindPopup(popup_c2fe5415722d291d644277892d1ecd82)
+        ;
+
+        
+    
+    
+            marker_d5a716f82a0b943cb58983130de7c9ac.bindTooltip(
+                `<div>
+                     Finland - 83.7 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d5a716f82a0b943cb58983130de7c9ac.setIcon(icon_929fedfe095dad13de0d3f0f8e4ef647);
+            
+    
+            var marker_4cbf06cc464cf5f8d11b58e24a4627a3 = L.marker(
+                [48.8566, 2.3522],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_6518de183c77682dc1e27f3fb5d500b2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_eff04d66e3e7596858fde377bacebbc9 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_68f5eaa514f75674b00125cfc1c93686 = $(`<div id="html_68f5eaa514f75674b00125cfc1c93686" style="width: 100.0%; height: 100.0%;">             <b>France (FR)</b><br>             <b>Expectativa de Vida:</b> 84.5 anos<br>             <b>Insegurança Alimentar:</b> 7.4%<br>             <b>Tabagismo:</b> 28.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> OCIDENTAIS             </div>`)[0];
+                popup_eff04d66e3e7596858fde377bacebbc9.setContent(html_68f5eaa514f75674b00125cfc1c93686);
+            
+        
+
+        marker_4cbf06cc464cf5f8d11b58e24a4627a3.bindPopup(popup_eff04d66e3e7596858fde377bacebbc9)
+        ;
+
+        
+    
+    
+            marker_4cbf06cc464cf5f8d11b58e24a4627a3.bindTooltip(
+                `<div>
+                     France - 84.5 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4cbf06cc464cf5f8d11b58e24a4627a3.setIcon(icon_6518de183c77682dc1e27f3fb5d500b2);
+            
+    
+            var marker_f891d50dd5435b647595e7ccd670843a = L.marker(
+                [45.815, 15.9819],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_56edc78871d0d56d17315a55dbafb998 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "lightgreen",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_510ab13a0e01960dde253ed32972a747 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_dc379221a7753fea64c178c186105431 = $(`<div id="html_dc379221a7753fea64c178c186105431" style="width: 100.0%; height: 100.0%;">             <b>Croatia (HR)</b><br>             <b>Expectativa de Vida:</b> 75.9 anos<br>             <b>Insegurança Alimentar:</b> 7.5%<br>             <b>Tabagismo:</b> 36.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> LESTE             </div>`)[0];
+                popup_510ab13a0e01960dde253ed32972a747.setContent(html_dc379221a7753fea64c178c186105431);
+            
+        
+
+        marker_f891d50dd5435b647595e7ccd670843a.bindPopup(popup_510ab13a0e01960dde253ed32972a747)
+        ;
+
+        
+    
+    
+            marker_f891d50dd5435b647595e7ccd670843a.bindTooltip(
+                `<div>
+                     Croatia - 75.9 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f891d50dd5435b647595e7ccd670843a.setIcon(icon_56edc78871d0d56d17315a55dbafb998);
+            
+    
+            var marker_764bbfbb3a247726220bd108573d6fa8 = L.marker(
+                [47.4979, 19.0402],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_d9152020893655de4462824b809cd9d3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f5e0ab38ddf1877d72aded0ca3ff00dd = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_b111779c02be353dc5d8853613f669c1 = $(`<div id="html_b111779c02be353dc5d8853613f669c1" style="width: 100.0%; height: 100.0%;">             <b>Hungary (HU)</b><br>             <b>Expectativa de Vida:</b> 72.7 anos<br>             <b>Insegurança Alimentar:</b> 12.2%<br>             <b>Tabagismo:</b> 28.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> LESTE             </div>`)[0];
+                popup_f5e0ab38ddf1877d72aded0ca3ff00dd.setContent(html_b111779c02be353dc5d8853613f669c1);
+            
+        
+
+        marker_764bbfbb3a247726220bd108573d6fa8.bindPopup(popup_f5e0ab38ddf1877d72aded0ca3ff00dd)
+        ;
+
+        
+    
+    
+            marker_764bbfbb3a247726220bd108573d6fa8.bindTooltip(
+                `<div>
+                     Hungary - 72.7 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_764bbfbb3a247726220bd108573d6fa8.setIcon(icon_d9152020893655de4462824b809cd9d3);
+            
+    
+            var marker_37b606f0695d19036f20309cf489be33 = L.marker(
+                [53.3498, -6.2603],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_1598f63d0cb4b70b380326d7a068541c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_92f6b913b2dbc435dfd51f5468746b9c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d1ac5dd66744649f50b7d3e0736ec14d = $(`<div id="html_d1ac5dd66744649f50b7d3e0736ec14d" style="width: 100.0%; height: 100.0%;">             <b>Ireland (IE)</b><br>             <b>Expectativa de Vida:</b> 84.1 anos<br>             <b>Insegurança Alimentar:</b> 1.0%<br>             <b>Tabagismo:</b> 18.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> OUTROS             </div>`)[0];
+                popup_92f6b913b2dbc435dfd51f5468746b9c.setContent(html_d1ac5dd66744649f50b7d3e0736ec14d);
+            
+        
+
+        marker_37b606f0695d19036f20309cf489be33.bindPopup(popup_92f6b913b2dbc435dfd51f5468746b9c)
+        ;
+
+        
+    
+    
+            marker_37b606f0695d19036f20309cf489be33.bindTooltip(
+                `<div>
+                     Ireland - 84.1 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_37b606f0695d19036f20309cf489be33.setIcon(icon_1598f63d0cb4b70b380326d7a068541c);
+            
+    
+            var marker_345e25b33421385f5abd1b5c4d2523c1 = L.marker(
+                [41.9028, 12.4964],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_def1da8b55e6ecd1a4700f52db926e9d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d37ca472768168bdcfb10ca4a2b24c26 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_2cc35f1dd8f3925084442a6079da83f8 = $(`<div id="html_2cc35f1dd8f3925084442a6079da83f8" style="width: 100.0%; height: 100.0%;">             <b>Italy (IT)</b><br>             <b>Expectativa de Vida:</b> 83.3 anos<br>             <b>Insegurança Alimentar:</b> 10.1%<br>             <b>Tabagismo:</b> 23.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> SUL/MEDITERRÂNICOS             </div>`)[0];
+                popup_d37ca472768168bdcfb10ca4a2b24c26.setContent(html_2cc35f1dd8f3925084442a6079da83f8);
+            
+        
+
+        marker_345e25b33421385f5abd1b5c4d2523c1.bindPopup(popup_d37ca472768168bdcfb10ca4a2b24c26)
+        ;
+
+        
+    
+    
+            marker_345e25b33421385f5abd1b5c4d2523c1.bindTooltip(
+                `<div>
+                     Italy - 83.3 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_345e25b33421385f5abd1b5c4d2523c1.setIcon(icon_def1da8b55e6ecd1a4700f52db926e9d);
+            
+    
+            var marker_e2a04e062395d42c45b9c92b384e4038 = L.marker(
+                [54.6872, 25.2797],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_dfb25f9a2cb848070fa416562b21335d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_512afa42f854fed843099a6ad0db3f7e = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_feb8b5d2b82eaf3704c92ae9a887ff3a = $(`<div id="html_feb8b5d2b82eaf3704c92ae9a887ff3a" style="width: 100.0%; height: 100.0%;">             <b>Lithuania (LT)</b><br>             <b>Expectativa de Vida:</b> 73.1 anos<br>             <b>Insegurança Alimentar:</b> 10.9%<br>             <b>Tabagismo:</b> 28.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> BÁLTICOS             </div>`)[0];
+                popup_512afa42f854fed843099a6ad0db3f7e.setContent(html_feb8b5d2b82eaf3704c92ae9a887ff3a);
+            
+        
+
+        marker_e2a04e062395d42c45b9c92b384e4038.bindPopup(popup_512afa42f854fed843099a6ad0db3f7e)
+        ;
+
+        
+    
+    
+            marker_e2a04e062395d42c45b9c92b384e4038.bindTooltip(
+                `<div>
+                     Lithuania - 73.1 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e2a04e062395d42c45b9c92b384e4038.setIcon(icon_dfb25f9a2cb848070fa416562b21335d);
+            
+    
+            var marker_ba6dd68eab0c502c053d7e7ba81b34ff = L.marker(
+                [49.6116, 6.1319],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_d6358165ae170f281806681591503516 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_08a37b25b79004d12e3c8cf1c237db2c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ca0628b6a1065af1f02eab880f62a6af = $(`<div id="html_ca0628b6a1065af1f02eab880f62a6af" style="width: 100.0%; height: 100.0%;">             <b>Luxembourg (LU)</b><br>             <b>Expectativa de Vida:</b> 83.6 anos<br>             <b>Insegurança Alimentar:</b> 4.6%<br>             <b>Tabagismo:</b> 23.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> OCIDENTAIS             </div>`)[0];
+                popup_08a37b25b79004d12e3c8cf1c237db2c.setContent(html_ca0628b6a1065af1f02eab880f62a6af);
+            
+        
+
+        marker_ba6dd68eab0c502c053d7e7ba81b34ff.bindPopup(popup_08a37b25b79004d12e3c8cf1c237db2c)
+        ;
+
+        
+    
+    
+            marker_ba6dd68eab0c502c053d7e7ba81b34ff.bindTooltip(
+                `<div>
+                     Luxembourg - 83.6 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ba6dd68eab0c502c053d7e7ba81b34ff.setIcon(icon_d6358165ae170f281806681591503516);
+            
+    
+            var marker_bc32b5c5637ea2135c3d39586f055e84 = L.marker(
+                [56.9496, 24.1052],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_83078703143c9bf5e1aeeddd5f3582ab = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5133ee59e3128c63d21870e9c47f965e = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_9bbeb7b8f9a00b929123fd934af0b994 = $(`<div id="html_9bbeb7b8f9a00b929123fd934af0b994" style="width: 100.0%; height: 100.0%;">             <b>Latvia (LV)</b><br>             <b>Expectativa de Vida:</b> 73.7 anos<br>             <b>Insegurança Alimentar:</b> 9.4%<br>             <b>Tabagismo:</b> 32.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> BÁLTICOS             </div>`)[0];
+                popup_5133ee59e3128c63d21870e9c47f965e.setContent(html_9bbeb7b8f9a00b929123fd934af0b994);
+            
+        
+
+        marker_bc32b5c5637ea2135c3d39586f055e84.bindPopup(popup_5133ee59e3128c63d21870e9c47f965e)
+        ;
+
+        
+    
+    
+            marker_bc32b5c5637ea2135c3d39586f055e84.bindTooltip(
+                `<div>
+                     Latvia - 73.7 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bc32b5c5637ea2135c3d39586f055e84.setIcon(icon_83078703143c9bf5e1aeeddd5f3582ab);
+            
+    
+            var marker_d9fb4b14553d15922c9532003fd284d9 = L.marker(
+                [35.8989, 14.5146],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_a020d8db0ee9b8793dd7e095ae233e72 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_70d7e28d1882ac400679707ac80c95be = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a1dd8ab20e81516ef580a6cc11f4ff70 = $(`<div id="html_a1dd8ab20e81516ef580a6cc11f4ff70" style="width: 100.0%; height: 100.0%;">             <b>Malta (MT)</b><br>             <b>Expectativa de Vida:</b> 83.5 anos<br>             <b>Insegurança Alimentar:</b> 5.4%<br>             <b>Tabagismo:</b> 20.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> SUL/MEDITERRÂNICOS             </div>`)[0];
+                popup_70d7e28d1882ac400679707ac80c95be.setContent(html_a1dd8ab20e81516ef580a6cc11f4ff70);
+            
+        
+
+        marker_d9fb4b14553d15922c9532003fd284d9.bindPopup(popup_70d7e28d1882ac400679707ac80c95be)
+        ;
+
+        
+    
+    
+            marker_d9fb4b14553d15922c9532003fd284d9.bindTooltip(
+                `<div>
+                     Malta - 83.5 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d9fb4b14553d15922c9532003fd284d9.setIcon(icon_a020d8db0ee9b8793dd7e095ae233e72);
+            
+    
+            var marker_36541bc06bb441358a49a25d9e4a6428 = L.marker(
+                [52.3676, 4.9041],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_d41fca64dc820a38c2e606bd31bd8a49 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b008156f1fb72679f2a2e138a3e3c2b6 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f40f3fdc63eb4fd04d06f9a42d1a08f2 = $(`<div id="html_f40f3fdc63eb4fd04d06f9a42d1a08f2" style="width: 100.0%; height: 100.0%;">             <b>Netherlands (NL)</b><br>             <b>Expectativa de Vida:</b> 82.1 anos<br>             <b>Insegurança Alimentar:</b> 1.8%<br>             <b>Tabagismo:</b> 12.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> OCIDENTAIS             </div>`)[0];
+                popup_b008156f1fb72679f2a2e138a3e3c2b6.setContent(html_f40f3fdc63eb4fd04d06f9a42d1a08f2);
+            
+        
+
+        marker_36541bc06bb441358a49a25d9e4a6428.bindPopup(popup_b008156f1fb72679f2a2e138a3e3c2b6)
+        ;
+
+        
+    
+    
+            marker_36541bc06bb441358a49a25d9e4a6428.bindTooltip(
+                `<div>
+                     Netherlands - 82.1 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_36541bc06bb441358a49a25d9e4a6428.setIcon(icon_d41fca64dc820a38c2e606bd31bd8a49);
+            
+    
+            var marker_a4bfc11d57365e25719add282302a774 = L.marker(
+                [59.9139, 10.7522],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_cab12cefe3369c0a8a5ae41c786e82ca = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_68025d00137b9d510c2fe6896344344b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_02886959019fbea517902bd3ed09f0fe = $(`<div id="html_02886959019fbea517902bd3ed09f0fe" style="width: 100.0%; height: 100.0%;">             <b>Norway (NO)</b><br>             <b>Expectativa de Vida:</b> 84.9 anos<br>             <b>Insegurança Alimentar:</b> 4.0%<br>             <b>Tabagismo:</b> nan%<br>             <b>Ano:</b> 2019<br>             <b>Região:</b> NÓRDICOS             </div>`)[0];
+                popup_68025d00137b9d510c2fe6896344344b.setContent(html_02886959019fbea517902bd3ed09f0fe);
+            
+        
+
+        marker_a4bfc11d57365e25719add282302a774.bindPopup(popup_68025d00137b9d510c2fe6896344344b)
+        ;
+
+        
+    
+    
+            marker_a4bfc11d57365e25719add282302a774.bindTooltip(
+                `<div>
+                     Norway - 84.9 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a4bfc11d57365e25719add282302a774.setIcon(icon_cab12cefe3369c0a8a5ae41c786e82ca);
+            
+    
+            var marker_d98c665d5a8aa3697bb1ed8313105ada = L.marker(
+                [52.2297, 21.0122],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_47abe3d89a1ee6264464f6e347e5496f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3cec38a295bcf6bf6840bf313739762f = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d68fb372743a4c6a01f8452fbf098c14 = $(`<div id="html_d68fb372743a4c6a01f8452fbf098c14" style="width: 100.0%; height: 100.0%;">             <b>Poland (PL)</b><br>             <b>Expectativa de Vida:</b> 74.7 anos<br>             <b>Insegurança Alimentar:</b> 3.7%<br>             <b>Tabagismo:</b> 26.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> LESTE             </div>`)[0];
+                popup_3cec38a295bcf6bf6840bf313739762f.setContent(html_d68fb372743a4c6a01f8452fbf098c14);
+            
+        
+
+        marker_d98c665d5a8aa3697bb1ed8313105ada.bindPopup(popup_3cec38a295bcf6bf6840bf313739762f)
+        ;
+
+        
+    
+    
+            marker_d98c665d5a8aa3697bb1ed8313105ada.bindTooltip(
+                `<div>
+                     Poland - 74.7 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d98c665d5a8aa3697bb1ed8313105ada.setIcon(icon_47abe3d89a1ee6264464f6e347e5496f);
+            
+    
+            var marker_05427c5b0fcade3254e1a23ab6fbe1c6 = L.marker(
+                [38.7223, -9.1393],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_7c8ef8b19e4aed6e4b358447fdf957f3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_dc9b04adaff286573ce9a89d4645f078 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_0269af0c3dfcaedf5afc59124dd7f252 = $(`<div id="html_0269af0c3dfcaedf5afc59124dd7f252" style="width: 100.0%; height: 100.0%;">             <b>Portugal (PT)</b><br>             <b>Expectativa de Vida:</b> 82.6 anos<br>             <b>Insegurança Alimentar:</b> 2.6%<br>             <b>Tabagismo:</b> 21.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> SUL/MEDITERRÂNICOS             </div>`)[0];
+                popup_dc9b04adaff286573ce9a89d4645f078.setContent(html_0269af0c3dfcaedf5afc59124dd7f252);
+            
+        
+
+        marker_05427c5b0fcade3254e1a23ab6fbe1c6.bindPopup(popup_dc9b04adaff286573ce9a89d4645f078)
+        ;
+
+        
+    
+    
+            marker_05427c5b0fcade3254e1a23ab6fbe1c6.bindTooltip(
+                `<div>
+                     Portugal - 82.6 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_05427c5b0fcade3254e1a23ab6fbe1c6.setIcon(icon_7c8ef8b19e4aed6e4b358447fdf957f3);
+            
+    
+            var marker_6089103ffb6bfd884e108bb1552741b6 = L.marker(
+                [44.4268, 26.1025],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_5dbff46e89a9c70e52e98fd7220211f6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6145331f4d933e888737027dc735ceb1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_11b29428ce00ade38410b3fa8a443bb4 = $(`<div id="html_11b29428ce00ade38410b3fa8a443bb4" style="width: 100.0%; height: 100.0%;">             <b>Romania (RO)</b><br>             <b>Expectativa de Vida:</b> 71.3 anos<br>             <b>Insegurança Alimentar:</b> 13.9%<br>             <b>Tabagismo:</b> 30.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> LESTE             </div>`)[0];
+                popup_6145331f4d933e888737027dc735ceb1.setContent(html_11b29428ce00ade38410b3fa8a443bb4);
+            
+        
+
+        marker_6089103ffb6bfd884e108bb1552741b6.bindPopup(popup_6145331f4d933e888737027dc735ceb1)
+        ;
+
+        
+    
+    
+            marker_6089103ffb6bfd884e108bb1552741b6.bindTooltip(
+                `<div>
+                     Romania - 71.3 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6089103ffb6bfd884e108bb1552741b6.setIcon(icon_5dbff46e89a9c70e52e98fd7220211f6);
+            
+    
+            var marker_8589b58039a7e53ffb02cc67f6a515b0 = L.marker(
+                [59.3293, 18.0686],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_bc8e42c89ec89f35bc97dd726992823e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b4673f1f4c9ba1e5aa79224d27b00b1a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_8a147e7f5321cf8c6564255c0dc300a3 = $(`<div id="html_8a147e7f5321cf8c6564255c0dc300a3" style="width: 100.0%; height: 100.0%;">             <b>Sweden (SE)</b><br>             <b>Expectativa de Vida:</b> 83.6 anos<br>             <b>Insegurança Alimentar:</b> 1.9%<br>             <b>Tabagismo:</b> 7.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> NÓRDICOS             </div>`)[0];
+                popup_b4673f1f4c9ba1e5aa79224d27b00b1a.setContent(html_8a147e7f5321cf8c6564255c0dc300a3);
+            
+        
+
+        marker_8589b58039a7e53ffb02cc67f6a515b0.bindPopup(popup_b4673f1f4c9ba1e5aa79224d27b00b1a)
+        ;
+
+        
+    
+    
+            marker_8589b58039a7e53ffb02cc67f6a515b0.bindTooltip(
+                `<div>
+                     Sweden - 83.6 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_8589b58039a7e53ffb02cc67f6a515b0.setIcon(icon_bc8e42c89ec89f35bc97dd726992823e);
+            
+    
+            var marker_d80294a18b00fcc76155b7e0ac5b1ccb = L.marker(
+                [46.0569, 14.5058],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_10d979e6b6d6b255cf92c643b52984ae = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_763456909edbb6093525f646ddef7370 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_5db783a7ca55376e4ce823c896abf7ba = $(`<div id="html_5db783a7ca55376e4ce823c896abf7ba" style="width: 100.0%; height: 100.0%;">             <b>Slovenia (SI)</b><br>             <b>Expectativa de Vida:</b> 80.4 anos<br>             <b>Insegurança Alimentar:</b> 4.1%<br>             <b>Tabagismo:</b> 27.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> LESTE             </div>`)[0];
+                popup_763456909edbb6093525f646ddef7370.setContent(html_5db783a7ca55376e4ce823c896abf7ba);
+            
+        
+
+        marker_d80294a18b00fcc76155b7e0ac5b1ccb.bindPopup(popup_763456909edbb6093525f646ddef7370)
+        ;
+
+        
+    
+    
+            marker_d80294a18b00fcc76155b7e0ac5b1ccb.bindTooltip(
+                `<div>
+                     Slovenia - 80.4 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d80294a18b00fcc76155b7e0ac5b1ccb.setIcon(icon_10d979e6b6d6b255cf92c643b52984ae);
+            
+    
+            var marker_b1ebec25b71ac553342cb6a5b779783b = L.marker(
+                [48.1486, 17.1077],
+                {
+}
+            ).addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+    
+            var icon_74f748c346ecfa612611b1a3d585e096 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "lightgreen",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c808e0f1a99e8821652bb7d46f97928f = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_171f6e7d5bb21bb09db4c3f58724d331 = $(`<div id="html_171f6e7d5bb21bb09db4c3f58724d331" style="width: 100.0%; height: 100.0%;">             <b>Slovakia (SK)</b><br>             <b>Expectativa de Vida:</b> 75.5 anos<br>             <b>Insegurança Alimentar:</b> 11.7%<br>             <b>Tabagismo:</b> 25.0%<br>             <b>Ano:</b> 2020<br>             <b>Região:</b> LESTE             </div>`)[0];
+                popup_c808e0f1a99e8821652bb7d46f97928f.setContent(html_171f6e7d5bb21bb09db4c3f58724d331);
+            
+        
+
+        marker_b1ebec25b71ac553342cb6a5b779783b.bindPopup(popup_c808e0f1a99e8821652bb7d46f97928f)
+        ;
+
+        
+    
+    
+            marker_b1ebec25b71ac553342cb6a5b779783b.bindTooltip(
+                `<div>
+                     Slovakia - 75.5 anos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b1ebec25b71ac553342cb6a5b779783b.setIcon(icon_74f748c346ecfa612611b1a3d585e096);
+            
+    
+            var heat_map_74809d9b0cf8e6ef9ae06c231ee7ac40 = L.heatLayer(
+                [[48.2082, 16.3738, 0.819906976744186], [50.8503, 4.3517, 0.8116976744186046], [42.6977, 23.3219, 0.7287209302325581], [46.948, 7.4474, 0.849860465116279], [35.1856, 33.3823, 0.8351162790697674], [50.0755, 14.4378, 0.7671627906976746], [52.52, 13.405, 0.8185348837209303], [55.6761, 12.5683, 0.8258604651162791], [59.437, 24.7536, 0.7882790697674419], [40.4168, -3.7038, 0.8367441860465117], [60.1699, 24.9384, 0.8366279069767443], [48.8566, 2.3522, 0.8447906976744186], [45.815, 15.9819, 0.759046511627907], [47.4979, 19.0402, 0.7273720930232558], [53.3498, -6.2603, 0.8406511627906977], [41.9028, 12.4964, 0.833093023255814], [54.6872, 25.2797, 0.7306744186046512], [49.6116, 6.1319, 0.8355348837209301], [56.9496, 24.1052, 0.737279069767442], [35.8989, 14.5146, 0.8347209302325582], [52.3676, 4.9041, 0.8205813953488372], [59.9139, 10.7522, 0.8485116279069768], [52.2297, 21.0122, 0.7473720930232558], [38.7223, -9.1393, 0.825813953488372], [44.4268, 26.1025, 0.7126744186046511], [59.3293, 18.0686, 0.8362325581395349], [46.0569, 14.5058, 0.8043255813953487], [48.1486, 17.1077, 0.7553720930232558]],
+                {
+  "minOpacity": 0.5,
+  "maxZoom": 18,
+  "radius": 25,
+  "blur": 15,
+  "gradient": {
+  0.4: "blue",
+  0.6: "cyan",
+  0.7: "lime",
+  0.8: "yellow",
+  1.0: "red",
+},
+}
+            );
+        
+    
+            heat_map_74809d9b0cf8e6ef9ae06c231ee7ac40.addTo(map_d1075beadc7f0eb4a93deefdb24fd2e4);
+        
+</script>
+</html>

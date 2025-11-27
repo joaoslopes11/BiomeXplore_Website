@@ -1,0 +1,10 @@
+{
+  "name": "biomexplore-netlify",
+  "version": "1.0.0",
+  "description": "BiomeXplore website for Netlify",
+  "dependencies": {
+    "express": "^4.18.2",
+    "serverless-http": "^3.2.0",
+    "sqlite3": "^5.1.6"
+  }
+}
