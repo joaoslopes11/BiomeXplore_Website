@@ -237,15 +237,12 @@
                                 <label>Description</label>
                                 <textarea id="partnerDescription" name="description" placeholder="Partner description"></textarea>
                             </div>
-                            <!-- COMENTEI TEMPORARIAMENTE O UPLOAD DE LOGO -->
-                            <!--
                             <div class="full-width">
-                                <label>Logo</label>
-                                <input type="file" id="partnerLogo" name="logo" accept="image/*">
-                                <small style="color: #666;">Supported formats: JPG, PNG, WEBP. Max size: 5MB</small>
-                                <div id="currentLogoPreview"></div>
+                                <label>Logo URL</label>
+                                <input type="url" id="partnerLogoUrl" name="logo_url" placeholder="https://exemplo.com/logo.png">
+                                <small style="color: #666;">Insere o URL da imagem do logo (recomendado: PNG transparente, min 200x100px)</small>
+                                <div id="logoPreview" style="margin-top: 10px;"></div>
                             </div>
-                            -->
                         </div>
                         <div style="display: flex; gap: 10px; margin-top: 15px;">
                             <button type="submit" id="partnerSubmitBtn" style="padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer;">
@@ -622,6 +619,25 @@
             currentEditingPartnerId = null;
             console.log('🔄 Partner form reset');
         }
+
+        // Preview do logo URL
+        document.getElementById('partnerLogoUrl').addEventListener('input', function(e) {
+            const preview = document.getElementById('logoPreview');
+            const url = e.target.value;
+            
+            if (url) {
+                preview.innerHTML = `
+                    <div style="margin-top: 10px;">
+                        <p style="font-size: 12px; color: #666; margin-bottom: 5px;">Preview:</p>
+                        <img src="${url}" alt="Logo preview" style="max-width: 200px; max-height: 100px; border: 1px solid #ddd; border-radius: 4px; padding: 5px; background: white;">
+                    </div>
+                `;
+            } else {
+                preview.innerHTML = '';
+            }
+        });
+
+        
     </script>
 </body>
 </html>
