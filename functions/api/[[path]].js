@@ -26,7 +26,7 @@ export async function onRequest(context) {
       }, { headers: corsHeaders });
     }
 
-    // Partners routes
+    // Public partners
     if (pathname === '/api/partners' && request.method === 'GET') {
       console.log('📊 Recebido pedido para /api/partners');
       const { results } = await env.DB.prepare("SELECT * FROM partners ORDER BY name").all();
@@ -34,7 +34,7 @@ export async function onRequest(context) {
       return Response.json(results, { headers: corsHeaders });
     }
 
-    // News routes
+    // Public news
     if (pathname === '/api/news' && request.method === 'GET') {
       const { results } = await env.DB.prepare("SELECT * FROM news ORDER BY created_at DESC LIMIT 6").all();
       return Response.json(results || [], { headers: corsHeaders });
@@ -130,6 +130,92 @@ export async function onRequest(context) {
         status: 201, 
         headers: corsHeaders 
       });
+    }
+
+    // Update partner
+    if (pathname.startsWith('/api/admin/partners/') && request.method === 'PUT') {
+      const id = pathname.split('/').pop();
+      console.log('✏️ Atualizando partner:', id);
+      const { name, website, description } = await request.json();
+      
+      if (!name) {
+        return Response.json({ error: 'Nome é obrigatório' }, { 
+          status: 400, 
+          headers: corsHeaders 
+        });
+      }
+
+      await env.DB.prepare("UPDATE partners SET name = ?, website = ?, description = ? WHERE id = ?")
+        .bind(name, website, description, id).run();
+
+      console.log(`✅ Partner ${id} atualizado`);
+      return Response.json({ 
+        success: true,
+        message: 'Partner atualizado com sucesso!' 
+      }, { headers: corsHeaders });
+    }
+
+    // Delete partner
+    if (pathname.startsWith('/api/admin/partners/') && request.method === 'DELETE') {
+      const id = pathname.split('/').pop();
+      console.log('🗑️ Eliminando partner:', id);
+      
+      await env.DB.prepare("DELETE FROM partners WHERE id = ?").bind(id).run();
+
+      console.log(`✅ Partner ${id} eliminado`);
+      return Response.json({ 
+        success: true,
+        message: 'Partner eliminado com sucesso!' 
+      }, { headers: corsHeaders });
+    }
+
+    // ============ NEWS MANAGEMENT ROUTES ============
+
+    // Admin news routes
+    if (pathname === '/api/admin/news' && request.method === 'GET') {
+      console.log('📰 Recebido pedido para /api/admin/news');
+      const { results } = await env.DB.prepare("SELECT * FROM news ORDER BY created_at DESC").all();
+      console.log(`✅ Retornando ${results.length} artigos`);
+      return Response.json(results, { headers: corsHeaders });
+    }
+
+    if (pathname === '/api/admin/news' && request.method === 'POST') {
+      console.log('➕ Criando novo artigo');
+      const { title, content, image_url } = await request.json();
+      
+      if (!title || !content) {
+        return Response.json({ error: 'Title and content are required' }, { 
+          status: 400, 
+          headers: corsHeaders 
+        });
+      }
+
+      const result = await env.DB.prepare("INSERT INTO news (title, content, image_url) VALUES (?, ?, ?)")
+        .bind(title, content, image_url || null).run();
+
+      console.log(`✅ Artigo criado com ID: ${result.meta.last_row_id}`);
+      return Response.json({ 
+        success: true,
+        message: 'News article created successfully!',
+        id: result.meta.last_row_id
+      }, { 
+        status: 201, 
+        headers: corsHeaders 
+      });
+    }
+
+    // Delete news article
+    if (pathname.startsWith('/api/admin/news/') && request.method === 'DELETE') {
+      const id = pathname.split('/').pop();
+      console.log('🗑️ Eliminando artigo:', id);
+      
+      await env.DB.prepare("DELETE FROM news WHERE id = ?").bind(id).run();
+
+      console.log(`✅ Artigo ${id} eliminado`);
+      return Response.json({ 
+        success: true,
+        message: 'News article deleted successfully!' 
+      }, { headers: corsHeaders });
     }
 
     // 404 for unknown routes
