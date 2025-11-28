@@ -10,26 +10,26 @@ const multer = require('multer');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware - IMPORTANTE: bodyParser deve vir antes das rotas
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-    secret: 'biomexplore-secret-key-2025',
+    secret: process.env.SESSION_SECRET || 'biomexplore-secret-key-2025',
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
         maxAge: 24 * 60 * 60 * 1000
     }
 }));
 
-// Configuração do Multer para upload de imagens
+// Configuração do Multer - usar memory storage em produção
 const storage = multer.memoryStorage();
 const upload = multer({ 
     storage: storage,
     limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB max
+        fileSize: 5 * 1024 * 1024
     },
     fileFilter: (req, file, cb) => {
         if (file.mimetype.startsWith('image/')) {
@@ -40,23 +40,30 @@ const upload = multer({
     }
 });
 
-// Criar pastas necessárias
-const uploadsDir = path.join(__dirname, 'uploads');
-const partnersDir = path.join(uploadsDir, 'partners');
-const dbDir = path.join(__dirname, 'database');
+// Criar pastas apenas em desenvolvimento
+if (process.env.NODE_ENV !== 'production') {
+    const uploadsDir = path.join(__dirname, 'uploads');
+    const partnersDir = path.join(uploadsDir, 'partners');
+    const dbDir = path.join(__dirname, 'database');
 
-[uploadsDir, partnersDir, dbDir].forEach(dir => {
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-    }
-});
+    [uploadsDir, partnersDir, dbDir].forEach(dir => {
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+    });
+}
 
-// Servir ficheiros estáticos
-app.use(express.static(path.join(__dirname, '../frontend')));
-app.use('/uploads', express.static(uploadsDir));
+// Servir ficheiros estáticos apenas em desenvolvimento
+if (process.env.NODE_ENV !== 'production') {
+    app.use(express.static(path.join(__dirname, '../frontend')));
+    app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+}
 
-// Configuração do SQLite
-const dbPath = path.join(__dirname, 'database', 'biomexplore.db');
+// Configuração do SQLite - usar path absoluto
+const dbPath = process.env.NODE_ENV === 'production' 
+    ? '/tmp/biomexplore.db'  // Railway tem /tmp persistente
+    : path.join(__dirname, 'database', 'biomexplore.db');
+
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('❌ Erro ao conectar com SQLite:', err.message);
@@ -148,15 +155,26 @@ const requireAuth = (req, res, next) => {
 
 // ==================== ROTAS PÚBLICAS ====================
 
-// Rota principal
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+// Health check para Railway
+app.get('/health', (req, res) => {
+    res.status(200).json({ 
+        status: 'OK', 
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV || 'development'
+    });
 });
 
-// Rota para admin.html
-app.get('/admin.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/admin.html'));
-});
+// Rota principal - apenas em desenvolvimento
+if (process.env.NODE_ENV !== 'production') {
+    app.get('/', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/index.html'));
+    });
+
+    // Rota para admin.html - apenas em desenvolvimento
+    app.get('/admin.html', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/admin.html'));
+    });
+}
 
 // API pública para partners
 app.get('/api/partners', (req, res) => {
@@ -344,11 +362,18 @@ app.put('/api/admin/partners/:id', requireAuth, (req, res) => {
 });
 
 // Update partner logo (placeholder - para implementar depois)
-app.post('/api/admin/partners/:id/logo', requireAuth, (req, res) => {
+app.post('/api/admin/partners/:id/logo', requireAuth, upload.single('logo'), (req, res) => {
     console.log('🖼️ Tentativa de upload de logo para partner:', req.params.id);
+    
+    if (!req.file) {
+        return res.status(400).json({ error: 'Nenhum ficheiro enviado' });
+    }
+
+    // Em produção, guardaríamos no Railway Volumes ou serviço cloud
+    // Por agora, apenas retornamos sucesso sem guardar
     res.json({
         success: true,
-        message: 'Logo upload functionality coming soon!',
+        message: 'Logo recebido (em memória). Funcionalidade completa em desenvolvimento.',
         logo_url: null
     });
 });
@@ -449,12 +474,19 @@ app.delete('/api/admin/news/:id', requireAuth, (req, res) => {
 
 // ==================== INICIAR SERVIDOR ====================
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Servidor BiomeXplore rodando na porta ${PORT}`);
-    console.log(`📍 Acesse: http://localhost:${PORT}`);
-    console.log(`🛠️  Admin Panel: http://localhost:${PORT}/admin.html`);
+    console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🗄️ Database path: ${dbPath}`);
+    
+    if (process.env.NODE_ENV !== 'production') {
+        console.log(`🌐 Acesse: http://localhost:${PORT}`);
+        console.log(`🛠️  Admin Panel: http://localhost:${PORT}/admin.html`);
+    }
+    
     console.log(`🤝 API Parceiros: http://localhost:${PORT}/api/partners`);
     console.log('🔑 Credenciais admin: admin / biomexplore2025');
+    console.log('❤️  Health check: http://localhost:${PORT}/health');
 });
 
 // Error handling para routes não encontradas
