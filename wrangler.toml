@@ -1,0 +1,8 @@
+name = "biomexplore-website"
+compatibility_date = "2024-01-15"
+pages_build_output_dir = "./frontend"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "biomexplore-db"
+database_id = "cf31d2f7-a786-461f-8927-f1ca4c2241e8"
