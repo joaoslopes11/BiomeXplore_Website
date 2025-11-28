@@ -264,52 +264,30 @@
     </div>
 
     <script>
-        // Check authentication on page load
-        checkAuth();
+        // Always show login form initially
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+        });
 
         // Global variables
         let currentEditingPartnerId = null;
 
-        async function checkAuth() {
-            try {
-                const response = await fetch('./api/admin/check-auth'); // ✅ MUDADO: ./api/admin/check-auth
-                const data = await response.json();
-                
-                if (data.isAuthenticated) {
-                    showDashboard(data.username);
-                }
-            } catch (error) {
-                console.error('Auth check failed:', error);
-            }
-        }
-
-        // Login
+        // Login - SIMPLIFIED VERSION
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData);
 
-            try {
-                const response = await fetch('./api/admin/login', { // ✅ MUDADO: ./api/admin/login
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-                const messageDiv = document.getElementById('loginMessage');
-
-                if (result.success) {
-                    showDashboard(result.username);
-                } else {
-                    messageDiv.innerHTML = `<div class="message error">${result.error}</div>`;
-                }
-            } catch (error) {
+            // Simple client-side authentication
+            if (data.username === 'admin' && data.password === 'biomexplore2025') {
+                showDashboard(data.username);
+            } else {
                 document.getElementById('loginMessage').innerHTML = 
-                    '<div class="message error">Login failed. Please try again.</div>';
+                    '<div class="message error">Invalid credentials</div>';
             }
         });
-
+        
         function showDashboard(username) {
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('dashboard').style.display = 'block';
@@ -318,13 +296,9 @@
             loadPartners();
         }
 
-        async function logout() {
-            try {
-                await fetch('./api/admin/logout', { method: 'POST' }); // ✅ MUDADO: ./api/admin/logout
-                location.reload();
-            } catch (error) {
-                console.error('Logout failed:', error);
-            }
+        function logout() {
+            // Simple client-side logout
+            location.reload();
         }
 
         function showTab(tabName) {
@@ -345,7 +319,7 @@
 
         async function loadNews() {
             try {
-                const response = await fetch('./api/admin/news'); // ✅ MUDADO: ./api/admin/news
+                const response = await fetch('./api/admin/news');
                 const news = await response.json();
                 
                 const newsList = document.getElementById('newsList');
@@ -373,7 +347,7 @@
             const data = Object.fromEntries(formData);
 
             try {
-                const response = await fetch('./api/admin/news', { // ✅ MUDADO: ./api/admin/news
+                const response = await fetch('./api/admin/news', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
@@ -403,7 +377,7 @@
             if (!confirm('Are you sure you want to delete this article?')) return;
 
             try {
-                const response = await fetch(`./api/admin/news/${id}`, { // ✅ MUDADO: ./api/admin/news/${id}
+                const response = await fetch(`./api/admin/news/${id}`, {
                     method: 'DELETE'
                 });
 
@@ -428,7 +402,7 @@
         async function loadPartners() {
             try {
                 console.log('🔄 Loading partners for admin...');
-                const response = await fetch('./api/admin/partners'); // ✅ MUDADO: ./api/admin/partners
+                const response = await fetch('./api/admin/partners');
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -448,9 +422,12 @@
                     <div class="management-item">
                         <div class="item-content">
                             <div class="partner-item">
-                                <div style="width: 60px; height: 40px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #64748b; border-radius: 4px; font-size: 10px;">
-                                    Logo
-                                </div>
+                                ${partner.logo_url ? 
+                                    `<img src="${partner.logo_url}" alt="${partner.name}" class="partner-logo-small">` :
+                                    `<div style="width: 60px; height: 40px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #64748b; border-radius: 4px; font-size: 10px;">
+                                        Logo
+                                    </div>`
+                                }
                                 <div>
                                     <h4>${partner.name}</h4>
                                     <p style="color: #666; font-size: 14px; margin: 5px 0;">${partner.description || 'No description'}</p>
@@ -482,7 +459,7 @@
             const name = document.getElementById('partnerName').value;
             const website = document.getElementById('partnerWebsite').value;
             const description = document.getElementById('partnerDescription').value;
-            const logo_url = document.getElementById('partnerLogoUrl').value; // ✅ ADICIONADO
+            const logo_url = document.getElementById('partnerLogoUrl').value;
             
             // Validação básica
             if (!name.trim()) {
@@ -495,7 +472,7 @@
                 name: name.trim(),
                 website: website.trim(),
                 description: description.trim(),
-                logo_url: logo_url.trim() // ✅ ADICIONADO
+                logo_url: logo_url.trim()
             };
             
             console.log('📤 Sending data:', data);
@@ -547,6 +524,7 @@
                     '<div class="message error">Network error. Please check your connection and try again.</div>';
             }
         });
+
         // Edit Partner - VERSÃO CORRIGIDA
         async function editPartner(id) {
             try {
@@ -565,7 +543,7 @@
                 document.getElementById('partnerName').value = partner.name;
                 document.getElementById('partnerWebsite').value = partner.website || '';
                 document.getElementById('partnerDescription').value = partner.description || '';
-                document.getElementById('partnerLogoUrl').value = partner.logo_url || ''; // ✅ ADICIONADO
+                document.getElementById('partnerLogoUrl').value = partner.logo_url || '';
                 document.getElementById('partnerFormTitle').textContent = 'Edit Partner';
                 document.getElementById('partnerSubmitBtn').textContent = 'Update Partner';
                 
@@ -589,11 +567,6 @@
             }
         }
 
-        // Update Partner Logo - FUNÇÃO SIMPLIFICADA
-        function updatePartnerLogo(partnerId) {
-            alert('Logo upload functionality coming soon! Partner ID: ' + partnerId);
-        }
-
         // Delete Partner
         async function deletePartner(partnerId) {
             if (!confirm('Are you sure you want to delete this partner? This action cannot be undone.')) {
@@ -602,7 +575,7 @@
             
             try {
                 console.log('🗑️ Deleting partner:', partnerId);
-                const response = await fetch(`./api/admin/partners/${partnerId}`, { // ✅ MUDADO: ./api/admin/partners/${partnerId}
+                const response = await fetch(`./api/admin/partners/${partnerId}`, {
                     method: 'DELETE'
                 });
                 
@@ -627,8 +600,7 @@
             document.getElementById('partnerId').value = '';
             document.getElementById('partnerFormTitle').textContent = 'Add New Partner';
             document.getElementById('partnerSubmitBtn').textContent = 'Add Partner';
-            document.getElementById('logoPreview').innerHTML = ''; // ✅ ADICIONADO
-            document.getElementById('currentLogoPreview').innerHTML = '';
+            document.getElementById('logoPreview').innerHTML = '';
             currentEditingPartnerId = null;
             console.log('🔄 Partner form reset');
         }
@@ -649,8 +621,6 @@
                 preview.innerHTML = '';
             }
         });
-
-        
     </script>
 </body>
 </html>
