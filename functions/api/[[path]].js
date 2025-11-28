@@ -109,51 +109,51 @@ export async function onRequest(context) {
     }
 
     if (pathname === '/api/admin/partners' && request.method === 'POST') {
-      console.log('➕ Criando novo partner');
-      const { name, website, description } = await request.json();
-      
-      if (!name) {
+    console.log('➕ Criando novo partner');
+    const { name, website, description, logo_url } = await request.json();
+    
+    if (!name) {
         return Response.json({ error: 'Nome é obrigatório' }, { 
-          status: 400, 
-          headers: corsHeaders 
+            status: 400, 
+            headers: corsHeaders 
         });
-      }
+    }
 
-      const result = await env.DB.prepare("INSERT INTO partners (name, website, description) VALUES (?, ?, ?)").bind(name, website, description).run();
-      console.log(`✅ Partner criado com ID: ${result.meta.last_row_id}`);
-      
-      return Response.json({ 
+    const result = await env.DB.prepare("INSERT INTO partners (name, website, description, logo_url) VALUES (?, ?, ?, ?)").bind(name, website, description, logo_url || null).run();
+    console.log(`✅ Partner criado com ID: ${result.meta.last_row_id}`);
+    
+    return Response.json({ 
         success: true,
         message: 'Partner criado com sucesso!',
         id: result.meta.last_row_id
-      }, { 
+    }, { 
         status: 201, 
         headers: corsHeaders 
-      });
-    }
+    });
+}
 
     // Update partner
     if (pathname.startsWith('/api/admin/partners/') && request.method === 'PUT') {
-      const id = pathname.split('/').pop();
-      console.log('✏️ Atualizando partner:', id);
-      const { name, website, description } = await request.json();
-      
+    const id = pathname.split('/').pop();
+    console.log('✏️ Atualizando partner:', id);
+    const { name, website, description, logo_url } = await request.json();
+    
       if (!name) {
-        return Response.json({ error: 'Nome é obrigatório' }, { 
-          status: 400, 
-          headers: corsHeaders 
-        });
+          return Response.json({ error: 'Nome é obrigatório' }, { 
+              status: 400, 
+              headers: corsHeaders 
+          });
       }
 
-      await env.DB.prepare("UPDATE partners SET name = ?, website = ?, description = ? WHERE id = ?")
-        .bind(name, website, description, id).run();
+      await env.DB.prepare("UPDATE partners SET name = ?, website = ?, description = ?, logo_url = ? WHERE id = ?")
+          .bind(name, website, description, logo_url || null, id).run();
 
       console.log(`✅ Partner ${id} atualizado`);
       return Response.json({ 
-        success: true,
-        message: 'Partner atualizado com sucesso!' 
+          success: true,
+          message: 'Partner atualizado com sucesso!' 
       }, { headers: corsHeaders });
-    }
+  }
 
     // Delete partner
     if (pathname.startsWith('/api/admin/partners/') && request.method === 'DELETE') {

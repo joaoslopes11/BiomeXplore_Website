@@ -482,6 +482,7 @@
             const name = document.getElementById('partnerName').value;
             const website = document.getElementById('partnerWebsite').value;
             const description = document.getElementById('partnerDescription').value;
+            const logo_url = document.getElementById('partnerLogoUrl').value; // ✅ ADICIONADO
             
             // Validação básica
             if (!name.trim()) {
@@ -493,7 +494,8 @@
             const data = {
                 name: name.trim(),
                 website: website.trim(),
-                description: description.trim()
+                description: description.trim(),
+                logo_url: logo_url.trim() // ✅ ADICIONADO
             };
             
             console.log('📤 Sending data:', data);
@@ -505,11 +507,11 @@
                 
                 if (partnerId) {
                     // Update existing partner
-                    url = `./api/admin/partners/${partnerId}`; // ✅ MUDADO: ./api/admin/partners/${partnerId}
+                    url = `./api/admin/partners/${partnerId}`;
                     method = 'PUT';
                 } else {
                     // Create new partner
-                    url = './api/admin/partners'; // ✅ MUDADO: ./api/admin/partners
+                    url = './api/admin/partners';
                     method = 'POST';
                 }
                 
@@ -545,12 +547,11 @@
                     '<div class="message error">Network error. Please check your connection and try again.</div>';
             }
         });
-
-        // Edit Partner
+        // Edit Partner - VERSÃO CORRIGIDA
         async function editPartner(id) {
             try {
                 console.log('✏️ Editing partner:', id);
-                const response = await fetch('./api/admin/partners'); // ✅ MUDADO: ./api/admin/partners
+                const response = await fetch('./api/admin/partners');
                 const partners = await response.json();
                 const partner = partners.find(p => p.id === id);
                 
@@ -564,8 +565,19 @@
                 document.getElementById('partnerName').value = partner.name;
                 document.getElementById('partnerWebsite').value = partner.website || '';
                 document.getElementById('partnerDescription').value = partner.description || '';
+                document.getElementById('partnerLogoUrl').value = partner.logo_url || ''; // ✅ ADICIONADO
                 document.getElementById('partnerFormTitle').textContent = 'Edit Partner';
                 document.getElementById('partnerSubmitBtn').textContent = 'Update Partner';
+                
+                // Show logo preview if exists
+                if (partner.logo_url) {
+                    document.getElementById('logoPreview').innerHTML = `
+                        <div style="margin-top: 10px;">
+                            <p style="font-size: 12px; color: #666; margin-bottom: 5px;">Current logo:</p>
+                            <img src="${partner.logo_url}" alt="Logo preview" style="max-width: 200px; max-height: 100px; border: 1px solid #ddd; border-radius: 4px; padding: 5px; background: white;">
+                        </div>
+                    `;
+                }
                 
                 currentEditingPartnerId = id;
                 
@@ -609,12 +621,13 @@
             }
         }
 
-        // Reset Partner Form
+        // Reset Partner Form - VERSÃO CORRIGIDA
         function resetPartnerForm() {
             document.getElementById('partnerForm').reset();
             document.getElementById('partnerId').value = '';
             document.getElementById('partnerFormTitle').textContent = 'Add New Partner';
             document.getElementById('partnerSubmitBtn').textContent = 'Add Partner';
+            document.getElementById('logoPreview').innerHTML = ''; // ✅ ADICIONADO
             document.getElementById('currentLogoPreview').innerHTML = '';
             currentEditingPartnerId = null;
             console.log('🔄 Partner form reset');
