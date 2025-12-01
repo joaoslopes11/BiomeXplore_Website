@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: https://biomexplore.eu/sitemap.xml
+
+# Cloudflare Pages fix
+Host: https://biomexplore.eu
