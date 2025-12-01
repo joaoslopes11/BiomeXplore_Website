@@ -337,19 +337,13 @@
         
         
 
-        /* Partners Section */
-        .partners {
-            text-align: center;
-            background-color: #f8fafc;
-        }
-
+        /* Partners Section - IMPROVED */
         .partner-logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
             margin-top: 50px;
+            justify-items: center;
         }
 
         .partner-logo {
@@ -363,21 +357,29 @@
             padding: 25px;
             transition: all 0.3s ease;
             border: 1px solid #e2e8f0;
-            width: 220px;
+            width: 100%;
             height: 140px;
+            text-decoration: none;
+            cursor: pointer;
         }
 
         .partner-logo:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            border-color: #1e40af;
         }
 
         .partner-logo img {
             width: auto;
             height: auto;
-            max-width: 160px;
-            max-height: 70px;
+            max-width: 180px;
+            max-height: 80px;
             object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .partner-logo:hover img {
+            transform: scale(1.05);
         }
 
         .partner-name {
@@ -386,14 +388,18 @@
             color: #4b5563;
             font-weight: 500;
             text-align: center;
+            transition: color 0.3s ease;
         }
 
-        /* Loading and empty states */
-        .no-partners {
+        .partner-logo:hover .partner-name {
+            color: #1e40af;
+        }
+
+        /* Loading states melhorados */
+        .no-partners, .loading-partners {
+            grid-column: 1 / -1;
             text-align: center;
             padding: 60px 40px;
-            color: #666;
-            grid-column: 1 / -1;
             background: white;
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
@@ -409,18 +415,6 @@
             color: #6b7280;
             font-size: 16px;
         }
-
-        .loading-partners {
-            text-align: center;
-            padding: 60px 40px;
-            color: #666;
-            font-style: italic;
-            font-size: 16px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
         /* Responsive Design */
         @media (max-width: 992px) {
             .partner-logos {
@@ -895,20 +889,25 @@
                         <!-- Language Selector -->
                         <li class="language-selector">
                             <img src="https://flagcdn.com/w40/eu.png" 
-                                 alt="English" 
-                                 class="language-flag active" 
-                                 data-lang="en"
-                                 onclick="changeLanguage('en')">
-                            <img src="https://flagcdn.com/w40/pt.png" 
-                                 alt="Português" 
-                                 class="language-flag" 
-                                 data-lang="pt"
-                                 onclick="changeLanguage('pt')">
+                                alt="English" 
+                                class="language-flag active" 
+                                data-lang="en"
+                                onclick="changeLanguage('en')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Galicia.svg/320px-Flag_of_Galicia.svg.png" 
+                                alt="Galego" 
+                                class="language-flag" 
+                                data-lang="gl"
+                                onclick="changeLanguage('gl')">
                             <img src="https://flagcdn.com/w40/es.png" 
-                                 alt="Español" 
-                                 class="language-flag" 
-                                 data-lang="es"
-                                 onclick="changeLanguage('es')">
+                                alt="Español" 
+                                class="language-flag" 
+                                data-lang="es"
+                                onclick="changeLanguage('es')">
+                            <img src="https://flagcdn.com/w40/pt.png" 
+                                alt="Português" 
+                                class="language-flag" 
+                                data-lang="pt"
+                                onclick="changeLanguage('pt')">
                         </li>
                     </ul>
                 </nav>
@@ -1442,7 +1441,7 @@
             }
         }
 
-        // Load Partners from API
+        // Load Partners from API - IMPROVED VERSION
         async function loadPartners() {
             try {
                 console.log('🔄 Loading partners from API...');
@@ -1468,10 +1467,17 @@
                 }
                 
                 partnersContainer.innerHTML = partners.map(partner => `
-                    <div class="partner-logo">
-                        <img src="${partner.logo_url}" alt="${partner.name}" loading="lazy">
+                    <a href="${partner.website || '#'}" 
+                    class="partner-logo" 
+                    target="_blank"
+                    title="Visit ${partner.name} website"
+                    onclick="trackPartnerClick('${partner.name}')">
+                        <img src="${partner.logo_url || 'https://via.placeholder.com/200x100/1e40af/ffffff?text=LOGO'}" 
+                            alt="${partner.name}" 
+                            loading="lazy"
+                            onerror="this.src='https://via.placeholder.com/200x100/1e40af/ffffff?text=LOGO'">
                         <div class="partner-name">${partner.name}</div>
-                    </div>
+                    </a>
                 `).join('');
                 
                 console.log('✅ Partners displayed successfully');
@@ -1486,6 +1492,12 @@
                     </div>
                 `;
             }
+        }
+
+        // Track partner clicks (opcional)
+        function trackPartnerClick(partnerName) {
+            console.log(`🔗 Partner clicked: ${partnerName}`);
+            // Podes adicionar analytics aqui
         }
 
         // Modal Functions
