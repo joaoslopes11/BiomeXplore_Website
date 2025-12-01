@@ -643,17 +643,32 @@
                             </div>
                         </li>
                         <li><button class="contact-btn" onclick="openModal()">Contact</button></li>
-                        <!-- Language Selector (Cosmetic Only) -->
+                        <!-- Language Selector (FUNCIONAL) -->
                         <li class="language-selector">
                             <img src="https://flagcdn.com/w40/eu.png" 
-                                 alt="European Union" 
-                                 class="language-flag active">
-                            <img src="https://flagcdn.com/w40/pt.png" 
-                                 alt="Português" 
-                                 class="language-flag">
+                                alt="English" 
+                                class="language-flag active" 
+                                data-lang="en"
+                                onclick="changeLanguage('en')"
+                                style="cursor: pointer;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Galicia.svg/320px-Flag_of_Galicia.svg.png" 
+                                alt="Galego" 
+                                class="language-flag" 
+                                data-lang="gl"
+                                onclick="changeLanguage('gl')"
+                                style="cursor: pointer; width: 24px; height: 16px; object-fit: cover;">
                             <img src="https://flagcdn.com/w40/es.png" 
-                                 alt="Español" 
-                                 class="language-flag">
+                                alt="Español" 
+                                class="language-flag" 
+                                data-lang="es"
+                                onclick="changeLanguage('es')"
+                                style="cursor: pointer;">
+                            <img src="https://flagcdn.com/w40/pt.png" 
+                                alt="Português" 
+                                class="language-flag" 
+                                data-lang="pt"
+                                onclick="changeLanguage('pt')"
+                                style="cursor: pointer;">
                         </li>
                     </ul>
                 </nav>
@@ -703,7 +718,7 @@
                         <div class="member-email">
                             <a href="mailto:sonia.maria.perez.castro@sergas.es">sonia.maria.perez.castro@sergas.es</a>
                         </div>
-                        <p class="member-bio">Info Sonia</p>
+                        <p class="member-bio">A specialist in Clinical Microbiology, she is a senior physician at the Vigo University Hospital Complex (CHUVI) and leads the Microbiology and Infectology group at the Galicia Sur Health Research Institute. Her work focuses on genomic surveillance of pathogens and microbiota innovation, co-authoring over 70 scientific papers. She actively promotes real-time clinical 'omics' in Galicia through her role at SOGAMIC and teaches Biomedical Engineering at the University of Vigo.</p>
                     </div>
                     
                     <div class="team-member">
@@ -1026,6 +1041,7 @@
         // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 About page initialized');
+            initLanguage();
             initMap();
         });
 
@@ -1044,8 +1060,51 @@
                     }
                 });
             }
+            
         });
+        let currentLanguage = 'en';
 
+        // Language change function
+        function changeLanguage(lang) {
+            console.log(`Changing language to: ${lang}`);
+            
+            // Update current language
+            currentLanguage = lang;
+            
+            // Update active flag
+            updateLanguageSelector();
+            
+            // Save preference
+            localStorage.setItem('preferredLanguage', lang);
+            
+            console.log(`Language changed to: ${lang}`);
+        }
+
+        // Update language selector
+        function updateLanguageSelector() {
+            const flags = document.querySelectorAll('.language-flag');
+            
+            flags.forEach(flag => {
+                const flagLang = flag.getAttribute('data-lang');
+                if (flagLang === currentLanguage) {
+                    flag.classList.add('active');
+                } else {
+                    flag.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize language system
+        function initLanguage() {
+            // Get preferred language from storage or use default
+            const preferredLang = localStorage.getItem('preferredLanguage') || 'en';
+            
+            // Set initial language
+            currentLanguage = preferredLang;
+            updateLanguageSelector();
+            
+            console.log(`Language system initialized with: ${currentLanguage}`);
+        }
     </script>
 </body>
 </html>
