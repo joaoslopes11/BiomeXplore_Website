@@ -5,8 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BiomeXplore: Gut Microbiota and Exposome Data Integration</title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/qYB65cyg/logo-biomexplore.png">
+    <!-- Google Translate Script -->
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
     <style>
-        /* Reset and base styles */
+        /* ============ GOOGLE TRANSLATE HIDING ============ */
+        .skiptranslate, .goog-te-banner-frame, .goog-te-gadget, 
+        .goog-te-combo, .goog-logo-link, .goog-te-gadget-simple,
+        .goog-te-menu-value, .goog-te-menu-frame, .goog-te-ftab-frame,
+        .goog-te-spinner-pos, .goog-te-banner, .goog-te-ftab,
+        .goog-te-menu, .goog-te-float, .goog-te-float-iframe {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            overflow: hidden !important;
+            position: absolute !important;
+            top: -9999px !important;
+            left: -9999px !important;
+        }
+
+        /* Prevent body from being shifted */
+        body {
+            top: 0 !important;
+            position: static !important;
+        }
+
+        /* Translation Notification */
+        #translation-notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #1e40af;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeInOut 2.5s ease;
+            max-width: 300px;
+        }
+
+        #translation-notification.error {
+            background: #dc2626;
+        }
+
+        #translation-notification.success {
+            background: #16a34a;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-10px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        /* ============ EXISTING STYLES ============ */
         * {
             margin: 0;
             padding: 0;
@@ -118,7 +177,7 @@
             color: #1e40af;
         }
 
-        /* Language Selector Styles */
+        /* Language Selector Styles - MODIFIED */
         .language-selector {
             display: flex;
             align-items: center;
@@ -126,25 +185,49 @@
             gap: 8px;
         }
         
+        .language-selector a {
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .language-selector a:hover {
+            background: rgba(30, 64, 175, 0.1);
+        }
+        
         .language-flag {
             width: 24px;
             height: 16px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: all 0.3s ease;
             border: 2px solid transparent;
             border-radius: 3px;
-        }
-        
-        .language-flag:hover {
-            opacity: 0.8;
-            transform: scale(1.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            object-fit: cover;
         }
         
         .language-flag.active {
             opacity: 1;
             border-color: #1e40af;
             transform: scale(1.1);
+        }
+
+        .language-selector a:hover .language-flag {
+            transform: scale(1.1);
+        }
+
+        /* Garantir que a bandeira inglesa seja visível como ativa */
+        .language-selector a[data-lang="en"] .language-flag {
+            border-color: #1e40af !important;
+        }
+
+        .language-flag.active {
+            opacity: 1 !important;
+            border-color: #1e40af !important;
+            transform: scale(1.1) !important;
         }
 
         /* Contact Button in Header */
@@ -509,6 +592,34 @@
                 margin-left: 0;
                 margin-top: 10px;
             }
+
+            /* DROPDOWN MOBILE */
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                background: #f8fafc;
+                border-radius: 4px;
+                margin-top: 10px;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                display: none;
+            }
+            
+            .dropdown:hover .dropdown-menu {
+                display: block;
+            }
+            
+            .dropdown-toggle::after {
+                content: ' ▾';
+            }
+
+            #translation-notification {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                text-align: center;
+            }
         }
 
         /* News Section Styles */
@@ -778,26 +889,7 @@
                 font-size: 13px;
             }
 
-            /* ============ DROPDOWN MOBILE ============ */
-            .dropdown-menu {
-                position: static;
-                box-shadow: none;
-                background: #f8fafc;
-                border-radius: 4px;
-                margin-top: 10px;
-                opacity: 1;
-                visibility: visible;
-                transform: none;
-                display: none;
-            }
             
-            .dropdown:hover .dropdown-menu {
-                display: block;
-            }
-            
-            .dropdown-toggle::after {
-                content: ' ▾';
-            }
         }
         /* ============ DROPDOWN STYLES ============ */
         .dropdown {
@@ -866,7 +958,10 @@
     </style>
 </head>
 <body>
-       <!-- Header -->
+    <!-- Google Translate Element (Hidden) -->
+    <div id="google_translate_element" style="display: none;"></div>
+
+    <!-- Header -->
     <header>
         <div class="header-main">
             <div class="container">
@@ -886,28 +981,29 @@
                             </div>
                         </li>
                         <li><button class="contact-btn" onclick="openModal()">Contact</button></li>
-                        <!-- Language Selector -->
+                        <!-- Language Selector - EXACTAMENTE COMO NO CÓDIGO ORIGINAL -->
                         <li class="language-selector">
-                            <img src="https://flagcdn.com/w40/eu.png" 
-                                alt="English" 
-                                class="language-flag active" 
-                                data-lang="en"
-                                onclick="changeLanguage('en')">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Galicia.svg/320px-Flag_of_Galicia.svg.png" 
-                                alt="Galego" 
-                                class="language-flag" 
-                                data-lang="gl"
-                                onclick="changeLanguage('gl')">
-                            <img src="https://flagcdn.com/w40/es.png" 
-                                alt="Español" 
-                                class="language-flag" 
-                                data-lang="es"
-                                onclick="changeLanguage('es')">
-                            <img src="https://flagcdn.com/w40/pt.png" 
-                                alt="Português" 
-                                class="language-flag" 
-                                data-lang="pt"
-                                onclick="changeLanguage('pt')">
+                            <a href="#" data-lang="en" title="English">
+                                <img src="https://i.ibb.co/Fbx9hhJp/imagem.png" 
+                                    alt="English" 
+                                    class="language-flag active">
+                            </a>
+                            <a href="#" data-lang="gl" title="Galego">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Galicia.svg/240px-Flag_of_Galicia.svg.png" 
+                                    alt="Galego" 
+                                    class="language-flag"
+                                    style="width: 24px; height: 16px;">
+                            </a>
+                            <a href="#" data-lang="es" title="Español">
+                                <img src="https://i.ibb.co/Mkw6HSB1/imagem.png" 
+                                    alt="Español" 
+                                    class="language-flag">
+                            </a>
+                            <a href="#" data-lang="pt" title="Português">
+                                <img src="https://i.ibb.co/VpNwWBw7/imagem.png" 
+                                    alt="Português" 
+                                    class="language-flag">
+                            </a>
                         </li>
                     </ul>
                 </nav>
@@ -1284,8 +1380,314 @@
     </footer>
 
     <script>
-        // ============ CARD EXPANSION SYSTEM ============
+        // ============ EXACT TRANSLATION SYSTEM FROM ORIGINAL CODE ============
         
+        let currentLanguage = 'en';
+        let googleTranslateLoaded = false;
+        let isTranslating = false;
+
+        localStorage.removeItem('preferredLanguage');
+
+        // Main translation function - EXACT COPY
+        function translatePage(lang) {
+            if (isTranslating || currentLanguage === lang) return;
+            
+            console.log(`🌐 Requesting translation to: ${lang}`);
+            isTranslating = true;
+            
+            // Update UI immediately
+            updateLanguageSelector(lang);
+            localStorage.setItem('preferredLanguage', lang);
+            
+            // Show notification
+            showNotification(`Translating to ${getLanguageName(lang)}...`);
+            
+            // Try to use Google Translate if available
+            if (window.google && google.translate) {
+                useGoogleTranslate(lang);
+            } else {
+                // Load Google Translate first
+                loadGoogleTranslate(() => {
+                    useGoogleTranslate(lang);
+                });
+            }
+        }
+
+        // Load Google Translate
+        function loadGoogleTranslate(callback) {
+            if (!googleTranslateLoaded) {
+                const script = document.createElement('script');
+                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
+                script.async = true;
+                script.onload = function() {
+                    googleTranslateLoaded = true;
+                    if (callback) callback();
+                };
+                script.onerror = function() {
+                    console.error('Failed to load Google Translate');
+                    showNotification('Translation service unavailable', 'error');
+                    isTranslating = false;
+                };
+                document.body.appendChild(script);
+            } else if (callback) {
+                callback();
+            }
+        }
+
+        // Initialize Google Translate
+        function googleTranslateInit() {
+            try {
+                if (typeof google !== 'undefined' && google.translate) {
+                    new google.translate.TranslateElement({
+                        pageLanguage: 'en',
+                        includedLanguages: 'en,gl,es,pt',
+                        autoDisplay: false
+                    }, 'google_translate_element');
+                    
+                    console.log('✅ Google Translate loaded');
+                    hideGoogleElements();
+                    
+                    // Set up periodic cleanup
+                    setInterval(hideGoogleElements, 1000);
+                }
+            } catch (error) {
+                console.error('Google Translate init error:', error);
+            }
+        }
+
+        // Use Google Translate
+        function useGoogleTranslate(lang) {
+            try {
+                const select = document.querySelector('.goog-te-combo');
+                if (select) {
+                    select.value = lang;
+                    select.dispatchEvent(new Event('change'));
+                    
+                    // Success
+                    setTimeout(() => {
+                        currentLanguage = lang;
+                        hideGoogleElements();
+                        isTranslating = false;
+                        showNotification(`Translated to ${getLanguageName(lang)}`, 'success');
+                    }, 1000);
+                } else {
+                    // Select element not found
+                    setTimeout(() => {
+                        const selectRetry = document.querySelector('.goog-te-combo');
+                        if (selectRetry) {
+                            selectRetry.value = lang;
+                            selectRetry.dispatchEvent(new Event('change'));
+                            
+                            setTimeout(() => {
+                                currentLanguage = lang;
+                                hideGoogleElements();
+                                isTranslating = false;
+                                showNotification(`Translated to ${getLanguageName(lang)}`, 'success');
+                            }, 1000);
+                        } else {
+                            showNotification('Translation failed. Please refresh and try again.', 'error');
+                            isTranslating = false;
+                        }
+                    }, 500);
+                }
+            } catch (error) {
+                console.error('Translation error:', error);
+                showNotification('Translation failed. Please try again.', 'error');
+                isTranslating = false;
+            }
+        }
+
+        // Hide all Google Translate elements
+        function hideGoogleElements() {
+            // List of all Google Translate classes
+            const googleClasses = [
+                '.skiptranslate', '.goog-te-banner-frame', '.goog-te-gadget',
+                '.goog-te-combo', '.goog-logo-link', '.goog-te-gadget-simple',
+                '.goog-te-menu-value', '.goog-te-menu-frame', '.goog-te-ftab-frame',
+                '.goog-te-spinner-pos', '.goog-te-banner', '.goog-te-ftab',
+                '.goog-te-menu', '.goog-te-float', '.goog-te-float-iframe',
+                'iframe[src*="translate.google"]', '.goog-te-balloon-frame'
+            ];
+            
+            googleClasses.forEach(selector => {
+                document.querySelectorAll(selector).forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.height = '0';
+                    el.style.width = '0';
+                    el.style.overflow = 'hidden';
+                    el.style.position = 'absolute';
+                    el.style.top = '-9999px';
+                    el.style.left = '-9999px';
+                });
+            });
+            
+            // Fix body position
+            document.body.style.top = '0';
+            document.body.style.position = 'static';
+            
+            // Remove any translation banners
+            document.querySelectorAll('div').forEach(div => {
+                const text = div.textContent || div.innerText || '';
+                if (text.includes('Translating') || text.includes('traduzindo') || 
+                    text.includes('traduciendo') || text.includes('Traduzir') ||
+                    text.includes('Translation')) {
+                    if (!div.id || !div.id.includes('translation') && !div.id.includes('notification')) {
+                        div.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            // Remove existing notification
+            const oldNote = document.getElementById('translation-notification');
+            if (oldNote) oldNote.remove();
+            
+            // Create new notification
+            const note = document.createElement('div');
+            note.id = 'translation-notification';
+            note.className = type;
+            note.innerHTML = `
+                <span style="font-size: 20px;">
+                    ${type === 'error' ? '⚠️' : type === 'success' ? '✅' : '🌐'}
+                </span>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(note);
+            
+            // Auto-remove
+            setTimeout(() => {
+                if (note.parentNode) note.remove();
+            }, type === 'error' ? 4000 : 2500);
+        }
+
+        // Get language name
+        function getLanguageName(code) {
+            const names = {
+                'en': 'English',
+                'gl': 'Galego', 
+                'es': 'Español',
+                'pt': 'Português'
+            };
+            return names[code] || code;
+        }
+
+        // Update language selector UI
+        function updateLanguageSelector(lang) {
+            document.querySelectorAll('.language-flag').forEach(flag => {
+                const parent = flag.closest('a');
+                if (parent) {
+                    const flagLang = parent.getAttribute('data-lang');
+                    flag.classList.toggle('active', flagLang === lang);
+                }
+            });
+        }
+
+        // ============ PAGE INITIALIZATION ============
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Page initialized');
+            
+            // Set up language selector clicks - EXACT SAME AS ORIGINAL
+            document.querySelectorAll('.language-selector a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute('data-lang');
+                    if (lang) {
+                        translatePage(lang);
+                    }
+                });
+            });
+            
+            // Load saved language preference - EXACT SAME AS ORIGINAL
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && savedLang !== 'en') {
+                currentLanguage = savedLang;
+                updateLanguageSelector(savedLang);
+                
+                // Auto-translate if not English
+                setTimeout(() => {
+                    if (!window.googleTranslateLoaded) {
+                        translatePage(savedLang);
+                    }
+                }, 1000);
+            } else {
+                // SEMPRE garantir que inglês está ativo por padrão
+                updateLanguageSelector('en');
+                localStorage.setItem('preferredLanguage', 'en');
+            }
+            
+            // Load dynamic content
+            loadNews();
+            loadPartners();
+            
+            // Mobile dropdown
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            
+            if (dropdownToggle && dropdownMenu) {
+                dropdownToggle.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                    }
+                });
+            }
+            
+            // Contact form
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const submitButton = this.querySelector('button[type="submit"]');
+                    const originalText = submitButton.innerHTML;
+                    
+                    submitButton.innerHTML = 'Sending...';
+                    submitButton.disabled = true;
+                    
+                    try {
+                        const response = await fetch('./api/contact', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(Object.fromEntries(formData))
+                        });
+                        
+                        if (response.ok) {
+                            document.getElementById('contactMessage').innerHTML = `
+                                <div class="message success">
+                                    Thank you for your message! We'll get back to you soon.
+                                </div>
+                            `;
+                            this.reset();
+                        } else {
+                            throw new Error('Failed to send message');
+                        }
+                    } catch (error) {
+                        document.getElementById('contactMessage').innerHTML = `
+                            <div class="message error">
+                                Sorry, there was an error sending your message. Please try again later.
+                            </div>
+                        `;
+                    } finally {
+                        submitButton.innerHTML = originalText;
+                        submitButton.disabled = false;
+                    }
+                });
+            }
+            
+            // Start periodic cleanup of Google elements
+            setInterval(hideGoogleElements, 2000);
+        });
+
+        // ============ EXISTING FUNCTIONS ============
+
+        // CARD EXPANSION SYSTEM
         let expandedCard = null;
 
         function toggleCard(cardId) {
@@ -1317,7 +1719,6 @@
         }
 
         function openInteractiveMap() {
-            // Open the Europe Health Interactive Map in a new tab
             window.open('Europe_Health_Interactive_Map.html', '_blank');
         }
 
@@ -1332,53 +1733,15 @@
             }
         });
 
-        // ============ SIMPLE LANGUAGE SELECTOR ============
-        
-        let currentLanguage = 'en';
-
-        // Simple language change function
-        function changeLanguage(lang) {
-            console.log(`Changing language to: ${lang}`);
-            
-            // Update current language
-            currentLanguage = lang;
-            
-            // Update active flag
-            updateLanguageSelector();
-            
-            // Save preference
-            localStorage.setItem('preferredLanguage', lang);
-            
-            console.log(`Language changed to: ${lang}`);
+        // Modal Functions
+        function openModal() {
+            document.getElementById('contactModal').style.display = 'block';
         }
 
-        // Update language selector
-        function updateLanguageSelector() {
-            const flags = document.querySelectorAll('.language-flag');
-            
-            flags.forEach(flag => {
-                const flagLang = flag.getAttribute('data-lang');
-                if (flagLang === currentLanguage) {
-                    flag.classList.add('active');
-                } else {
-                    flag.classList.remove('active');
-                }
-            });
+        function closeModal() {
+            document.getElementById('contactModal').style.display = 'none';
+            document.getElementById('contactMessage').innerHTML = '';
         }
-
-        // Initialize language system
-        function initLanguage() {
-            // Get preferred language from storage or use default
-            const preferredLang = localStorage.getItem('preferredLanguage') || 'en';
-            
-            // Set initial language
-            currentLanguage = preferredLang;
-            updateLanguageSelector();
-            
-            console.log(`Language system initialized with: ${currentLanguage}`);
-        }
-
-        // ============ EXISTING FUNCTIONS ============
 
         // Load News from API
         async function loadNews() {
@@ -1441,7 +1804,7 @@
             }
         }
 
-        // Load Partners from API - IMPROVED VERSION
+        // Load Partners from API
         async function loadPartners() {
             try {
                 console.log('🔄 Loading partners from API...');
@@ -1494,66 +1857,10 @@
             }
         }
 
-        // Track partner clicks (opcional)
+        // Track partner clicks
         function trackPartnerClick(partnerName) {
             console.log(`🔗 Partner clicked: ${partnerName}`);
-            // Podes adicionar analytics aqui
         }
-
-        // Modal Functions
-        function openModal() {
-            document.getElementById('contactModal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('contactModal').style.display = 'none';
-            document.getElementById('contactMessage').innerHTML = '';
-        }
-
-        // Contact Form Submission
-        document.getElementById('contactForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitButton = this.querySelector('button[type="submit"]');
-            const originalText = submitButton.innerHTML;
-            
-            // Show loading state
-            submitButton.innerHTML = 'Sending...';
-            submitButton.disabled = true;
-            
-            try {
-                const response = await fetch('./api/contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(Object.fromEntries(formData))
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    document.getElementById('contactMessage').innerHTML = `
-                        <div class="message success">
-                            Thank you for your message! We'll get back to you soon.
-                        </div>
-                    `;
-                    this.reset();
-                } else {
-                    throw new Error(result.message || 'Failed to send message');
-                }
-            } catch (error) {
-                document.getElementById('contactMessage').innerHTML = `
-                    <div class="message error">
-                        Sorry, there was an error sending your message. Please try again later.
-                    </div>
-                `;
-            } finally {
-                submitButton.innerHTML = originalText;
-                submitButton.disabled = false;
-            }
-        });
 
         // Newsletter Form Submission
         document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
@@ -1563,7 +1870,6 @@
             const submitButton = this.querySelector('button[type="submit"]');
             const originalText = submitButton.innerHTML;
             
-            // Show loading state
             submitButton.innerHTML = 'Subscribing...';
             submitButton.disabled = true;
             
@@ -1622,22 +1928,6 @@
             });
         });
 
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Initializing BiomeXplore website...');
-            
-            // Initialize simple language system
-            initLanguage();
-            
-            // Load dynamic content
-            loadNews();
-            loadPartners();
-            
-            console.log('✅ All systems initialized');
-        });
-
-        // ============ DROPDOWN FUNCTIONS ============
-        
         // Scroll to top when clicking logo
         function scrollToTop() {
             window.scrollTo({
@@ -1646,22 +1936,7 @@
             });
         }
 
-        // Mobile dropdown toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropdownToggle = document.querySelector('.dropdown-toggle');
-            const dropdownMenu = document.querySelector('.dropdown-menu');
-            
-            if (dropdownToggle && dropdownMenu) {
-                dropdownToggle.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 768) {
-                        e.preventDefault();
-                        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-                    }
-                });
-            }
-        });
-
-
+        console.log('✅ All systems initialized');
     </script>
 </body>
 </html>
