@@ -158,11 +158,18 @@
         }
 
                 /* Language Selector Links */
+        /* Language Selector Styles */
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .language-selector a {
             display: flex;
             align-items: center;
-            padding: 2px;
-            border-radius: 3px;
+            padding: 4px;
+            border-radius: 4px;
             transition: all 0.3s ease;
         }
 
@@ -170,7 +177,22 @@
             background: rgba(30, 64, 175, 0.1);
         }
 
-        .language-selector a .language-flag.active {
+        .language-selector a:hover .language-flag {
+            opacity: 1 !important;
+            transform: scale(1.1) !important;
+        }
+
+        .language-flag {
+            width: 24px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .language-flag.active {
+            opacity: 1;
             border-color: #1e40af;
             transform: scale(1.1);
         }
@@ -710,29 +732,29 @@
                             </div>
                         </li>
                         <li><button class="contact-btn" onclick="openModal()">Contact</button></li>
-                        <!-- Language Selector COM GOOGLE TRANSLATE SIMPLES -->
+                        <!-- Language Selector LIMPO -->
                         <li class="language-selector">
-                            <a href="javascript:void(0)" onclick="translatePage('en')" title="English">
-                                <img src="https://flagcdn.com/w40/eu.png" 
+                            <a href="#" onclick="translatePage('en'); return false;" title="English">
+                                <img src="https://flagcdn.com/w24/eu.png" 
                                     alt="English" 
                                     class="language-flag active" 
                                     data-lang="en">
                             </a>
-                            <a href="javascript:void(0)" onclick="translatePage('gl')" title="Galego">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Galicia.svg/320px-Flag_of_Galicia.svg.png" 
+                            <a href="#" onclick="translatePage('gl'); return false;" title="Galego">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Galicia.svg/240px-Flag_of_Galicia.svg.png" 
                                     alt="Galego" 
                                     class="language-flag" 
                                     data-lang="gl"
                                     style="width: 24px; height: 16px; object-fit: cover;">
                             </a>
-                            <a href="javascript:void(0)" onclick="translatePage('es')" title="Español">
-                                <img src="https://flagcdn.com/w40/es.png" 
+                            <a href="#" onclick="translatePage('es'); return false;" title="Español">
+                                <img src="https://flagcdn.com/w24/es.png" 
                                     alt="Español" 
                                     class="language-flag" 
                                     data-lang="es">
                             </a>
-                            <a href="javascript:void(0)" onclick="translatePage('pt')" title="Português">
-                                <img src="https://flagcdn.com/w40/pt.png" 
+                            <a href="#" onclick="translatePage('pt'); return false;" title="Português">
+                                <img src="https://flagcdn.com/w24/pt.png" 
                                     alt="Português" 
                                     class="language-flag" 
                                     data-lang="pt">
@@ -1141,8 +1163,58 @@
         });
         // ============ SIMPLE TRANSLATION SYSTEM ============
 
-        let currentLanguage = 'en';
+        // ============ GOOGLE TRANSLATE INVISIBLE ============
 
+        let currentLanguage = 'en';
+        let googleTranslateLoaded = false;
+
+        // Load Google Translate INVISIBLY
+        function loadGoogleTranslate() {
+            if (!googleTranslateLoaded) {
+                // Create INVISIBLE translate element
+                const translateDiv = document.createElement('div');
+                translateDiv.id = 'google_translate_element';
+                translateDiv.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';
+                document.body.appendChild(translateDiv);
+                
+                // Load Google Translate script
+                const script = document.createElement('script');
+                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                script.async = true;
+                document.body.appendChild(script);
+                
+                googleTranslateLoaded = true;
+                console.log('🌐 Google Translate loaded (invisible)');
+            }
+        }
+
+        // Initialize Google Translate
+        function googleTranslateElementInit() {
+            if (typeof google !== 'undefined' && google.translate) {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,gl,es,pt',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+                
+                // HIDE EVERYTHING from Google
+                setTimeout(() => {
+                    // Hide Google banner
+                    const banner = document.querySelector('.goog-te-banner-frame');
+                    const gadget = document.querySelector('.goog-te-gadget');
+                    const combo = document.querySelector('.goog-te-combo');
+                    
+                    if (banner) banner.style.cssText = 'display:none !important;';
+                    if (gadget) gadget.style.cssText = 'display:none !important;';
+                    if (combo) combo.style.cssText = 'display:none !important;';
+                    
+                    console.log('✅ Google Translate hidden successfully');
+                }, 1000);
+            }
+        }
+
+        // Main translation function
         function translatePage(lang) {
             console.log(`🌐 Translating to: ${lang}`);
             
@@ -1151,23 +1223,28 @@
             updateLanguageSelector();
             localStorage.setItem('preferredLanguage', lang);
             
+            // Show loading feedback
+            showTranslationFeedback(lang);
+            
             // Use Google Translate
             if (typeof google !== 'undefined' && google.translate) {
-                var select = document.querySelector('.goog-te-combo');
+                const select = document.querySelector('.goog-te-combo');
                 if (select) {
                     select.value = lang;
                     select.dispatchEvent(new Event('change'));
-                    
-                    // Show a message
-                    showTranslationMessage(lang);
+                } else {
+                    // If select not found, try direct API
+                    setTimeout(() => translatePage(lang), 500);
                 }
             } else {
-                // If Google Translate not loaded, reload page with lang parameter
-                window.location.href = window.location.pathname + '?lang=' + lang;
+                // Load Google Translate first time
+                loadGoogleTranslate();
+                setTimeout(() => translatePage(lang), 1500);
             }
         }
 
-        function showTranslationMessage(lang) {
+        // Show visual feedback when clicking flag
+        function showTranslationFeedback(lang) {
             const langNames = {
                 'en': 'English',
                 'gl': 'Galego', 
@@ -1175,48 +1252,79 @@
                 'pt': 'Português'
             };
             
-            // Create a temporary message
-            const message = document.createElement('div');
-            message.innerHTML = `🌐 Translating to ${langNames[lang]}...`;
-            message.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                background: #1e40af;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 4px;
-                z-index: 10000;
-                font-weight: bold;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            `;
-            document.body.appendChild(message);
+            // Remove any existing feedback
+            const oldFeedback = document.getElementById('translation-feedback');
+            if (oldFeedback) oldFeedback.remove();
             
-            // Remove after 2 seconds
-            setTimeout(() => message.remove(), 2000);
+            // Create new feedback element
+            const feedback = document.createElement('div');
+            feedback.id = 'translation-feedback';
+            feedback.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    background: #1e40af;
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    z-index: 9999;
+                    font-weight: 600;
+                    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+                    animation: fadeIn 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                ">
+                    <span style="font-size: 20px;">🌐</span>
+                    <span>Translating to ${langNames[lang]}...</span>
+                </div>
+            `;
+            
+            document.body.appendChild(feedback);
+            
+            // Auto-remove after 2 seconds
+            setTimeout(() => {
+                if (feedback.parentNode) {
+                    feedback.style.animation = 'fadeOut 0.3s ease';
+                    setTimeout(() => feedback.remove(), 300);
+                }
+            }, 2000);
         }
 
+        // Update language selector UI
         function updateLanguageSelector() {
             const flags = document.querySelectorAll('.language-flag');
             flags.forEach(flag => {
                 const flagLang = flag.getAttribute('data-lang');
-                flag.classList.toggle('active', flagLang === currentLanguage);
+                if (flagLang === currentLanguage) {
+                    flag.classList.add('active');
+                    flag.style.opacity = '1';
+                    flag.style.borderColor = '#1e40af';
+                    flag.style.transform = 'scale(1.1)';
+                } else {
+                    flag.classList.remove('active');
+                    flag.style.opacity = '0.6';
+                    flag.style.borderColor = 'transparent';
+                    flag.style.transform = 'scale(1)';
+                }
             });
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
+       document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 About page initialized');
             
             // Load saved language preference
             currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
             updateLanguageSelector();
             
+            // Pre-load Google Translate (invisible)
+            loadGoogleTranslate();
+            
             initMap();
         });
     </script>
-        <!-- GOOGLE TRANSLATE WIDGET (MOST SIMPLE VERSION) -->
-    <div id="google_translate_element" style="position: absolute; top: 80px; right: 20px; z-index: 9999;"></div>
+
 
     <script type="text/javascript">
     // Simple Google Translate initialization
