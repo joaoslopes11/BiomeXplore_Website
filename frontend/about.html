@@ -120,51 +120,14 @@
             transform: translateY(-2px);
         }
 
-        /* Google Translate Widget Styling */
-        .goog-te-banner-frame {
-            display: none !important;
-        }
-
-        .goog-te-menu-frame {
-            max-width: 200px !important;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2) !important;
-            border-radius: 8px !important;
-        }
-
-        .goog-te-menu2 {
-            max-width: 200px !important;
-            background: white !important;
-        }
-
-        /* Hide "Powered by Google" */
-        .goog-logo-link {
-            display: none !important;
-        }
-
-        .goog-te-gadget {
-            color: transparent !important;
-            font-size: 0 !important;
-        }
-
-        /* Style the dropdown */
-        .goog-te-combo {
-            padding: 8px 12px !important;
-            border: 1px solid #ddd !important;
-            border-radius: 4px !important;
-            background: white !important;
-            color: #333 !important;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-            font-size: 14px !important;
-        }
-
-                /* Language Selector Links */
         /* Language Selector Styles */
         .language-selector {
             display: flex;
             align-items: center;
-            gap: 12px;
+            margin-left: 20px;
+            gap: 8px;
         }
-
+        
         .language-selector a {
             display: flex;
             align-items: center;
@@ -172,16 +135,11 @@
             border-radius: 4px;
             transition: all 0.3s ease;
         }
-
+        
         .language-selector a:hover {
             background: rgba(30, 64, 175, 0.1);
         }
-
-        .language-selector a:hover .language-flag {
-            opacity: 1 !important;
-            transform: scale(1.1) !important;
-        }
-
+        
         .language-flag {
             width: 24px;
             height: 16px;
@@ -189,27 +147,20 @@
             border-radius: 3px;
             transition: all 0.3s ease;
             cursor: pointer;
+            object-fit: cover;
         }
-
+        
         .language-flag.active {
             opacity: 1;
             border-color: #1e40af;
             transform: scale(1.1);
         }
 
-        /* Our flag selector should trigger Google Translate */
-        .language-flag {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .language-flag:hover {
+        .language-selector a:hover .language-flag {
             transform: scale(1.1);
-            box-shadow: 0 0 5px rgba(30, 64, 175, 0.5);
         }
 
-
-/* ============ DROPDOWN STYLES ============ */
+        /* DROPDOWN STYLES */
         .dropdown {
             position: relative;
         }
@@ -271,31 +222,6 @@
         
         .logo:hover {
             transform: scale(1.05);
-        }
-
-
-
-        /* Language Selector Styles */
-        .language-selector {
-            display: flex;
-            align-items: center;
-            margin-left: 20px;
-            gap: 8px;
-        }
-        
-        .language-flag {
-            width: 24px;
-            height: 16px;
-            opacity: 0.6;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            border-radius: 3px;
-        }
-        
-        .language-flag.active {
-            opacity: 1;
-            border-color: #1e40af;
-            transform: scale(1.1);
         }
 
         /* Hero Section */
@@ -637,6 +563,39 @@
             border: 1px solid #f5c6cb;
         }
 
+        /* Translation Feedback */
+        #translation-feedback {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #1e40af;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeInOut 2.5s ease;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-10px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        /* Hide Google Translate elements */
+        .goog-te-banner-frame,
+        .goog-te-gadget,
+        .goog-te-combo,
+        .goog-logo-link {
+            display: none !important;
+        }
+
         @media (max-width: 768px) {
             .location-content {
                 grid-template-columns: 1fr;
@@ -676,6 +635,13 @@
                 padding: 8px 16px;
                 font-size: 13px;
             }
+
+            #translation-feedback {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                text-align: center;
+            }
         }
 
         @media (max-width: 576px) {
@@ -688,7 +654,7 @@
                 margin-top: 10px;
             }
 
-            /* ============ DROPDOWN MOBILE ============ */
+            /* DROPDOWN MOBILE */
             .dropdown-menu {
                 position: static;
                 box-shadow: none;
@@ -712,7 +678,7 @@
     </style>
 </head>
 <body>
-     <!-- Header -->
+    <!-- Header -->
     <header>
         <div class="header-main">
             <div class="container">
@@ -732,7 +698,7 @@
                             </div>
                         </li>
                         <li><button class="contact-btn" onclick="openModal()">Contact</button></li>
-                        <!-- Language Selector LIMPO -->
+                        <!-- Language Selector -->
                         <li class="language-selector">
                             <a href="#" onclick="translatePage('en'); return false;" title="English">
                                 <img src="https://flagcdn.com/w24/eu.png" 
@@ -745,7 +711,7 @@
                                     alt="Galego" 
                                     class="language-flag" 
                                     data-lang="gl"
-                                    style="width: 24px; height: 16px; object-fit: cover;">
+                                    style="width: 24px; height: 16px;">
                             </a>
                             <a href="#" onclick="translatePage('es'); return false;" title="Español">
                                 <img src="https://flagcdn.com/w24/es.png" 
@@ -760,14 +726,11 @@
                                     data-lang="pt">
                             </a>
                         </li>
-
-
                     </ul>
                 </nav>
             </div>
         </div>
     </header>
-
 
     <!-- Hero Section -->
     <section class="about-hero">
@@ -790,7 +753,7 @@
         </div>
     </section>
 
-        <!-- Team Section -->
+    <!-- Team Section -->
     <section class="section">
         <div class="container">
             <div class="section-title">
@@ -828,7 +791,7 @@
                 </div>
             </div>
 
-            <!-- Coordenadora -->
+            <!-- Coordinator -->
             <div style="margin-bottom: 50px;">
                 <h3 style="text-align: center; color: #1e3a8a; margin-bottom: 30px; font-size: 28px;">Coordinator</h3>
                 <div class="team-grid" style="max-width: 400px; margin: 0 auto;">
@@ -859,7 +822,7 @@
                         <div class="member-email">
                             <a href="mailto:joao.serra@iisgaliciasur.es">joao.serra@iisgaliciasur.es</a>
                         </div>
-                        <p class="member-bio">Master’s in Biomedical Engineering, Instituto Superior de Engenharia de Lisboa. Responsible for exposome research and author of multiple scientific publications on metabolic analysis in cancer and biological systems.</p>
+                        <p class="member-bio">Master's in Biomedical Engineering, Instituto Superior de Engenharia de Lisboa. Responsible for exposome research and author of multiple scientific publications on metabolic analysis in cancer and biological systems.</p>
                     </div>
                     
                     <div class="team-member">
@@ -888,7 +851,7 @@
                 </div>
             </div>
         </div>
-</section>
+    </section>
 
     <!-- Contact Section -->
     <section class="section">
@@ -1015,9 +978,125 @@
         </div>
     </div>
 
+    <!-- Invisible Google Translate Element -->
+    <div id="google_translate_element" style="display: none;"></div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // ============ SIMPLE FUNCTIONS ============
+        // ============ TRANSLATION SYSTEM ============
+
+        let currentLanguage = 'en';
+        let googleTranslateLoaded = false;
+
+        // Initialize Google Translate
+        function googleTranslateElementInit() {
+            if (typeof google !== 'undefined' && google.translate) {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,gl,es,pt',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+                
+                console.log('✅ Google Translate initialized');
+                
+                // Force hide all Google elements immediately
+                setTimeout(() => {
+                    document.querySelectorAll('.goog-te-banner-frame, .goog-te-gadget, .goog-te-combo, .goog-logo-link')
+                        .forEach(el => el.style.display = 'none');
+                }, 100);
+            }
+        }
+
+        // Load Google Translate
+        function loadGoogleTranslate() {
+            if (!googleTranslateLoaded) {
+                const script = document.createElement('script');
+                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                script.async = true;
+                document.body.appendChild(script);
+                googleTranslateLoaded = true;
+            }
+        }
+
+        // Main translation function
+        function translatePage(lang) {
+            console.log(`🌐 Translating to: ${lang}`);
+            
+            // Update UI immediately
+            currentLanguage = lang;
+            updateLanguageSelector();
+            localStorage.setItem('preferredLanguage', lang);
+            
+            // Show feedback
+            showTranslationFeedback(lang);
+            
+            // Use Google Translate if available
+            if (typeof google !== 'undefined' && google.translate) {
+                const select = document.querySelector('.goog-te-combo');
+                if (select) {
+                    select.value = lang;
+                    select.dispatchEvent(new Event('change'));
+                    
+                    // Hide Google elements again after translation
+                    setTimeout(() => {
+                        document.querySelectorAll('.goog-te-banner-frame, .goog-te-gadget')
+                            .forEach(el => el.style.display = 'none');
+                    }, 500);
+                } else {
+                    // Retry after a short delay
+                    setTimeout(() => translatePage(lang), 300);
+                }
+            } else {
+                // Load Google Translate if not loaded
+                loadGoogleTranslate();
+                setTimeout(() => translatePage(lang), 1000);
+            }
+        }
+
+        // Show translation feedback
+        function showTranslationFeedback(lang) {
+            const langNames = {
+                'en': 'English',
+                'gl': 'Galego', 
+                'es': 'Español',
+                'pt': 'Português'
+            };
+            
+            // Remove existing feedback
+            const oldFeedback = document.getElementById('translation-feedback');
+            if (oldFeedback) oldFeedback.remove();
+            
+            // Create new feedback
+            const feedback = document.createElement('div');
+            feedback.id = 'translation-feedback';
+            feedback.innerHTML = `
+                <span style="font-size: 20px;">🌐</span>
+                <span>Translating to ${langNames[lang]}...</span>
+            `;
+            
+            document.body.appendChild(feedback);
+            
+            // Auto-remove
+            setTimeout(() => {
+                if (feedback.parentNode) feedback.remove();
+            }, 2500);
+        }
+
+        // Update language selector UI
+        function updateLanguageSelector() {
+            const flags = document.querySelectorAll('.language-flag');
+            flags.forEach(flag => {
+                const flagLang = flag.getAttribute('data-lang');
+                if (flagLang === currentLanguage) {
+                    flag.classList.add('active');
+                } else {
+                    flag.classList.remove('active');
+                }
+            });
+        }
+
+        // ============ EXISTING FUNCTIONS ============
 
         // Modal Functions
         function openModal() {
@@ -1029,7 +1108,7 @@
             document.getElementById('contactMessage').innerHTML = '';
         }
 
-        // Contact Form Submission
+        // Contact Form
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1037,16 +1116,13 @@
             const submitButton = this.querySelector('button[type="submit"]');
             const originalText = submitButton.innerHTML;
             
-            // Show loading state
             submitButton.innerHTML = 'Sending...';
             submitButton.disabled = true;
             
             try {
                 const response = await fetch('./api/contact', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(Object.fromEntries(formData))
                 });
                 
@@ -1074,42 +1150,15 @@
             }
         });
 
-        // Close modal when clicking outside
-        window.addEventListener('click', function(e) {
-            const modal = document.getElementById('contactModal');
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Initialize map
+        // Map
         function initMap() {
-            // Coordinates for Hospital Álvaro Cunqueiro in Vigo
             const hospitalCoords = [42.189491, -8.713703];
-            
-            // Create map
             const map = L.map('hospitalMap').setView(hospitalCoords, 15);
             
-            // Add OpenStreetMap tiles
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
             
-            // Add custom marker
             const hospitalIcon = L.divIcon({
                 html: '<div style="background-color: #1e40af; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">🏥</div>',
                 className: 'hospital-marker',
@@ -1117,7 +1166,6 @@
                 iconAnchor: [15, 15]
             });
             
-            // Add marker to map
             const marker = L.marker(hospitalCoords, { icon: hospitalIcon })
                 .addTo(map)
                 .bindPopup(`
@@ -1127,27 +1175,23 @@
                     </div>
                 `);
             
-            // Open popup by default
             marker.openPopup();
         }
 
-        // Initialize when DOM is loaded
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 About page initialized');
             
-            // Load saved language preference
-            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
-            currentLanguage = savedLang;
+            // Load language preference
+            currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
             updateLanguageSelector();
             
+            // Pre-load Google Translate
+            loadGoogleTranslate();
             
             initMap();
-        });
-
-        // ============ DROPDOWN FUNCTIONS ============
-        
-        // Mobile dropdown toggle
-        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Mobile dropdown
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');
             
@@ -1159,197 +1203,27 @@
                     }
                 });
             }
-            
         });
-        // ============ SIMPLE TRANSLATION SYSTEM ============
 
-        // ============ GOOGLE TRANSLATE INVISIBLE ============
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('contactModal');
+            if (e.target === modal) closeModal();
+        });
 
-        let currentLanguage = 'en';
-        let googleTranslateLoaded = false;
-
-        // Load Google Translate INVISIBLY
-        function loadGoogleTranslate() {
-            if (!googleTranslateLoaded) {
-                // Create INVISIBLE translate element
-                const translateDiv = document.createElement('div');
-                translateDiv.id = 'google_translate_element';
-                translateDiv.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';
-                document.body.appendChild(translateDiv);
-                
-                // Load Google Translate script
-                const script = document.createElement('script');
-                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-                script.async = true;
-                document.body.appendChild(script);
-                
-                googleTranslateLoaded = true;
-                console.log('🌐 Google Translate loaded (invisible)');
-            }
-        }
-
-        // Initialize Google Translate
-        function googleTranslateElementInit() {
-            if (typeof google !== 'undefined' && google.translate) {
-                new google.translate.TranslateElement({
-                    pageLanguage: 'en',
-                    includedLanguages: 'en,gl,es,pt',
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                    autoDisplay: false
-                }, 'google_translate_element');
-                
-                // HIDE EVERYTHING from Google
-                setTimeout(() => {
-                    // Hide Google banner
-                    const banner = document.querySelector('.goog-te-banner-frame');
-                    const gadget = document.querySelector('.goog-te-gadget');
-                    const combo = document.querySelector('.goog-te-combo');
-                    
-                    if (banner) banner.style.cssText = 'display:none !important;';
-                    if (gadget) gadget.style.cssText = 'display:none !important;';
-                    if (combo) combo.style.cssText = 'display:none !important;';
-                    
-                    console.log('✅ Google Translate hidden successfully');
-                }, 1000);
-            }
-        }
-
-        // Main translation function
-        function translatePage(lang) {
-            console.log(`🌐 Translating to: ${lang}`);
-            
-            // Update UI
-            currentLanguage = lang;
-            updateLanguageSelector();
-            localStorage.setItem('preferredLanguage', lang);
-            
-            // Show loading feedback
-            showTranslationFeedback(lang);
-            
-            // Use Google Translate
-            if (typeof google !== 'undefined' && google.translate) {
-                const select = document.querySelector('.goog-te-combo');
-                if (select) {
-                    select.value = lang;
-                    select.dispatchEvent(new Event('change'));
-                } else {
-                    // If select not found, try direct API
-                    setTimeout(() => translatePage(lang), 500);
-                }
-            } else {
-                // Load Google Translate first time
-                loadGoogleTranslate();
-                setTimeout(() => translatePage(lang), 1500);
-            }
-        }
-
-        // Show visual feedback when clicking flag
-        function showTranslationFeedback(lang) {
-            const langNames = {
-                'en': 'English',
-                'gl': 'Galego', 
-                'es': 'Español',
-                'pt': 'Português'
-            };
-            
-            // Remove any existing feedback
-            const oldFeedback = document.getElementById('translation-feedback');
-            if (oldFeedback) oldFeedback.remove();
-            
-            // Create new feedback element
-            const feedback = document.createElement('div');
-            feedback.id = 'translation-feedback';
-            feedback.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 100px;
-                    right: 20px;
-                    background: #1e40af;
-                    color: white;
-                    padding: 12px 20px;
-                    border-radius: 8px;
-                    z-index: 9999;
-                    font-weight: 600;
-                    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
-                    animation: fadeIn 0.3s ease;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                ">
-                    <span style="font-size: 20px;">🌐</span>
-                    <span>Translating to ${langNames[lang]}...</span>
-                </div>
-            `;
-            
-            document.body.appendChild(feedback);
-            
-            // Auto-remove after 2 seconds
-            setTimeout(() => {
-                if (feedback.parentNode) {
-                    feedback.style.animation = 'fadeOut 0.3s ease';
-                    setTimeout(() => feedback.remove(), 300);
-                }
-            }, 2000);
-        }
-
-        // Update language selector UI
-        function updateLanguageSelector() {
-            const flags = document.querySelectorAll('.language-flag');
-            flags.forEach(flag => {
-                const flagLang = flag.getAttribute('data-lang');
-                if (flagLang === currentLanguage) {
-                    flag.classList.add('active');
-                    flag.style.opacity = '1';
-                    flag.style.borderColor = '#1e40af';
-                    flag.style.transform = 'scale(1.1)';
-                } else {
-                    flag.classList.remove('active');
-                    flag.style.opacity = '0.6';
-                    flag.style.borderColor = 'transparent';
-                    flag.style.transform = 'scale(1)';
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
-        }
-
-       document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 About page initialized');
-            
-            // Load saved language preference
-            currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
-            updateLanguageSelector();
-            
-            // Pre-load Google Translate (invisible)
-            loadGoogleTranslate();
-            
-            initMap();
         });
     </script>
-
-
-    <script type="text/javascript">
-    // Simple Google Translate initialization
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'en,gl,es,pt',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false
-        }, 'google_translate_element');
-        
-        // Hide Google's banner
-        setTimeout(function() {
-            var banner = document.querySelector('.goog-te-banner-frame');
-            if (banner) banner.style.display = 'none';
-        }, 1000);
-    }
-
-    // Load Google Translate script
-    (function() {
-        var script = document.createElement('script');
-        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-        script.async = true;
-        document.body.appendChild(script);
-    })();
-    </script>    
 </body>
 </html>
