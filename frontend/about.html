@@ -157,6 +157,24 @@
             font-size: 14px !important;
         }
 
+                /* Language Selector Links */
+        .language-selector a {
+            display: flex;
+            align-items: center;
+            padding: 2px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .language-selector a:hover {
+            background: rgba(30, 64, 175, 0.1);
+        }
+
+        .language-selector a .language-flag.active {
+            border-color: #1e40af;
+            transform: scale(1.1);
+        }
+
         /* Our flag selector should trigger Google Translate */
         .language-flag {
             cursor: pointer;
@@ -692,40 +710,42 @@
                             </div>
                         </li>
                         <li><button class="contact-btn" onclick="openModal()">Contact</button></li>
-                        <!-- Language Selector -->
+                        <!-- Language Selector COM GOOGLE TRANSLATE SIMPLES -->
                         <li class="language-selector">
-                            <img src="https://flagcdn.com/w40/eu.png" 
-                                alt="English" 
-                                class="language-flag active" 
-                                data-lang="en"
-                                onclick="translatePage('en')">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Galicia.svg/320px-Flag_of_Galicia.svg.png" 
-                                alt="Galego" 
-                                class="language-flag" 
-                                data-lang="gl"
-                                onclick="translatePage('gl')">
-                            <img src="https://flagcdn.com/w40/es.png" 
-                                alt="Español" 
-                                class="language-flag" 
-                                data-lang="es"
-                                onclick="translatePage('es')">
-                            <img src="https://flagcdn.com/w40/pt.png" 
-                                alt="Português" 
-                                class="language-flag" 
-                                data-lang="pt"
-                                onclick="translatePage('pt')">
+                            <a href="javascript:void(0)" onclick="translatePage('en')" title="English">
+                                <img src="https://flagcdn.com/w40/eu.png" 
+                                    alt="English" 
+                                    class="language-flag active" 
+                                    data-lang="en">
+                            </a>
+                            <a href="javascript:void(0)" onclick="translatePage('gl')" title="Galego">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Galicia.svg/320px-Flag_of_Galicia.svg.png" 
+                                    alt="Galego" 
+                                    class="language-flag" 
+                                    data-lang="gl"
+                                    style="width: 24px; height: 16px; object-fit: cover;">
+                            </a>
+                            <a href="javascript:void(0)" onclick="translatePage('es')" title="Español">
+                                <img src="https://flagcdn.com/w40/es.png" 
+                                    alt="Español" 
+                                    class="language-flag" 
+                                    data-lang="es">
+                            </a>
+                            <a href="javascript:void(0)" onclick="translatePage('pt')" title="Português">
+                                <img src="https://flagcdn.com/w40/pt.png" 
+                                    alt="Português" 
+                                    class="language-flag" 
+                                    data-lang="pt">
+                            </a>
                         </li>
 
-                        <!-- Google Translate (hidden) -->
-                        <div id="google_translate_element" style="display:none;"></div>
+
                     </ul>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- Google Translate Widget -->
-    <div id="google_translate_element" style="position: absolute; top: 20px; right: 150px; z-index: 9999;"></div>
 
     <!-- Hero Section -->
     <section class="about-hero">
@@ -1098,8 +1118,6 @@
             currentLanguage = savedLang;
             updateLanguageSelector();
             
-            // Load Google Translate
-            loadGoogleTranslate();
             
             initMap();
         });
@@ -1121,100 +1139,109 @@
             }
             
         });
-        // ============ GOOGLE TRANSLATE INTEGRATION ============
+        // ============ SIMPLE TRANSLATION SYSTEM ============
 
         let currentLanguage = 'en';
 
-        // Load Google Translate script
-        function loadGoogleTranslate() {
-            if (!document.getElementById('google-translate-script')) {
-                const script = document.createElement('script');
-                script.id = 'google-translate-script';
-                script.type = 'text/javascript';
-                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-                document.body.appendChild(script);
-            }
-        }
-
-        // Initialize Google Translate
-        function googleTranslateElementInit() {
-            if (typeof google !== 'undefined' && google.translate) {
-                new google.translate.TranslateElement({
-                    pageLanguage: 'en',
-                    includedLanguages: 'en,gl,es,pt',
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                    autoDisplay: false
-                }, 'google_translate_element');
-                
-                console.log('✅ Google Translate initialized');
-            }
-        }
-
-        function translatePage(targetLang) {
-            console.log(`🌐 Translating to: ${targetLang}`);
+        function translatePage(lang) {
+            console.log(`🌐 Translating to: ${lang}`);
             
             // Update UI
-            currentLanguage = targetLang;
+            currentLanguage = lang;
             updateLanguageSelector();
-            localStorage.setItem('preferredLanguage', targetLang);
+            localStorage.setItem('preferredLanguage', lang);
             
-            // Force Google Translate to change language
-            if (typeof google !== 'undefined') {
-                // Method 1: Use the Google Translate dropdown
+            // Use Google Translate
+            if (typeof google !== 'undefined' && google.translate) {
                 var select = document.querySelector('.goog-te-combo');
                 if (select) {
-                    select.value = targetLang;
-                    var event = new Event('change', { bubbles: true });
-                    select.dispatchEvent(event);
-                } else {
-                    // Method 2: If dropdown not found, use direct API
-                    setTimeout(function() {
-                        if (google.translate && google.translate.TranslateElement) {
-                            var transElement = google.translate.TranslateElement.getInstance();
-                            if (transElement) {
-                                transElement.selectLanguage(targetLang);
-                            }
-                        }
-                    }, 1000);
+                    select.value = lang;
+                    select.dispatchEvent(new Event('change'));
+                    
+                    // Show a message
+                    showTranslationMessage(lang);
                 }
+            } else {
+                // If Google Translate not loaded, reload page with lang parameter
+                window.location.href = window.location.pathname + '?lang=' + lang;
             }
-            
-            // Fallback: Show Google Translate widget
-            document.getElementById('google_translate_element').style.display = 'block';
         }
 
-        // Update language selector UI
+        function showTranslationMessage(lang) {
+            const langNames = {
+                'en': 'English',
+                'gl': 'Galego', 
+                'es': 'Español',
+                'pt': 'Português'
+            };
+            
+            // Create a temporary message
+            const message = document.createElement('div');
+            message.innerHTML = `🌐 Translating to ${langNames[lang]}...`;
+            message.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: #1e40af;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 4px;
+                z-index: 10000;
+                font-weight: bold;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            `;
+            document.body.appendChild(message);
+            
+            // Remove after 2 seconds
+            setTimeout(() => message.remove(), 2000);
+        }
+
         function updateLanguageSelector() {
             const flags = document.querySelectorAll('.language-flag');
             flags.forEach(flag => {
                 const flagLang = flag.getAttribute('data-lang');
-                if (flagLang === currentLanguage) {
-                    flag.classList.add('active');
-                } else {
-                    flag.classList.remove('active');
-                }
+                flag.classList.toggle('active', flagLang === currentLanguage);
             });
         }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 About page initialized');
+            
+            // Load saved language preference
+            currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
+            updateLanguageSelector();
+            
+            initMap();
+        });
     </script>
-        <!-- Google Translate Script -->
+        <!-- GOOGLE TRANSLATE WIDGET (MOST SIMPLE VERSION) -->
+    <div id="google_translate_element" style="position: absolute; top: 80px; right: 20px; z-index: 9999;"></div>
+
     <script type="text/javascript">
+    // Simple Google Translate initialization
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
             pageLanguage: 'en',
             includedLanguages: 'en,gl,es,pt',
-            layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
             autoDisplay: false
         }, 'google_translate_element');
         
-        // Hide the default Google bar
+        // Hide Google's banner
         setTimeout(function() {
-            var googleBar = document.querySelector('.goog-te-banner-frame');
-            var googleModal = document.querySelector('.goog-te-menu-frame');
-            if (googleBar) googleBar.style.display = 'none';
-            if (googleModal) googleModal.style.top = '50px';
-        }, 500);
+            var banner = document.querySelector('.goog-te-banner-frame');
+            if (banner) banner.style.display = 'none';
+        }, 1000);
     }
-    </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    // Load Google Translate script
+    (function() {
+        var script = document.createElement('script');
+        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        script.async = true;
+        document.body.appendChild(script);
+    })();
+    </script>    
 </body>
 </html>
