@@ -1017,13 +1017,10 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // ============ SIMPLE TRANSLATION SYSTEM ============
-        
+    // ============ SIMPLE TRANSLATION SYSTEM ============
+    
         let currentLanguage = 'en';
-        let googleTranslateLoaded = false;
         let isTranslating = false;
-
-        localStorage.removeItem('preferredLanguage');
 
         // Main translation function - SIMPLIFIED
         function translatePage(lang) {
@@ -1040,55 +1037,81 @@
             showNotification(`Translating to ${getLanguageName(lang)}...`);
             
             // Try to use Google Translate if available
-            if (window.google && google.translate) {
+            if (window.google && google.translate && window.googleTranslateElementInstance) {
                 useGoogleTranslate(lang);
             } else {
                 // Load Google Translate first
-                loadGoogleTranslate(() => {
-                    useGoogleTranslate(lang);
-                });
+                loadGoogleTranslate(lang);
             }
         }
 
         // Load Google Translate
-        function loadGoogleTranslate(callback) {
-            if (!googleTranslateLoaded) {
-                const script = document.createElement('script');
-                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
-                script.async = true;
-                script.onload = function() {
-                    googleTranslateLoaded = true;
-                    if (callback) callback();
-                };
-                script.onerror = function() {
-                    console.error('Failed to load Google Translate');
-                    showNotification('Translation service unavailable', 'error');
-                    isTranslating = false;
-                };
-                document.body.appendChild(script);
-            } else if (callback) {
-                callback();
+        function loadGoogleTranslate(targetLang) {
+            // Remove any existing Google Translate elements
+            const existingScript = document.querySelector('script[src*="translate.google"]');
+            if (existingScript) {
+                existingScript.remove();
             }
+            
+            // Remove any existing Google Translate instances
+            const existingDiv = document.getElementById('google_translate_element');
+            if (existingDiv) {
+                existingDiv.innerHTML = '';
+            }
+            
+            const script = document.createElement('script');
+            script.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateInit&hl=${targetLang}`;
+            script.async = true;
+            
+            script.onload = function() {
+                console.log('✅ Google Translate script loaded');
+                // Store target language to use after initialization
+                window.targetLanguage = targetLang;
+            };
+            
+            script.onerror = function() {
+                console.error('Failed to load Google Translate');
+                showNotification('Translation service unavailable', 'error');
+                isTranslating = false;
+            };
+            
+            document.body.appendChild(script);
         }
 
         // Initialize Google Translate
         function googleTranslateInit() {
             try {
-                if (typeof google !== 'undefined' && google.translate) {
-                    new google.translate.TranslateElement({
-                        pageLanguage: 'en',
-                        includedLanguages: 'en,gl,es,pt',
-                        autoDisplay: false
-                    }, 'google_translate_element');
-                    
-                    console.log('✅ Google Translate loaded');
-                    hideGoogleElements();
-                    
-                    // Set up periodic cleanup
-                    setInterval(hideGoogleElements, 1000);
+                // Clear any previous instance
+                if (window.googleTranslateElementInstance) {
+                    document.getElementById('google_translate_element').innerHTML = '';
                 }
+                
+                // Create new instance
+                window.googleTranslateElementInstance = new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,gl,es,pt',
+                    autoDisplay: false,
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                }, 'google_translate_element');
+                
+                console.log('✅ Google Translate initialized');
+                
+                // Hide Google elements immediately
+                hideGoogleElements();
+                
+                // Apply translation if target language is set
+                if (window.targetLanguage) {
+                    setTimeout(() => {
+                        useGoogleTranslate(window.targetLanguage);
+                    }, 500);
+                }
+                
+                // Set up periodic cleanup
+                setInterval(hideGoogleElements, 1000);
+                
             } catch (error) {
                 console.error('Google Translate init error:', error);
+                isTranslating = false;
             }
         }
 
@@ -1096,7 +1119,7 @@
         function useGoogleTranslate(lang) {
             try {
                 const select = document.querySelector('.goog-te-combo');
-                if (select) {
+                if (select && select.value !== lang) {
                     select.value = lang;
                     select.dispatchEvent(new Event('change'));
                     
@@ -1105,27 +1128,35 @@
                         currentLanguage = lang;
                         hideGoogleElements();
                         isTranslating = false;
+                        window.targetLanguage = null; // Clear target
+                        showNotification(`Translated to ${getLanguageName(lang)}`, 'success');
+                        
+                        // Force cleanup
+                        setTimeout(hideGoogleElements, 100);
+                    }, 1500);
+                } else if (select && select.value === lang) {
+                    // Already in this language
+                    currentLanguage = lang;
+                    hideGoogleElements();
+                    isTranslating = false;
+                    showNotification(`Already in ${getLanguageName(lang)}`, 'info');
+                } else {
+                    // Select element not found - try alternative approach
+                    console.log('Select element not found, trying alternative...');
+                    const frame = document.querySelector('.goog-te-menu-frame');
+                    if (frame && frame.contentWindow) {
+                        frame.contentWindow.postMessage({
+                            type: 'TRANSLATE',
+                            lang: lang
+                        }, '*');
+                    }
+                    
+                    setTimeout(() => {
+                        currentLanguage = lang;
+                        hideGoogleElements();
+                        isTranslating = false;
                         showNotification(`Translated to ${getLanguageName(lang)}`, 'success');
                     }, 1000);
-                } else {
-                    // Select element not found
-                    setTimeout(() => {
-                        const selectRetry = document.querySelector('.goog-te-combo');
-                        if (selectRetry) {
-                            selectRetry.value = lang;
-                            selectRetry.dispatchEvent(new Event('change'));
-                            
-                            setTimeout(() => {
-                                currentLanguage = lang;
-                                hideGoogleElements();
-                                isTranslating = false;
-                                showNotification(`Translated to ${getLanguageName(lang)}`, 'success');
-                            }, 1000);
-                        } else {
-                            showNotification('Translation failed. Please refresh and try again.', 'error');
-                            isTranslating = false;
-                        }
-                    }, 500);
                 }
             } catch (error) {
                 console.error('Translation error:', error);
@@ -1143,7 +1174,7 @@
                 '.goog-te-menu-value', '.goog-te-menu-frame', '.goog-te-ftab-frame',
                 '.goog-te-spinner-pos', '.goog-te-banner', '.goog-te-ftab',
                 '.goog-te-menu', '.goog-te-float', '.goog-te-float-iframe',
-                'iframe[src*="translate.google"]', '.goog-te-balloon-frame'
+                '.goog-te-balloon-frame', '.goog-te-balloon', '.goog-te-spinner'
             ];
             
             googleClasses.forEach(selector => {
@@ -1157,20 +1188,30 @@
                     el.style.position = 'absolute';
                     el.style.top = '-9999px';
                     el.style.left = '-9999px';
+                    el.style.pointerEvents = 'none';
                 });
+            });
+            
+            // Remove any iframes from Google
+            document.querySelectorAll('iframe').forEach(iframe => {
+                if (iframe.src && iframe.src.includes('translate.google')) {
+                    iframe.style.display = 'none';
+                    iframe.style.visibility = 'hidden';
+                }
             });
             
             // Fix body position
             document.body.style.top = '0';
             document.body.style.position = 'static';
+            document.body.style.marginTop = '0';
             
             // Remove any translation banners
             document.querySelectorAll('div').forEach(div => {
                 const text = div.textContent || div.innerText || '';
                 if (text.includes('Translating') || text.includes('traduzindo') || 
                     text.includes('traduciendo') || text.includes('Traduzir') ||
-                    text.includes('Translation')) {
-                    if (!div.id || !div.id.includes('translation') && !div.id.includes('notification')) {
+                    text.includes('Translation') || text.includes('Original')) {
+                    if (!div.id || (!div.id.includes('translation') && !div.id.includes('notification'))) {
                         div.style.display = 'none';
                     }
                 }
@@ -1216,12 +1257,42 @@
         // Update language selector UI
         function updateLanguageSelector(lang) {
             document.querySelectorAll('.language-flag').forEach(flag => {
+                flag.classList.remove('active');
                 const parent = flag.closest('a');
                 if (parent) {
                     const flagLang = parent.getAttribute('data-lang');
-                    flag.classList.toggle('active', flagLang === lang);
+                    if (flagLang === lang) {
+                        flag.classList.add('active');
+                    }
                 }
             });
+        }
+
+        // Reset to English
+        function resetToEnglish() {
+            currentLanguage = 'en';
+            updateLanguageSelector('en');
+            localStorage.setItem('preferredLanguage', 'en');
+            
+            // Remove Google Translate completely
+            const googleDiv = document.getElementById('google_translate_element');
+            if (googleDiv) {
+                googleDiv.innerHTML = '';
+            }
+            
+            // Remove any Google Translate scripts
+            document.querySelectorAll('script[src*="translate.google"]').forEach(script => {
+                script.remove();
+            });
+            
+            // Clear instance
+            window.googleTranslateElementInstance = null;
+            
+            // Reload the page to get back to original English
+            showNotification('Switching to English...', 'info');
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
         }
 
         // ============ PAGE INITIALIZATION ============
@@ -1235,28 +1306,18 @@
                     e.preventDefault();
                     const lang = this.getAttribute('data-lang');
                     if (lang) {
-                        translatePage(lang);
+                        if (lang === 'en') {
+                            resetToEnglish();
+                        } else {
+                            translatePage(lang);
+                        }
                     }
                 });
             });
             
-            // Load saved language preference
-            const savedLang = localStorage.getItem('preferredLanguage');
-            if (savedLang && savedLang !== 'en') {
-                currentLanguage = savedLang;
-                updateLanguageSelector(savedLang);
-                
-                // Auto-translate if not English
-                setTimeout(() => {
-                    if (!window.googleTranslateLoaded) {
-                        translatePage(savedLang);
-                    }
-                }, 1000);
-            } else {
-                // SEMPRE garantir que inglês está ativo por padrão
-                updateLanguageSelector('en');
-                localStorage.setItem('preferredLanguage', 'en');
-            }
+            // Set English as active by default
+            updateLanguageSelector('en');
+            localStorage.setItem('preferredLanguage', 'en');
             
             // Initialize map
             initMap();
@@ -1274,49 +1335,6 @@
                 });
             }
             
-            // Contact form
-            const contactForm = document.getElementById('contactForm');
-            if (contactForm) {
-                contactForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    const formData = new FormData(this);
-                    const submitButton = this.querySelector('button[type="submit"]');
-                    const originalText = submitButton.innerHTML;
-                    
-                    submitButton.innerHTML = 'Sending...';
-                    submitButton.disabled = true;
-                    
-                    try {
-                        const response = await fetch('./api/contact', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(Object.fromEntries(formData))
-                        });
-                        
-                        if (response.ok) {
-                            document.getElementById('contactMessage').innerHTML = `
-                                <div class="message success">
-                                    Thank you for your message! We'll get back to you soon.
-                                </div>
-                            `;
-                            this.reset();
-                        } else {
-                            throw new Error('Failed to send message');
-                        }
-                    } catch (error) {
-                        document.getElementById('contactMessage').innerHTML = `
-                            <div class="message error">
-                                Sorry, there was an error sending your message. Please try again later.
-                            </div>
-                        `;
-                    } finally {
-                        submitButton.innerHTML = originalText;
-                        submitButton.disabled = false;
-                    }
-                });
-            }
-            
             // Start periodic cleanup of Google elements
             setInterval(hideGoogleElements, 2000);
         });
@@ -1330,7 +1348,8 @@
 
         function closeModal() {
             document.getElementById('contactModal').style.display = 'none';
-            document.getElementById('contactMessage').innerHTML = '';
+            const messageDiv = document.getElementById('contactMessage');
+            if (messageDiv) messageDiv.innerHTML = '';
         }
 
         // Map
