@@ -727,7 +727,7 @@
                         <!-- Language Selector - SIMPLIFIED -->
                         <li class="language-selector">
                             <a href="#" data-lang="en" title="English">
-                                <img src="https://i.ibb.co/Fbx9hhJp/imagem.png" 
+                                <img src="https://flagcdn.com/w24/gb.png" 
                                     alt="English" 
                                     class="language-flag active">
                             </a>
@@ -738,12 +738,12 @@
                                     style="width: 24px; height: 16px;">
                             </a>
                             <a href="#" data-lang="es" title="Español">
-                                <img src="https://i.ibb.co/Mkw6HSB1/imagem.png" 
+                                <img src="https://flagcdn.com/w24/es.png" 
                                     alt="Español" 
                                     class="language-flag">
                             </a>
                             <a href="#" data-lang="pt" title="Português">
-                                <img src="https://i.ibb.co/VpNwWBw7/imagem.png" 
+                                <img src="https://flagcdn.com/w24/pt.png" 
                                     alt="Português" 
                                     class="language-flag">
                             </a>
@@ -1000,18 +1000,42 @@
         </div>
     </div>
 
-    <!-- Google Translate Element (Optional - if you still want to try) -->
+    <!-- Google Translate Element -->
     <div id="google_translate_element" style="display: none;"></div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // ============ SIMPLE TRANSLATION SYSTEM ============
+        // ============ TRANSLATION SYSTEM ============
         
-        let currentLanguage = 'en';
+        let currentLanguage = 'en'; // Inglês como idioma padrão
         let googleTranslateLoaded = false;
         let isTranslating = false;
 
-        // Main translation function - SIMPLIFIED
+        // Forçar Português de Portugal na tradução
+        function forcePortuguesePortugal() {
+            // Alterar o atributo lang para forçar PT-PT quando em português
+            if (currentLanguage === 'pt') {
+                document.documentElement.lang = 'pt-PT';
+            }
+            
+            // Alterar a configuração do Google Translate se estiver carregado
+            if (window.google && google.translate && google.translate.TranslateElement) {
+                try {
+                    // Tentar forçar PT-PT
+                    const iframe = document.querySelector('iframe.goog-te-menu-frame');
+                    if (iframe) {
+                        iframe.contentWindow.document.querySelectorAll('a').forEach(a => {
+                            if (a.textContent.includes('Português') || a.getAttribute('href').includes('pt')) {
+                                a.href = a.href.replace('pt', 'pt-PT');
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.log('Não foi possível forçar PT-PT no Google Translate');
+                }
+            }
+        }
+
         function translatePage(lang) {
             if (isTranslating || currentLanguage === lang) return;
             
@@ -1025,6 +1049,11 @@
             // Show notification
             showNotification(`Translating to ${getLanguageName(lang)}...`);
             
+            // Se for Português, forçar PT-PT
+            if (lang === 'pt') {
+                forcePortuguesePortugal();
+            }
+            
             // Try to use Google Translate if available
             if (window.google && google.translate) {
                 useGoogleTranslate(lang);
@@ -1036,7 +1065,6 @@
             }
         }
 
-        // Load Google Translate
         function loadGoogleTranslate(callback) {
             if (!googleTranslateLoaded) {
                 const script = document.createElement('script');
@@ -1057,18 +1085,23 @@
             }
         }
 
-        // Initialize Google Translate
         function googleTranslateInit() {
             try {
                 if (typeof google !== 'undefined' && google.translate) {
                     new google.translate.TranslateElement({
                         pageLanguage: 'en',
-                        includedLanguages: 'en,gl,es,pt',
-                        autoDisplay: false
+                        includedLanguages: 'en,gl,es,pt-PT', // Forçar PT-PT para português
+                        autoDisplay: false,
+                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
                     }, 'google_translate_element');
                     
                     console.log('✅ Google Translate loaded');
                     hideGoogleElements();
+                    
+                    // Forçar Português de Portugal após carregamento se necessário
+                    if (currentLanguage === 'pt') {
+                        setTimeout(forcePortuguesePortugal, 1000);
+                    }
                     
                     // Set up periodic cleanup
                     setInterval(hideGoogleElements, 1000);
@@ -1078,12 +1111,13 @@
             }
         }
 
-        // Use Google Translate
         function useGoogleTranslate(lang) {
             try {
                 const select = document.querySelector('.goog-te-combo');
                 if (select) {
-                    select.value = lang;
+                    // Se for português, usar pt-PT
+                    const translateLang = lang === 'pt' ? 'pt-PT' : lang;
+                    select.value = translateLang;
                     select.dispatchEvent(new Event('change'));
                     
                     // Success
@@ -1094,11 +1128,11 @@
                         showNotification(`Translated to ${getLanguageName(lang)}`, 'success');
                     }, 1000);
                 } else {
-                    // Select element not found
                     setTimeout(() => {
                         const selectRetry = document.querySelector('.goog-te-combo');
                         if (selectRetry) {
-                            selectRetry.value = lang;
+                            const translateLang = lang === 'pt' ? 'pt-PT' : lang;
+                            selectRetry.value = translateLang;
                             selectRetry.dispatchEvent(new Event('change'));
                             
                             setTimeout(() => {
@@ -1120,9 +1154,7 @@
             }
         }
 
-        // Hide all Google Translate elements
         function hideGoogleElements() {
-            // List of all Google Translate classes
             const googleClasses = [
                 '.skiptranslate', '.goog-te-banner-frame', '.goog-te-gadget',
                 '.goog-te-combo', '.goog-logo-link', '.goog-te-gadget-simple',
@@ -1146,30 +1178,14 @@
                 });
             });
             
-            // Fix body position
             document.body.style.top = '0';
             document.body.style.position = 'static';
-            
-            // Remove any translation banners
-            document.querySelectorAll('div').forEach(div => {
-                const text = div.textContent || div.innerText || '';
-                if (text.includes('Translating') || text.includes('traduzindo') || 
-                    text.includes('traduciendo') || text.includes('Traduzir') ||
-                    text.includes('Translation')) {
-                    if (!div.id || !div.id.includes('translation') && !div.id.includes('notification')) {
-                        div.style.display = 'none';
-                    }
-                }
-            });
         }
 
-        // Show notification
         function showNotification(message, type = 'info') {
-            // Remove existing notification
             const oldNote = document.getElementById('translation-notification');
             if (oldNote) oldNote.remove();
             
-            // Create new notification
             const note = document.createElement('div');
             note.id = 'translation-notification';
             note.className = type;
@@ -1182,24 +1198,21 @@
             
             document.body.appendChild(note);
             
-            // Auto-remove
             setTimeout(() => {
                 if (note.parentNode) note.remove();
             }, type === 'error' ? 4000 : 2500);
         }
 
-        // Get language name
         function getLanguageName(code) {
             const names = {
                 'en': 'English',
                 'gl': 'Galego', 
                 'es': 'Español',
-                'pt': 'Português'
+                'pt': 'Português (Portugal)'
             };
             return names[code] || code;
         }
 
-        // Update language selector UI
         function updateLanguageSelector(lang) {
             document.querySelectorAll('.language-flag').forEach(flag => {
                 const parent = flag.closest('a');
@@ -1305,7 +1318,6 @@
 
         // ============ EXISTING FUNCTIONS ============
 
-        // Modal Functions
         function openModal() {
             document.getElementById('contactModal').style.display = 'block';
         }
@@ -1315,7 +1327,6 @@
             document.getElementById('contactMessage').innerHTML = '';
         }
 
-        // Map
         function initMap() {
             const hospitalCoords = [42.189491, -8.713703];
             const map = L.map('hospitalMap').setView(hospitalCoords, 15);
@@ -1343,13 +1354,11 @@
             marker.openPopup();
         }
 
-        // Close modal when clicking outside
         window.addEventListener('click', function(e) {
             const modal = document.getElementById('contactModal');
             if (e.target === modal) closeModal();
         });
 
-        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
