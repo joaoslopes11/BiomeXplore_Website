@@ -120,6 +120,55 @@
             transform: translateY(-2px);
         }
 
+        /* Google Translate Widget Styling */
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+
+        .goog-te-menu-frame {
+            max-width: 200px !important;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2) !important;
+            border-radius: 8px !important;
+        }
+
+        .goog-te-menu2 {
+            max-width: 200px !important;
+            background: white !important;
+        }
+
+        /* Hide "Powered by Google" */
+        .goog-logo-link {
+            display: none !important;
+        }
+
+        .goog-te-gadget {
+            color: transparent !important;
+            font-size: 0 !important;
+        }
+
+        /* Style the dropdown */
+        .goog-te-combo {
+            padding: 8px 12px !important;
+            border: 1px solid #ddd !important;
+            border-radius: 4px !important;
+            background: white !important;
+            color: #333 !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+            font-size: 14px !important;
+        }
+
+        /* Our flag selector should trigger Google Translate */
+        .language-flag {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-flag:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 5px rgba(30, 64, 175, 0.5);
+        }
+
+
 /* ============ DROPDOWN STYLES ============ */
         .dropdown {
             position: relative;
@@ -675,6 +724,9 @@
         </div>
     </header>
 
+    <!-- Google Translate Widget -->
+    <div id="google_translate_element" style="position: absolute; top: 20px; right: 150px; z-index: 9999;"></div>
+
     <!-- Hero Section -->
     <section class="about-hero">
         <div class="container">
@@ -1098,7 +1150,6 @@
             }
         }
 
-        // Translate page function
         function translatePage(targetLang) {
             console.log(`🌐 Translating to: ${targetLang}`);
             
@@ -1107,21 +1158,29 @@
             updateLanguageSelector();
             localStorage.setItem('preferredLanguage', targetLang);
             
-            // Use Google Translate
-            if (typeof google !== 'undefined' && google.translate && google.translate.TranslateElement) {
-                try {
-                    const select = document.querySelector('.goog-te-combo');
-                    if (select) {
-                        select.value = targetLang;
-                        select.dispatchEvent(new Event('change'));
-                    }
-                } catch (error) {
-                    console.log('Google Translate not ready yet');
-                    loadGoogleTranslate();
+            // Force Google Translate to change language
+            if (typeof google !== 'undefined') {
+                // Method 1: Use the Google Translate dropdown
+                var select = document.querySelector('.goog-te-combo');
+                if (select) {
+                    select.value = targetLang;
+                    var event = new Event('change', { bubbles: true });
+                    select.dispatchEvent(event);
+                } else {
+                    // Method 2: If dropdown not found, use direct API
+                    setTimeout(function() {
+                        if (google.translate && google.translate.TranslateElement) {
+                            var transElement = google.translate.TranslateElement.getInstance();
+                            if (transElement) {
+                                transElement.selectLanguage(targetLang);
+                            }
+                        }
+                    }, 1000);
                 }
-            } else {
-                loadGoogleTranslate();
             }
+            
+            // Fallback: Show Google Translate widget
+            document.getElementById('google_translate_element').style.display = 'block';
         }
 
         // Update language selector UI
@@ -1137,5 +1196,25 @@
             });
         }
     </script>
+        <!-- Google Translate Script -->
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,gl,es,pt',
+            layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+            autoDisplay: false
+        }, 'google_translate_element');
+        
+        // Hide the default Google bar
+        setTimeout(function() {
+            var googleBar = document.querySelector('.goog-te-banner-frame');
+            var googleModal = document.querySelector('.goog-te-menu-frame');
+            if (googleBar) googleBar.style.display = 'none';
+            if (googleModal) googleModal.style.top = '50px';
+        }, 500);
+    }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
