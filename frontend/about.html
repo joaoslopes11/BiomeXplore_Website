@@ -643,33 +643,32 @@
                             </div>
                         </li>
                         <li><button class="contact-btn" onclick="openModal()">Contact</button></li>
-                        <!-- Language Selector (FUNCIONAL) -->
+                        <!-- Language Selector -->
                         <li class="language-selector">
                             <img src="https://flagcdn.com/w40/eu.png" 
                                 alt="English" 
                                 class="language-flag active" 
                                 data-lang="en"
-                                onclick="changeLanguage('en')"
-                                style="cursor: pointer;">
+                                onclick="translatePage('en')">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Galicia.svg/320px-Flag_of_Galicia.svg.png" 
                                 alt="Galego" 
                                 class="language-flag" 
                                 data-lang="gl"
-                                onclick="changeLanguage('gl')"
-                                style="cursor: pointer; width: 24px; height: 16px; object-fit: cover;">
+                                onclick="translatePage('gl')">
                             <img src="https://flagcdn.com/w40/es.png" 
                                 alt="Español" 
                                 class="language-flag" 
                                 data-lang="es"
-                                onclick="changeLanguage('es')"
-                                style="cursor: pointer;">
+                                onclick="translatePage('es')">
                             <img src="https://flagcdn.com/w40/pt.png" 
                                 alt="Português" 
                                 class="language-flag" 
                                 data-lang="pt"
-                                onclick="changeLanguage('pt')"
-                                style="cursor: pointer;">
+                                onclick="translatePage('pt')">
                         </li>
+
+                        <!-- Google Translate (hidden) -->
+                        <div id="google_translate_element" style="display:none;"></div>
                     </ul>
                 </nav>
             </div>
@@ -1041,7 +1040,15 @@
         // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 About page initialized');
-            initLanguage();
+            
+            // Load saved language preference
+            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+            currentLanguage = savedLang;
+            updateLanguageSelector();
+            
+            // Load Google Translate
+            loadGoogleTranslate();
+            
             initMap();
         });
 
@@ -1062,28 +1069,64 @@
             }
             
         });
+        // ============ GOOGLE TRANSLATE INTEGRATION ============
+
         let currentLanguage = 'en';
 
-        // Language change function
-        function changeLanguage(lang) {
-            console.log(`Changing language to: ${lang}`);
-            
-            // Update current language
-            currentLanguage = lang;
-            
-            // Update active flag
-            updateLanguageSelector();
-            
-            // Save preference
-            localStorage.setItem('preferredLanguage', lang);
-            
-            console.log(`Language changed to: ${lang}`);
+        // Load Google Translate script
+        function loadGoogleTranslate() {
+            if (!document.getElementById('google-translate-script')) {
+                const script = document.createElement('script');
+                script.id = 'google-translate-script';
+                script.type = 'text/javascript';
+                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                document.body.appendChild(script);
+            }
         }
 
-        // Update language selector
+        // Initialize Google Translate
+        function googleTranslateElementInit() {
+            if (typeof google !== 'undefined' && google.translate) {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,gl,es,pt',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+                
+                console.log('✅ Google Translate initialized');
+            }
+        }
+
+        // Translate page function
+        function translatePage(targetLang) {
+            console.log(`🌐 Translating to: ${targetLang}`);
+            
+            // Update UI
+            currentLanguage = targetLang;
+            updateLanguageSelector();
+            localStorage.setItem('preferredLanguage', targetLang);
+            
+            // Use Google Translate
+            if (typeof google !== 'undefined' && google.translate && google.translate.TranslateElement) {
+                try {
+                    const select = document.querySelector('.goog-te-combo');
+                    if (select) {
+                        select.value = targetLang;
+                        select.dispatchEvent(new Event('change'));
+                    }
+                } catch (error) {
+                    console.log('Google Translate not ready yet');
+                    loadGoogleTranslate();
+                }
+            } else {
+                loadGoogleTranslate();
+            }
+        }
+
+        // Update language selector UI
         function updateLanguageSelector() {
             const flags = document.querySelectorAll('.language-flag');
-            
             flags.forEach(flag => {
                 const flagLang = flag.getAttribute('data-lang');
                 if (flagLang === currentLanguage) {
@@ -1092,18 +1135,6 @@
                     flag.classList.remove('active');
                 }
             });
-        }
-
-        // Initialize language system
-        function initLanguage() {
-            // Get preferred language from storage or use default
-            const preferredLang = localStorage.getItem('preferredLanguage') || 'en';
-            
-            // Set initial language
-            currentLanguage = preferredLang;
-            updateLanguageSelector();
-            
-            console.log(`Language system initialized with: ${currentLanguage}`);
         }
     </script>
 </body>
