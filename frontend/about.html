@@ -162,6 +162,18 @@
             transform: scale(1.1);
         }
 
+                /* ADICIONE ESTE CSS (pode colocar na linha ~120 do CSS) */
+        .language-flag.active {
+            opacity: 1 !important;
+            border-color: #1e40af !important;
+            transform: scale(1.1) !important;
+        }
+
+        /* Garantir que a bandeira inglesa seja visível como ativa */
+        .language-selector a[data-lang="en"] .language-flag {
+            border-color: #1e40af !important;
+        }
+
         /* DROPDOWN STYLES */
         .dropdown {
             position: relative;
@@ -1011,6 +1023,8 @@
         let googleTranslateLoaded = false;
         let isTranslating = false;
 
+        localStorage.removeItem('preferredLanguage');
+
         // Main translation function - SIMPLIFIED
         function translatePage(lang) {
             if (isTranslating || currentLanguage === lang) return;
@@ -1227,8 +1241,8 @@
             });
             
             // Load saved language preference
-            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
-            if (savedLang !== 'en') {
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && savedLang !== 'en') {
                 currentLanguage = savedLang;
                 updateLanguageSelector(savedLang);
                 
@@ -1238,6 +1252,10 @@
                         translatePage(savedLang);
                     }
                 }, 1000);
+            } else {
+                // SEMPRE garantir que inglês está ativo por padrão
+                updateLanguageSelector('en');
+                localStorage.setItem('preferredLanguage', 'en');
             }
             
             // Initialize map
