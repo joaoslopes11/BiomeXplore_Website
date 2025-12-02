@@ -42,29 +42,29 @@ export async function onRequest(context) {
       return Response.json(results || [], { headers: corsHeaders });
     }
 
-    // Newsletter subscription (public)
+    // Newsletter subscription (public) - JÁ EXISTE NO TEU BACKEND
     if (pathname === '/api/subscribe' && request.method === 'POST') {
-      const { email } = await request.json();
-      
-      if (!email) {
-        return Response.json({ error: 'Email é obrigatório' }, { 
-          status: 400, 
-          headers: corsHeaders 
-        });
-      }
+        const { email } = await request.json();
+        
+        if (!email) {
+            return Response.json({ error: 'Email é obrigatório' }, { 
+                status: 400, 
+                headers: corsHeaders 
+            });
+        }
 
-      const currentDate = new Date().toISOString();
-      await env.DB.prepare(
-        "INSERT OR IGNORE INTO newsletter_subscribers (email, subscribed_at, confirmed) VALUES (?, ?, 1)"
-      ).bind(email, currentDate).run();
-      
-      return Response.json({ 
-        success: true,
-        message: 'Subscrição realizada com sucesso!' 
-      }, { 
-        status: 201, 
-        headers: corsHeaders 
-      });
+        const currentDate = new Date().toISOString();
+        await env.DB.prepare(
+            "INSERT OR IGNORE INTO newsletter_subscribers (email, subscribed_at, confirmed) VALUES (?, ?, 1)"
+        ).bind(email, currentDate).run();
+        
+        return Response.json({ 
+            success: true,
+            message: 'Subscrição realizada com sucesso!' 
+        }, { 
+            status: 201, 
+            headers: corsHeaders 
+        });
     }
 
     // Contact form
