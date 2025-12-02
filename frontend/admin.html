@@ -80,6 +80,61 @@
         }
         .management-form textarea { height: 120px; }
         
+        /* Newsletter Styles */
+        .subscriber-item {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            background: white;
+        }
+
+        .subscriber-email {
+            font-weight: 500;
+            color: #1e40af;
+        }
+
+        .subscriber-date {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .subscriber-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .email-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+
         /* Lists */
         .management-list { background: white; padding: 20px; border-radius: 8px; }
         .management-item { 
@@ -260,6 +315,73 @@
                     <div id="partnersList"></div>
                 </div>
             </div>
+
+                        <!-- Newsletter Tab -->
+            <div id="newsletterTab" class="tab-content">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <!-- Coluna 1: Subscribers -->
+                    <div>
+                        <div class="management-form">
+                            <h3>Newsletter Subscribers</h3>
+                            <div style="margin-bottom: 20px;">
+                                <p>Total subscribers: <strong id="subscriberCount">0</strong></p>
+                                <button onclick="exportSubscribers()" style="padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                    📥 Export CSV
+                                </button>
+                            </div>
+                        </div>
+                        <div class="management-list">
+                            <h4>Subscribers List</h4>
+                            <div id="subscribersList">
+                                <p style="color: #666; padding: 20px; text-align: center;">Loading subscribers...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coluna 2: Send Newsletter -->
+                    <div>
+                        <div class="management-form">
+                            <h3>Send Newsletter</h3>
+                            <form id="sendNewsletterForm">
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Subject *</label>
+                                    <input type="text" name="subject" placeholder="Newsletter Subject" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                </div>
+                                
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Recipients</label>
+                                    <div style="background: #f8fafc; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                                        <label style="display: block; margin-bottom: 5px;">
+                                            <input type="radio" name="recipients" value="all" checked> All subscribers 
+                                            (<span id="allSubscribersCount">0</span>)
+                                        </label>
+                                        <label style="display: block;">
+                                            <input type="radio" name="recipients" value="test"> Test email (admin only)
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Content *</label>
+                                    <textarea name="content" rows="10" placeholder="Write your newsletter content here... (HTML supported)" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace;"></textarea>
+                                </div>
+                                
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Preview</label>
+                                    <div id="emailPreview" style="border: 1px solid #ddd; border-radius: 4px; padding: 15px; background: white; min-height: 100px; max-height: 200px; overflow-y: auto;">
+                                        Preview will appear here...
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" style="padding: 12px 24px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; width: 100%;">
+                                    📧 Send Newsletter
+                                </button>
+                            </form>
+                        </div>
+                        <div id="newsletterMessage" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -294,6 +416,7 @@
             document.getElementById('adminUsername').textContent = username;
             loadNews();
             loadPartners();
+            loadSubscribers();
         }
 
         function logout() {
@@ -621,6 +744,227 @@
                 preview.innerHTML = '';
             }
         });
+
+                // ============ NEWSLETTER MANAGEMENT ============
+
+        // Load subscribers
+        async function loadSubscribers() {
+            try {
+                const response = await fetch('./api/admin/newsletter/subscribers');
+                const subscribers = await response.json();
+                
+                // Update counts
+                document.getElementById('subscriberCount').textContent = subscribers.length;
+                document.getElementById('allSubscribersCount').textContent = subscribers.length;
+                
+                // Display subscribers
+                const subscribersList = document.getElementById('subscribersList');
+                
+                if (!subscribers || subscribers.length === 0) {
+                    subscribersList.innerHTML = '<p style="color: #666; padding: 20px; text-align: center;">No subscribers yet.</p>';
+                    return;
+                }
+                
+                subscribersList.innerHTML = subscribers.map(sub => `
+                    <div class="subscriber-item">
+                        <div class="subscriber-email">${sub.email}</div>
+                        <div class="subscriber-date">
+                            Subscribed: ${new Date(sub.subscribed_at).toLocaleDateString()}
+                            ${sub.confirmed ? '✅' : '⏳'}
+                        </div>
+                        <div class="subscriber-actions">
+                            <button onclick="sendTestEmail('${sub.email}')" style="padding: 3px 8px; font-size: 11px; background: #3b82f6; color: white; border: none; border-radius: 3px; cursor: pointer;">
+                                Test
+                            </button>
+                            <button onclick="unsubscribeEmail('${sub.email}')" style="padding: 3px 8px; font-size: 11px; background: #ef4444; color: white; border: none; border-radius: 3px; cursor: pointer;">
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading subscribers:', error);
+                document.getElementById('subscribersList').innerHTML = 
+                    '<p style="color: #ef4444; padding: 20px; text-align: center;">Error loading subscribers</p>';
+            }
+        }
+
+        // Export subscribers to CSV
+        async function exportSubscribers() {
+            try {
+                const response = await fetch('./api/admin/newsletter/subscribers/export');
+                const blob = await response.blob();
+                
+                // Create download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `biomexplore-subscribers-${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                showMessage('success', 'Subscribers exported successfully!');
+            } catch (error) {
+                console.error('Error exporting subscribers:', error);
+                showMessage('error', 'Error exporting subscribers');
+            }
+        }
+
+        // Send test email
+        async function sendTestEmail(email) {
+            try {
+                const subject = prompt('Test email subject:', 'Test from BiomeXplore');
+                if (!subject) return;
+                
+                const content = prompt('Test email content:', 'This is a test email from BiomeXplore admin panel.');
+                if (!content) return;
+                
+                const response = await fetch('./api/admin/newsletter/send-test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        subject: subject,
+                        content: content
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', `Test email sent to ${email}`);
+                } else {
+                    showMessage('error', result.error || 'Error sending test email');
+                }
+            } catch (error) {
+                console.error('Error sending test email:', error);
+                showMessage('error', 'Error sending test email');
+            }
+        }
+
+        // Unsubscribe email
+        async function unsubscribeEmail(email) {
+            if (!confirm(`Remove ${email} from newsletter?`)) return;
+            
+            try {
+                const response = await fetch('./api/admin/newsletter/unsubscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', `${email} removed from newsletter`);
+                    loadSubscribers();
+                } else {
+                    showMessage('error', result.error || 'Error removing subscriber');
+                }
+            } catch (error) {
+                console.error('Error unsubscribing:', error);
+                showMessage('error', 'Error removing subscriber');
+            }
+        }
+
+        // Send newsletter to all subscribers
+        document.getElementById('sendNewsletterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const subject = formData.get('subject');
+            const content = formData.get('content');
+            const recipients = formData.get('recipients');
+            
+            if (!subject || !content) {
+                showMessage('error', 'Subject and content are required');
+                return;
+            }
+            
+            if (!confirm(`Send newsletter to ${recipients === 'all' ? 'ALL subscribers' : 'TEST email'}?`)) {
+                return;
+            }
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '⏳ Sending...';
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch('./api/admin/newsletter/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        subject: subject,
+                        content: content,
+                        recipients: recipients,
+                        test_email: 'admin@biomexplore.eu' // Change to your admin email
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', `Newsletter sent successfully! ${result.sent} emails sent.`);
+                    e.target.reset();
+                    document.getElementById('emailPreview').innerHTML = 'Preview will appear here...';
+                } else {
+                    showMessage('error', result.error || 'Error sending newsletter');
+                }
+            } catch (error) {
+                console.error('Error sending newsletter:', error);
+                showMessage('error', 'Network error sending newsletter');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Email preview
+        document.querySelector('textarea[name="content"]').addEventListener('input', function(e) {
+            const preview = document.getElementById('emailPreview');
+            const content = e.target.value;
+            
+            // Basic HTML preview
+            preview.innerHTML = content || 'Preview will appear here...';
+        });
+
+        // Helper function to show messages
+        function showMessage(type, message) {
+            const messageDiv = document.getElementById('newsletterMessage');
+            messageDiv.innerHTML = `
+                <div class="message ${type}">
+                    ${message}
+                </div>
+            `;
+            
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Load subscribers when newsletter tab is shown
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            event.target.classList.add('active');
+            
+            // If newsletter tab, load subscribers
+            if (tabName === 'newsletter') {
+                loadSubscribers();
+            }
+        };
     </script>
 </body>
 </html>

@@ -976,7 +976,7 @@
                 <div class="footer-column">
                     <h4>Contact</h4>
                     <ul>
-                        <li><a href="mailto:info@biomexplore.com">info@biomexplore.com</a></li>
+                        <li><a href="mailto:info@biomexplore.eu">info@biomexplore.eu</a></li>
                         <li><a href="tel:+34986123456">+34 986 123 456</a></li>
                         <li>Galicia Sur Health Research Institute<br>Vigo, Spain</li>
                     </ul>
@@ -1275,9 +1275,10 @@
             }
             
             // Contact form
+            // Contact form - ENVIA EMAIL DIRETAMENTE
             const contactForm = document.getElementById('contactForm');
             if (contactForm) {
-                contactForm.addEventListener('submit', async function(e) {
+                contactForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     
                     const formData = new FormData(this);
@@ -1287,33 +1288,29 @@
                     submitButton.innerHTML = 'Sending...';
                     submitButton.disabled = true;
                     
-                    try {
-                        const response = await fetch('./api/contact', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(Object.fromEntries(formData))
-                        });
-                        
-                        if (response.ok) {
-                            document.getElementById('contactMessage').innerHTML = `
-                                <div class="message success">
-                                    Thank you for your message! We'll get back to you soon.
-                                </div>
-                            `;
-                            this.reset();
-                        } else {
-                            throw new Error('Failed to send message');
-                        }
-                    } catch (error) {
+                    // Coleta dados do formulário
+                    const name = formData.get('name');
+                    const email = formData.get('email');
+                    const message = formData.get('message');
+                    
+                    // Cria link mailto para info@biomexplore.eu
+                    const subject = `Contact from BiomeXplore.eu About Page: ${name}`;
+                    const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0AMessage:%0D%0A${message}`;
+                    
+                    // Abre cliente de email
+                    window.location.href = `mailto:info@biomexplore.eu?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                    
+                    // Mensagem de sucesso
+                    setTimeout(() => {
                         document.getElementById('contactMessage').innerHTML = `
-                            <div class="message error">
-                                Sorry, there was an error sending your message. Please try again later.
+                            <div class="message success">
+                                Opening your email client... If it doesn't open, please send to info@biomexplore.eu
                             </div>
                         `;
-                    } finally {
+                        this.reset();
                         submitButton.innerHTML = originalText;
                         submitButton.disabled = false;
-                    }
+                    }, 1000);
                 });
             }
             
