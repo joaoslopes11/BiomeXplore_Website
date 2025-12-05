@@ -4,9 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - BiomeXplore</title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/qYB65cyg/logo-biomexplore.png">
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/5h9VnK6y/2025-12-03-0oh-Kleki-removebg-preview.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
+        /* ============ VARIABLES CONSISTENT WITH INDEX ============ */
+        :root {
+            --primary-blue: #4890c6;
+            --primary-blue-dark: #3a7cb0;
+            --accent-green: #10b981;
+            --accent-green-dark: #0da271;
+            --accent-purple: #8b5cf6;
+            --accent-indigo: #6366f1;
+            --accent-amber: #f59e0b;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --footer-bg: #1e293b;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +31,7 @@
         }
         
         body {
-            background-color: #f8fafc;
+            background-color: var(--background);
             color: #333;
             line-height: 1.6;
         }
@@ -29,7 +45,7 @@
         
         .btn {
             display: inline-block;
-            background-color: #1e40af;
+            background-color: var(--primary-blue);
             color: white;
             padding: 12px 25px;
             border-radius: 4px;
@@ -41,7 +57,7 @@
         }
         
         .btn:hover {
-            background-color: #1e3a8a;
+            background-color: var(--primary-blue-dark);
             transform: translateY(-2px);
         }
 
@@ -77,7 +93,7 @@
             margin-left: 10px;
             font-size: 24px;
             font-weight: 700;
-            color: #1e40af;
+            color: var(--primary-blue);
         }
         
         nav ul {
@@ -100,11 +116,11 @@
         }
         
         nav ul li a:hover {
-            color: #1e40af;
+            color: var(--primary-blue);
         }
 
         .contact-btn {
-            background-color: #1e40af;
+            background-color: var(--accent-green);
             color: white;
             padding: 10px 20px;
             border-radius: 4px;
@@ -116,7 +132,7 @@
         }
         
         .contact-btn:hover {
-            background-color: #1e3a8a;
+            background-color: var(--accent-green-dark);
             transform: translateY(-2px);
         }
 
@@ -139,7 +155,7 @@
         }
         
         .language-selector a:hover {
-            background: rgba(30, 64, 175, 0.1);
+            background: rgba(72, 144, 198, 0.1);
         }
         
         .language-flag {
@@ -154,7 +170,7 @@
         
         .language-flag.active {
             opacity: 1;
-            border-color: #1e40af;
+            border-color: var(--primary-blue);
             transform: scale(1.1);
         }
 
@@ -162,16 +178,15 @@
             transform: scale(1.1);
         }
 
-                /* ADICIONE ESTE CSS (pode colocar na linha ~120 do CSS) */
         .language-flag.active {
             opacity: 1 !important;
-            border-color: #1e40af !important;
+            border-color: var(--primary-blue) !important;
             transform: scale(1.1) !important;
         }
 
         /* Garantir que a bandeira inglesa seja visível como ativa */
         .language-selector a[data-lang="en"] .language-flag {
-            border-color: #1e40af !important;
+            border-color: var(--primary-blue) !important;
         }
 
         /* DROPDOWN STYLES */
@@ -189,7 +204,7 @@
         }
         
         .dropdown-toggle:hover {
-            color: #1e40af;
+            color: var(--primary-blue);
         }
         
         .dropdown-menu {
@@ -224,7 +239,7 @@
         
         .dropdown-menu a:hover {
             background-color: #f1f5f9;
-            color: #1e40af;
+            color: var(--primary-blue);
             padding-left: 25px;
         }
         
@@ -240,7 +255,7 @@
 
         /* Hero Section */
         .about-hero {
-            background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.9));
+            background: linear-gradient(rgba(72, 144, 198, 0.9), rgba(16, 185, 129, 0.9));
             color: white;
             padding: 100px 0;
             text-align: center;
@@ -270,12 +285,16 @@
         
         .section-title h2 {
             font-size: 36px;
-            color: #1e3a8a;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
             margin-bottom: 15px;
         }
         
         .section-title p {
-            color: #666;
+            color: var(--text-light);
             max-width: 700px;
             margin: 0 auto;
         }
@@ -302,7 +321,7 @@
         }
         
         .card {
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             padding: 30px;
@@ -311,7 +330,7 @@
             max-width: 350px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-top: 4px solid #1e40af;
+            border-top: 4px solid var(--primary-blue);
         }
         
         .card:hover {
@@ -334,11 +353,11 @@
         .card h3 {
             font-size: 22px;
             margin-bottom: 15px;
-            color: #1e3a8a;
+            color: var(--primary-blue);
         }
         
         .card p {
-            color: #666;
+            color: var(--text-light);
             margin-bottom: 20px;
         }
 
@@ -351,7 +370,7 @@
         }
 
         .team-member {
-            background: white;
+            background: var(--card-bg);
             border-radius: 12px;
             padding: 30px;
             text-align: center;
@@ -369,8 +388,8 @@
             border-radius: 50%;
             margin: 0 auto 20px;
             overflow: hidden;
-            border: 4px solid #1e40af;
-            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            border: 4px solid var(--primary-blue);
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-green));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -384,19 +403,19 @@
 
         .member-name {
             font-size: 20px;
-            color: #1e3a8a;
+            color: var(--text-dark);
             margin-bottom: 10px;
             font-weight: 600;
         }
 
         .member-role {
-            color: #1e40af;
+            color: var(--primary-blue);
             font-weight: 500;
             margin-bottom: 15px;
         }
 
         .member-bio {
-            color: #666;
+            color: var(--text-light);
             line-height: 1.6;
         }
 
@@ -405,14 +424,14 @@
         }
 
         .member-email a {
-            color: #1e40af;
+            color: var(--primary-blue);
             text-decoration: none;
             font-size: 14px;
             transition: color 0.3s ease;
         }
 
         .member-email a:hover {
-            color: #1e3a8a;
+            color: var(--primary-blue-dark);
             text-decoration: underline;
         }
 
@@ -425,7 +444,7 @@
         }
 
         .contact-card {
-            background: white;
+            background: var(--card-bg);
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
@@ -435,16 +454,16 @@
         .contact-icon {
             font-size: 40px;
             margin-bottom: 20px;
-            color: #1e40af;
+            color: var(--primary-blue);
         }
 
         .contact-card h3 {
-            color: #1e3a8a;
+            color: var(--text-dark);
             margin-bottom: 15px;
         }
 
         .contact-card p {
-            color: #666;
+            color: var(--text-light);
             line-height: 1.6;
         }
 
@@ -461,13 +480,13 @@
         }
 
         .location-info h3 {
-            color: #1e3a8a;
+            color: var(--text-dark);
             margin-bottom: 20px;
             font-size: 24px;
         }
 
         .location-info p {
-            color: #666;
+            color: var(--text-light);
             line-height: 1.6;
             margin-bottom: 15px;
         }
@@ -481,7 +500,7 @@
 
         /* Footer */
         footer {
-            background-color: #1e293b;
+            background-color: var(--footer-bg);
             color: white;
             padding: 60px 0 20px;
         }
@@ -582,13 +601,13 @@
             position: fixed;
             top: 100px;
             right: 20px;
-            background: #1e40af;
+            background: var(--primary-blue);
             color: white;
             padding: 12px 20px;
             border-radius: 8px;
             z-index: 9999;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 4px 15px rgba(72, 144, 198, 0.3);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -632,6 +651,20 @@
         body {
             top: 0 !important;
             position: static !important;
+        }
+
+        /* Team Section Headers */
+        .team-section-header {
+            text-align: center;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            font-size: 28px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            width: 100%;
         }
 
         @media (max-width: 768px) {
@@ -696,7 +729,7 @@
             .dropdown-menu {
                 position: static;
                 box-shadow: none;
-                background: #f8fafc;
+                background: var(--background);
                 border-radius: 4px;
                 margin-top: 10px;
                 opacity: 1;
@@ -721,7 +754,7 @@
         <div class="header-main">
             <div class="container">
                 <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
-                    <img src="https://i.ibb.co/qYB65cyg/logo-biomexplore.png" alt="BiomeXplore Logo">
+                    <img src="https://i.ibb.co/TBy2cB56/2025-12-03-0ox-Kleki-1-1-removebg-preview.png" alt="BiomeXplore Logo">
                     <div class="logo-text">BiomeXplore</div>
                 </div>
                 <nav>
@@ -736,7 +769,7 @@
                             </div>
                         </li>
                         <li><button class="contact-btn" onclick="openModal()">Contact</button></li>
-                        <!-- Language Selector - SIMPLIFIED -->
+                        <!-- Language Selector -->
                         <li class="language-selector">
                             <a href="#" data-lang="en" title="English">
                                 <img src="https://i.ibb.co/Fbx9hhJp/imagem.png" 
@@ -797,7 +830,7 @@
 
             <!-- Team Leaders -->
             <div style="margin-bottom: 50px;">
-                <h3 style="text-align: center; color: #1e3a8a; margin-bottom: 30px; font-size: 28px;">Team Leaders</h3>
+                <h3 class="team-section-header">Team Leaders</h3>
                 <div class="team-grid">
                     <div class="team-member">
                         <div class="member-photo">
@@ -822,12 +855,25 @@
                         </div>
                         <p class="member-bio">Info Xurxo.</p>
                     </div>
+                    
+                    <!-- NOVO TEAM LEADER: Cesar Veiga -->
+                    <div class="team-member">
+                        <div class="member-photo">
+                            <img src="https://i.ibb.co/1Y0bnVdN/image.png" alt="Cesar Veiga">
+                        </div>
+                        <h3 class="member-name">Cesar Veiga</h3>
+                        <div class="member-role">Team Leader</div>
+                        <div class="member-email">
+                            <a href="mailto:cesar.veiga@iisgaliciasur.es">cesar.veiga@iisgaliciasur.es</a>
+                        </div>
+                        <p class="member-bio">Expert in bioinformatics and data analysis with extensive experience in microbiome research. Leads the development of computational tools for microbiome-exposome integration and contributes to multiple international research collaborations.</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Coordinator -->
             <div style="margin-bottom: 50px;">
-                <h3 style="text-align: center; color: #1e3a8a; margin-bottom: 30px; font-size: 28px;">Coordinator</h3>
+                <h3 class="team-section-header">Coordinator</h3>
                 <div class="team-grid" style="max-width: 400px; margin: 0 auto;">
                     <div class="team-member">
                         <div class="member-photo">
@@ -845,7 +891,7 @@
 
             <!-- Researchers -->
             <div>
-                <h3 style="text-align: center; color: #1e3a8a; margin-bottom: 30px; font-size: 28px;">Researchers</h3>
+                <h3 class="team-section-header">Researchers</h3>
                 <div class="team-grid">
                     <div class="team-member">
                         <div class="member-photo">
@@ -993,7 +1039,7 @@
     <div id="contactModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">&times;</span>
-            <h2 style="color: #1e3a8a; margin-bottom: 20px;">Contact Us</h2>
+            <h2 style="color: var(--primary-blue); margin-bottom: 20px;">Contact Us</h2>
             <form id="contactForm">
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: 600;">Name *</label>
@@ -1013,7 +1059,7 @@
         </div>
     </div>
 
-    <!-- Google Translate Element (Optional - if you still want to try) -->
+    <!-- Google Translate Element -->
     <div id="google_translate_element" style="display: none;"></div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1341,7 +1387,7 @@
             }).addTo(map);
             
             const hospitalIcon = L.divIcon({
-                html: '<div style="background-color: #1e40af; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">🏥</div>',
+                html: '<div style="background-color: #4890c6; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">🏥</div>',
                 className: 'hospital-marker',
                 iconSize: [30, 30],
                 iconAnchor: [15, 15]
@@ -1351,7 +1397,7 @@
                 .addTo(map)
                 .bindPopup(`
                     <div style="text-align: center;">
-                        <h3 style="margin: 0 0 8px 0; color: #1e3a8a;">Hospital Álvaro Cunqueiro</h3>
+                        <h3 style="margin: 0 0 8px 0; color: #4890c6;">Hospital Álvaro Cunqueiro</h3>
                         <p style="margin: 0;">Bloque técnico, planta 2<br>Estrada Clara Campoamor nº 341<br>36213 Vigo (Pontevedra)<br>Galiza</p>
                     </div>
                 `);
