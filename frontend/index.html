@@ -70,6 +70,28 @@
             left: -9999px !important;
         }
 
+        :root {
+            --primary-blue: #4890c6;
+            --primary-blue-dark: #3a7cb0;
+            --accent-green: #10b981;
+            --accent-green-dark: #0da271;
+            --accent-purple: #8b5cf6;
+            --accent-indigo: #6366f1;
+            --accent-amber: #f59e0b;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --footer-bg: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         /* Prevent body from being shifted */
         body {
             top: 0 !important;
@@ -295,7 +317,7 @@
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(72, 144, 198), rgba(72, 144, 198));
+            background: rgba(72, 144, 198, 0.9);
             background-size: cover;
             background-position: center;
             color: white;
@@ -317,9 +339,11 @@
         
         /* Introduction */
         .intro {
-            background-color: linear-gradient(rgba(72, 144, 198, 0.9), rgba(16, 185, 129, 0.9));
+            background: linear-gradient(rgba(72, 144, 198, 0.9), rgba(16, 185, 129, 0.9));
+            background-size: cover;
+            background-position: center;
             color: white;
-            padding: 60px 0;
+            padding: 100px 0;
             text-align: center;
         }
         
@@ -1018,7 +1042,7 @@
 
     /* Títulos com gradiente */
     .section-title h2 {
-        background: linear-gradient(#4890c6, #4890c6);
+        background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
