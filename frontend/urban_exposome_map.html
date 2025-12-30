@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_5dfe9192d45dc51c9f83625c558fae86 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+</head>
+<body>
+    
+    
+<div style="position: fixed; 
+            bottom: 50px; left: 50px; width: 300px; height: auto;
+            background-color: white; border:2px solid grey; z-index:9999; 
+            font-size:14px; padding: 10px; border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+            
+    <h4 style="margin-top:0; color: #2c3e50;">Legenda do Mapa</h4>
+    
+    <div style="display: flex; align-items: center; margin: 5px 0;">
+        <div style="width: 20px; height: 20px; background-color: green; 
+                    border-radius: 50%; margin-right: 10px;"></div>
+        <span>Risco Muito Baixo (< 0.2)</span>
+    </div>
+    
+    <div style="display: flex; align-items: center; margin: 5px 0;">
+        <div style="width: 20px; height: 20px; background-color: lightgreen; 
+                    border-radius: 50%; margin-right: 10px;"></div>
+        <span>Risco Baixo (0.2-0.4)</span>
+    </div>
+    
+    <div style="display: flex; align-items: center; margin: 5px 0;">
+        <div style="width: 20px; height: 20px; background-color: yellow; 
+                    border-radius: 50%; margin-right: 10px;"></div>
+        <span>Risco Moderado (0.4-0.6)</span>
+    </div>
+    
+    <div style="display: flex; align-items: center; margin: 5px 0;">
+        <div style="width: 20px; height: 20px; background-color: orange; 
+                    border-radius: 50%; margin-right: 10px;"></div>
+        <span>Risco Alto (0.6-0.8)</span>
+    </div>
+    
+    <div style="display: flex; align-items: center; margin: 5px 0;">
+        <div style="width: 20px; height: 20px; background-color: red; 
+                    border-radius: 50%; margin-right: 10px;"></div>
+        <span>Risco Muito Alto (> 0.8)</span>
+    </div>
+    
+    <hr style="margin: 10px 0;">
+    
+    <div style="font-size: 12px; color: #7f8c8d;">
+        <p><b>Total de cidades:</b> 10</p>
+        <p><b>Dados disponíveis:</b> Ambientais + Socioeconômicos</p>
+        <p>Clique nos marcadores para detalhes</p>
+    </div>
+</div>
+    
+            <div class="folium-map" id="map_5dfe9192d45dc51c9f83625c558fae86" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_5dfe9192d45dc51c9f83625c558fae86 = L.map(
+                "map_5dfe9192d45dc51c9f83625c558fae86",
+                {
+                    center: [50.0, 10.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 5,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+
+            
+
+        
+    
+            var tile_layer_084c93cfa6230c024c13c341ca14ffbf = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_084c93cfa6230c024c13c341ca14ffbf.addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+            var tile_layer_b09443a2a5a1271d6c1451b21482bc9c = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_b09443a2a5a1271d6c1451b21482bc9c.addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+            var tile_layer_44fbc9a3d5b06f690902f892134864c5 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_44fbc9a3d5b06f690902f892134864c5.addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+    var color_map_2cfba6b34c1a1cf860c19bdb3e298d0a = {};
+
+    
+    color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.color = d3.scale.threshold()
+              .domain([0.5, 0.5048804110977125, 0.5097608221954251, 0.5146412332931376, 0.5195216443908501, 0.5244020554885628, 0.5292824665862753, 0.5341628776839878, 0.5390432887817004, 0.5439236998794129, 0.5488041109771254, 0.553684522074838, 0.5585649331725505, 0.563445344270263, 0.5683257553679756, 0.5732061664656882, 0.5780865775634008, 0.5829669886611133, 0.5878473997588258, 0.5927278108565384, 0.5976082219542509, 0.6024886330519634, 0.607369044149676, 0.6122494552473885, 0.617129866345101, 0.6220102774428136, 0.6268906885405262, 0.6317710996382387, 0.6366515107359513, 0.6415319218336638, 0.6464123329313763, 0.6512927440290889, 0.6561731551268014, 0.6610535662245139, 0.6659339773222266, 0.6708143884199391, 0.6756947995176517, 0.6805752106153642, 0.6854556217130767, 0.6903360328107893, 0.6952164439085018, 0.7000968550062143, 0.7049772661039269, 0.7098576772016394, 0.7147380882993519, 0.7196184993970645, 0.724498910494777, 0.7293793215924896, 0.7342597326902022, 0.7391401437879147, 0.7440205548856272, 0.7489009659833398, 0.7537813770810524, 0.758661788178765, 0.7635421992764775, 0.76842261037419, 0.7733030214719026, 0.7781834325696151, 0.7830638436673276, 0.7879442547650402, 0.7928246658627527, 0.7977050769604652, 0.8025854880581778, 0.8074658991558903, 0.8123463102536028, 0.8172267213513154, 0.8221071324490279, 0.8269875435467405, 0.8318679546444531, 0.8367483657421656, 0.8416287768398781, 0.8465091879375908, 0.8513895990353033, 0.8562700101330158, 0.8611504212307284, 0.8660308323284409, 0.8709112434261534, 0.875791654523866, 0.8806720656215785, 0.885552476719291, 0.8904328878170036, 0.8953132989147161, 0.9001937100124286, 0.9050741211101412, 0.9099545322078537, 0.9148349433055663, 0.9197153544032788, 0.9245957655009913, 0.9294761765987039, 0.9343565876964164, 0.939236998794129, 0.9441174098918416, 0.9489978209895541, 0.9538782320872666, 0.9587586431849793, 0.9636390542826918, 0.9685194653804043, 0.9733998764781169, 0.9782802875758294, 0.9831606986735419, 0.9880411097712545, 0.992921520868967, 0.9978019319666795, 1.002682343064392, 1.0075627541621048, 1.0124431652598171, 1.01732357635753, 1.0222039874552422, 1.027084398552955, 1.0319648096506673, 1.03684522074838, 1.0417256318460923, 1.046606042943805, 1.0514864540415174, 1.0563668651392302, 1.0612472762369425, 1.0661276873346552, 1.0710080984323676, 1.0758885095300803, 1.0807689206277928, 1.0856493317255054, 1.090529742823218, 1.0954101539209304, 1.100290565018643, 1.1051709761163555, 1.110051387214068, 1.1149317983117806, 1.119812209409493, 1.1246926205072056, 1.1295730316049184, 1.1344534427026307, 1.1393338538003435, 1.1442142648980558, 1.1490946759957685, 1.153975087093481, 1.1588554981911936, 1.1637359092889061, 1.1686163203866187, 1.1734967314843312, 1.1783771425820437, 1.1832575536797563, 1.1881379647774688, 1.1930183758751816, 1.1978987869728939, 1.2027791980706066, 1.207659609168319, 1.2125400202660317, 1.217420431363744, 1.2223008424614568, 1.227181253559169, 1.2320616646568818, 1.2369420757545941, 1.241822486852307, 1.2467028979500192, 1.251583309047732, 1.2564637201454443, 1.261344131243157, 1.2662245423408696, 1.271104953438582, 1.2759853645362946, 1.2808657756340072, 1.2857461867317197, 1.2906265978294322, 1.2955070089271448, 1.3003874200248573, 1.30526783112257, 1.3101482422202824, 1.3150286533179951, 1.3199090644157074, 1.3247894755134202, 1.3296698866111325, 1.3345502977088453, 1.3394307088065576, 1.3443111199042703, 1.3491915310019826, 1.3540719420996954, 1.3589523531974077, 1.3638327642951205, 1.3687131753928328, 1.3735935864905455, 1.378473997588258, 1.3833544086859706, 1.3882348197836831, 1.3931152308813957, 1.3979956419791082, 1.4028760530768207, 1.4077564641745333, 1.4126368752722458, 1.4175172863699586, 1.4223976974676709, 1.4272781085653836, 1.432158519663096, 1.4370389307608087, 1.4419193418585212, 1.4467997529562338, 1.4516801640539463, 1.4565605751516588, 1.4614409862493714, 1.4663213973470839, 1.4712018084447964, 1.476082219542509, 1.4809626306402215, 1.485843041737934, 1.4907234528356468, 1.495603863933359, 1.5004842750310716, 1.5053646861287844, 1.5102450972264967, 1.5151255083242094, 1.5200059194219218, 1.5248863305196345, 1.529766741617347, 1.5346471527150596, 1.539527563812772, 1.5444079749104846, 1.5492883860081972, 1.5541687971059097, 1.5590492082036222, 1.5639296193013346, 1.5688100303990473, 1.5736904414967599, 1.5785708525944724, 1.583451263692185, 1.5883316747898975, 1.59321208588761, 1.5980924969853225, 1.602972908083035, 1.6078533191807478, 1.6127337302784601, 1.6176141413761727, 1.6224945524738852, 1.627374963571598, 1.6322553746693105, 1.6371357857670228, 1.6420161968647353, 1.646896607962448, 1.6517770190601606, 1.6566574301578731, 1.6615378412555857, 1.6664182523532982, 1.6712986634510107, 1.6761790745487233, 1.6810594856464358, 1.6859398967441486, 1.6908203078418609, 1.6957007189395734, 1.700581130037286, 1.7054615411349987, 1.7103419522327112, 1.7152223633304235, 1.720102774428136, 1.7249831855258488, 1.7298635966235614, 1.734744007721274, 1.7396244188189862, 1.744504829916699, 1.7493852410144115, 1.754265652112124, 1.7591460632098366, 1.764026474307549, 1.7689068854052616, 1.7737872965029742, 1.7786677076006867, 1.7835481186983995, 1.7884285297961118, 1.7933089408938243, 1.7981893519915368, 1.8030697630892496, 1.8079501741869621, 1.8128305852846744, 1.817710996382387, 1.8225914074800997, 1.8274718185778123, 1.8323522296755248, 1.8372326407732371, 1.8421130518709496, 1.8469934629686624, 1.851873874066375, 1.8567542851640875, 1.8616346962618, 1.8665151073595125, 1.871395518457225, 1.8762759295549376, 1.8811563406526501, 1.886036751750363, 1.8909171628480752, 1.8957975739457877, 1.9006779850435003, 1.905558396141213, 1.9104388072389256, 1.9153192183366379, 1.9201996294343504, 1.9250800405320632, 1.9299604516297757, 1.9348408627274882, 1.9397212738252005, 1.9446016849229133, 1.9494820960206258, 1.9543625071183384, 1.959242918216051, 1.9641233293137634, 1.969003740411476, 1.9738841515091885, 1.978764562606901, 1.9836449737046138, 1.988525384802326, 1.9934057959000386, 1.9982862069977512, 2.003166618095464, 2.0080470291931762, 2.0129274402908885, 2.0178078513886013, 2.022688262486314, 2.0275686735840264, 2.032449084681739, 2.0373294957794514, 2.042209906877164, 2.0470903179748765, 2.0519707290725893, 2.056851140170302, 2.0617315512680143, 2.0666119623657266, 2.0714923734634394, 2.076372784561152, 2.0812531956588645, 2.086133606756577, 2.0910140178542895, 2.0958944289520023, 2.1007748400497146, 2.1056552511474274, 2.11053566224514, 2.1154160733428524, 2.1202964844405647, 2.1251768955382775, 2.1300573066359902, 2.1349377177337026, 2.139818128831415, 2.1446985399291276, 2.1495789510268404, 2.1544593621245527, 2.159339773222265, 2.1642201843199778, 2.1691005954176905, 2.173981006515403, 2.178861417613115, 2.1837418287108283, 2.1886222398085406, 2.193502650906253, 2.1983830620039653, 2.2032634731016785, 2.208143884199391, 2.213024295297103, 2.2179047063948154, 2.2227851174925286, 2.227665528590241, 2.2325459396879532, 2.2374263507856655, 2.2423067618833787, 2.247187172981091, 2.2520675840788034, 2.256947995176516, 2.261828406274229, 2.266708817371941, 2.2715892284696535, 2.2764696395673663, 2.281350050665079, 2.2862304617627913, 2.2911108728605036, 2.2959912839582164, 2.300871695055929, 2.3057521061536415, 2.310632517251354, 2.3155129283490665, 2.3203933394467793, 2.3252737505444916, 2.3301541616422043, 2.335034572739917, 2.3399149838376294, 2.3447953949353417, 2.3496758060330545, 2.3545562171307672, 2.3594366282284795, 2.364317039326192, 2.3691974504239046, 2.3740778615216174, 2.3789582726193297, 2.3838386837170424, 2.3887190948147548, 2.3935995059124675, 2.39847991701018, 2.4033603281078926, 2.4082407392056053, 2.4131211503033176, 2.41800156140103, 2.4228819724987427, 2.4277623835964555, 2.4326427946941678, 2.43752320579188, 2.442403616889593, 2.4472840279873056, 2.452164439085018, 2.4570448501827302, 2.461925261280443, 2.4668056723781557, 2.471686083475868, 2.4765664945735804, 2.4814469056712936, 2.486327316769006, 2.491207727866718, 2.4960881389644305, 2.5009685500621432, 2.505848961159856, 2.5107293722575688, 2.515609783355281, 2.5204901944529934, 2.525370605550706, 2.530251016648419, 2.535131427746131, 2.5400118388438435, 2.5448922499415563, 2.549772661039269, 2.5546530721369813, 2.559533483234694, 2.5644138943324064, 2.569294305430119, 2.5741747165278315, 2.579055127625544, 2.5839355387232565, 2.5888159498209693, 2.5936963609186816, 2.5985767720163944, 2.6034571831141067, 2.6083375942118194, 2.613218005309532, 2.6180984164072445, 2.6229788275049573, 2.627859238602669, 2.632739649700382, 2.6376200607980946, 2.642500471895807, 2.6473808829935197, 2.6522612940912325, 2.6571417051889448, 2.6620221162866575, 2.66690252738437, 2.6717829384820826, 2.676663349579795, 2.681543760677507, 2.68642417177522, 2.6913045828729327, 2.696184993970645, 2.701065405068358, 2.70594581616607, 2.710826227263783, 2.7157066383614956, 2.720587049459208, 2.7254674605569202, 2.730347871654633, 2.7352282827523453, 2.740108693850058, 2.7449891049477704, 2.749869516045483, 2.754749927143196, 2.759630338240908, 2.764510749338621, 2.7693911604363337, 2.7742715715340456, 2.7791519826317583, 2.7840323937294706, 2.7889128048271834, 2.793793215924896, 2.7986736270226085, 2.8035540381203212, 2.808434449218034, 2.8133148603157463, 2.818195271413459, 2.8230756825111714, 2.8279560936088837, 2.8328365047065964, 2.8377169158043087, 2.8425973269020215, 2.8474777379997342, 2.8523581490974466, 2.8572385601951593, 2.8621189712928716, 2.8669993823905844, 2.871879793488297, 2.876760204586009, 2.8816406156837218, 2.886521026781434, 2.891401437879147, 2.8962818489768596, 2.901162260074572, 2.9060426711722847, 2.9109230822699974, 2.9158034933677097, 2.9206839044654225, 2.9255643155631343, 2.930444726660847, 2.93532513775856])
+              .range(['#008000ff', '#028100ff', '#048200ff', '#068300ff', '#088400ff', '#0a8500ff', '#0c8600ff', '#0e8700ff', '#108800ff', '#128900ff', '#148a00ff', '#168b00ff', '#188c00ff', '#1a8d00ff', '#1c8e00ff', '#1e8f00ff', '#209000ff', '#229100ff', '#249200ff', '#269300ff', '#299400ff', '#2b9500ff', '#2d9600ff', '#2f9800ff', '#319900ff', '#339a00ff', '#359b00ff', '#379c00ff', '#399d00ff', '#3b9e00ff', '#3d9f00ff', '#3fa000ff', '#41a100ff', '#43a200ff', '#45a300ff', '#47a400ff', '#49a500ff', '#4ba600ff', '#4da700ff', '#50a800ff', '#52a900ff', '#54aa00ff', '#56ab00ff', '#58ac00ff', '#5aad00ff', '#5cae00ff', '#5eaf00ff', '#60b000ff', '#62b100ff', '#64b200ff', '#66b300ff', '#68b400ff', '#6ab500ff', '#6cb600ff', '#6eb700ff', '#70b800ff', '#72b900ff', '#74ba00ff', '#77bb00ff', '#79bc00ff', '#7bbd00ff', '#7dbe00ff', '#7fbf00ff', '#81c000ff', '#83c100ff', '#85c200ff', '#87c300ff', '#89c400ff', '#8bc500ff', '#8dc700ff', '#8fc800ff', '#91c900ff', '#93ca00ff', '#95cb00ff', '#97cc00ff', '#99cd00ff', '#9bce00ff', '#9ecf00ff', '#a0d000ff', '#a2d100ff', '#a4d200ff', '#a6d300ff', '#a8d400ff', '#aad500ff', '#acd600ff', '#aed700ff', '#b0d800ff', '#b2d900ff', '#b4da00ff', '#b6db00ff', '#b8dc00ff', '#badd00ff', '#bcde00ff', '#bedf00ff', '#c0e000ff', '#c2e100ff', '#c5e200ff', '#c7e300ff', '#c9e400ff', '#cbe500ff', '#cde600ff', '#cfe700ff', '#d1e800ff', '#d3e900ff', '#d5ea00ff', '#d7eb00ff', '#d9ec00ff', '#dbed00ff', '#ddee00ff', '#dfef00ff', '#e1f000ff', '#e3f100ff', '#e5f200ff', '#e7f300ff', '#e9f500ff', '#ebf600ff', '#eef700ff', '#f0f800ff', '#f2f900ff', '#f4fa00ff', '#f6fb00ff', '#f8fc00ff', '#fafd00ff', '#fcfe00ff', '#feff00ff', '#ffff00ff', '#ffff00ff', '#fffe00ff', '#fffd00ff', '#fffc00ff', '#fffc00ff', '#fffb00ff', '#fffa00ff', '#fffa00ff', '#fff900ff', '#fff800ff', '#fff700ff', '#fff700ff', '#fff600ff', '#fff500ff', '#fff400ff', '#fff400ff', '#fff300ff', '#fff200ff', '#fff200ff', '#fff100ff', '#fff000ff', '#ffef00ff', '#ffef00ff', '#ffee00ff', '#ffed00ff', '#ffec00ff', '#ffec00ff', '#ffeb00ff', '#ffea00ff', '#ffea00ff', '#ffe900ff', '#ffe800ff', '#ffe700ff', '#ffe700ff', '#ffe600ff', '#ffe500ff', '#ffe500ff', '#ffe400ff', '#ffe300ff', '#ffe200ff', '#ffe200ff', '#ffe100ff', '#ffe000ff', '#ffdf00ff', '#ffdf00ff', '#ffde00ff', '#ffdd00ff', '#ffdd00ff', '#ffdc00ff', '#ffdb00ff', '#ffda00ff', '#ffda00ff', '#ffd900ff', '#ffd800ff', '#ffd700ff', '#ffd700ff', '#ffd600ff', '#ffd500ff', '#ffd500ff', '#ffd400ff', '#ffd300ff', '#ffd200ff', '#ffd200ff', '#ffd100ff', '#ffd000ff', '#ffd000ff', '#ffcf00ff', '#ffce00ff', '#ffcd00ff', '#ffcd00ff', '#ffcc00ff', '#ffcb00ff', '#ffca00ff', '#ffca00ff', '#ffc900ff', '#ffc800ff', '#ffc800ff', '#ffc700ff', '#ffc600ff', '#ffc500ff', '#ffc500ff', '#ffc400ff', '#ffc300ff', '#ffc200ff', '#ffc200ff', '#ffc100ff', '#ffc000ff', '#ffc000ff', '#ffbf00ff', '#ffbe00ff', '#ffbd00ff', '#ffbd00ff', '#ffbc00ff', '#ffbb00ff', '#ffbb00ff', '#ffba00ff', '#ffb900ff', '#ffb800ff', '#ffb800ff', '#ffb700ff', '#ffb600ff', '#ffb500ff', '#ffb500ff', '#ffb400ff', '#ffb300ff', '#ffb300ff', '#ffb200ff', '#ffb100ff', '#ffb000ff', '#ffb000ff', '#ffaf00ff', '#ffae00ff', '#ffad00ff', '#ffad00ff', '#ffac00ff', '#ffab00ff', '#ffab00ff', '#ffaa00ff', '#ffa900ff', '#ffa800ff', '#ffa800ff', '#ffa700ff', '#ffa600ff', '#ffa600ff', '#ffa400ff', '#ffa300ff', '#ffa200ff', '#ffa000ff', '#ff9f00ff', '#ff9e00ff', '#ff9d00ff', '#ff9b00ff', '#ff9a00ff', '#ff9900ff', '#ff9700ff', '#ff9600ff', '#ff9500ff', '#ff9300ff', '#ff9200ff', '#ff9100ff', '#ff8f00ff', '#ff8e00ff', '#ff8d00ff', '#ff8b00ff', '#ff8a00ff', '#ff8900ff', '#ff8700ff', '#ff8600ff', '#ff8500ff', '#ff8300ff', '#ff8200ff', '#ff8100ff', '#ff7f00ff', '#ff7e00ff', '#ff7d00ff', '#ff7b00ff', '#ff7a00ff', '#ff7900ff', '#ff7700ff', '#ff7600ff', '#ff7500ff', '#ff7300ff', '#ff7200ff', '#ff7100ff', '#ff6f00ff', '#ff6e00ff', '#ff6d00ff', '#ff6b00ff', '#ff6a00ff', '#ff6900ff', '#ff6700ff', '#ff6600ff', '#ff6500ff', '#ff6300ff', '#ff6200ff', '#ff6100ff', '#ff5f00ff', '#ff5e00ff', '#ff5d00ff', '#ff5b00ff', '#ff5a00ff', '#ff5900ff', '#ff5700ff', '#ff5600ff', '#ff5500ff', '#ff5300ff', '#ff5200ff', '#ff5100ff', '#ff5000ff', '#ff4e00ff', '#ff4d00ff', '#ff4c00ff', '#ff4a00ff', '#ff4900ff', '#ff4800ff', '#ff4600ff', '#ff4500ff', '#ff4400ff', '#ff4200ff', '#ff4100ff', '#ff4000ff', '#ff3e00ff', '#ff3d00ff', '#ff3c00ff', '#ff3a00ff', '#ff3900ff', '#ff3800ff', '#ff3600ff', '#ff3500ff', '#ff3400ff', '#ff3200ff', '#ff3100ff', '#ff3000ff', '#ff2e00ff', '#ff2d00ff', '#ff2c00ff', '#ff2a00ff', '#ff2900ff', '#ff2800ff', '#ff2600ff', '#ff2500ff', '#ff2400ff', '#ff2200ff', '#ff2100ff', '#ff2000ff', '#ff1e00ff', '#ff1d00ff', '#ff1c00ff', '#ff1a00ff', '#ff1900ff', '#ff1800ff', '#ff1600ff', '#ff1500ff', '#ff1400ff', '#ff1200ff', '#ff1100ff', '#ff1000ff', '#ff0e00ff', '#ff0d00ff', '#ff0c00ff', '#ff0a00ff', '#ff0900ff', '#ff0800ff', '#ff0600ff', '#ff0500ff', '#ff0400ff', '#ff0200ff', '#ff0100ff', '#ff0000ff', '#ff0000ff', '#fe0000ff', '#fd0000ff', '#fc0000ff', '#fb0000ff', '#fa0000ff', '#f90000ff', '#f80000ff', '#f70000ff', '#f60000ff', '#f50000ff', '#f50000ff', '#f40000ff', '#f30000ff', '#f20000ff', '#f10000ff', '#f00000ff', '#ef0000ff', '#ee0000ff', '#ed0000ff', '#ec0000ff', '#eb0000ff', '#ea0000ff', '#e90000ff', '#e80000ff', '#e70000ff', '#e70000ff', '#e60000ff', '#e50000ff', '#e40000ff', '#e30000ff', '#e20000ff', '#e10000ff', '#e00000ff', '#df0000ff', '#de0000ff', '#dd0000ff', '#dc0000ff', '#db0000ff', '#da0000ff', '#d90000ff', '#d90000ff', '#d80000ff', '#d70000ff', '#d60000ff', '#d50000ff', '#d40000ff', '#d30000ff', '#d20000ff', '#d10000ff', '#d00000ff', '#cf0000ff', '#ce0000ff', '#cd0000ff', '#cc0000ff', '#cb0000ff', '#cb0000ff', '#ca0000ff', '#c90000ff', '#c80000ff', '#c70000ff', '#c60000ff', '#c50000ff', '#c40000ff', '#c30000ff', '#c20000ff', '#c10000ff', '#c00000ff', '#bf0000ff', '#be0000ff', '#bd0000ff', '#bd0000ff', '#bc0000ff', '#bb0000ff', '#ba0000ff', '#b90000ff', '#b80000ff', '#b70000ff', '#b60000ff', '#b50000ff', '#b40000ff', '#b30000ff', '#b20000ff', '#b10000ff', '#b00000ff', '#af0000ff', '#af0000ff', '#ae0000ff', '#ad0000ff', '#ac0000ff', '#ab0000ff', '#aa0000ff', '#a90000ff', '#a80000ff', '#a70000ff', '#a60000ff', '#a50000ff', '#a40000ff', '#a30000ff', '#a20000ff', '#a10000ff', '#a10000ff', '#a00000ff', '#9f0000ff', '#9e0000ff', '#9d0000ff', '#9c0000ff', '#9b0000ff', '#9a0000ff', '#990000ff', '#980000ff', '#970000ff', '#960000ff', '#950000ff', '#940000ff', '#930000ff', '#930000ff', '#920000ff', '#910000ff', '#900000ff', '#8f0000ff', '#8e0000ff', '#8d0000ff', '#8c0000ff', '#8b0000ff']);
+    
+
+    color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.x = d3.scale.linear()
+              .domain([0.5, 2.93532513775856])
+              .range([0, 450 - 50]);
+
+    color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.legend = L.control({position: 'topright'});
+    color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+    color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.legend.addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+
+    color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.xAxis = d3.svg.axis()
+        .scale(color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.x)
+        .orient("top")
+        .tickSize(1)
+        .tickValues([0.5, 1.10883128443964, 1.71766256887928, 2.3264938533189197, 2.93532513775856]);
+
+    color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.svg = d3.select(".legend.leaflet-control").append("svg")
+        .attr("id", 'legend')
+        .attr("width", 450)
+        .attr("height", 40);
+
+    color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.g = color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.svg.append("g")
+        .attr("class", "key")
+        .attr("fill", "black")
+        .attr("transform", "translate(25,16)");
+
+    color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.g.selectAll("rect")
+        .data(color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.color.range().map(function(d, i) {
+          return {
+            x0: i ? color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.x(color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.color.domain()[i - 1]) : color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.x.range()[0],
+            x1: i < color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.color.domain().length ? color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.x(color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.color.domain()[i]) : color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.x.range()[1],
+            z: d
+          };
+        }))
+      .enter().append("rect")
+        .attr("height", 40 - 30)
+        .attr("x", function(d) { return d.x0; })
+        .attr("width", function(d) { return d.x1 - d.x0; })
+        .style("fill", function(d) { return d.z; });
+
+    color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.g.call(color_map_2cfba6b34c1a1cf860c19bdb3e298d0a.xAxis).append("text")
+        .attr("class", "caption")
+        .attr("y", 21)
+        .attr("fill", "black")
+        .text("Score de Risco Total (0-1)");
+    
+            var circle_marker_23c62cfb8d4eecdbbf184d8952c9b288 = L.circleMarker(
+                [52.3676, 4.9041],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 2}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+        var popup_5702f0b99ca77ba5f8b69ce6f059d873 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_68571d51a9d79f9b59f32b8726767b4a = $(`<div id="html_68571d51a9d79f9b59f32b8726767b4a" style="width: 100.0%; height: 100.0%;">         <div style="font-family: Arial, sans-serif; width: 300px;">             <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">                 Amsterdam             </h3>                      <h4 style="color: #e74c3c; margin-top: 10px;">                 ⚠ Risco Total: 2.056             </h4>                      <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">             <h4 style="color: #27ae60; margin: 0 0 10px 0;">🌿 Dados Ambientais:</h4>         <p><b>Risco Ambiental:</b> 3.546 (Muito Baixo)</p><p><b>Contaminação do Solo:</b> 0.420</p><p><b>Qualidade do Ar:</b> 0.457</p><p><b>Metais no Solo:</b></p><p><b>Cd:</b> 0.42 mg/kg</p><p><b>Pb:</b> 182.00 mg/kg</p><p><b>Cu:</b> 15.95 mg/kg</p><p><b>Zn:</b> 54.15 mg/kg</p></div>             <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-top: 10px;">                 <h4 style="color: #2980b9; margin: 0 0 10px 0;">🏙️ Dados Socioeconômicos:</h4>             <p><b>Risco Socioeconômico:</b> 0.566 (Alto)</p><p><b>GDP Regional:</b> 84,796 M€</p><p><b>Expectativa de Vida:</b> 81.7 anos</p><p><b>Mortes PM2.5:</b> 8546</p></div>         <div style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">             <i>Dados integrados de análises de exposoma urbano</i>         </div>         </div>         </div>`)[0];
+                popup_5702f0b99ca77ba5f8b69ce6f059d873.setContent(html_68571d51a9d79f9b59f32b8726767b4a);
+            
+        
+
+        circle_marker_23c62cfb8d4eecdbbf184d8952c9b288.bindPopup(popup_5702f0b99ca77ba5f8b69ce6f059d873)
+        ;
+
+        
+    
+    
+            var circle_marker_40b717307af2eb02f23e5cb96092bb16 = L.circleMarker(
+                [55.6761, 12.5683],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 2}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+        var popup_33d7eeee51f7f212a77dc783eb76e4ce = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_123aca2de6ee747fe09d0f8f321a0f08 = $(`<div id="html_123aca2de6ee747fe09d0f8f321a0f08" style="width: 100.0%; height: 100.0%;">         <div style="font-family: Arial, sans-serif; width: 300px;">             <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">                 Copenhagen             </h3>                      <h4 style="color: #e74c3c; margin-top: 10px;">                 ⚠ Risco Total: 1.746             </h4>                      <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">             <h4 style="color: #27ae60; margin: 0 0 10px 0;">🌿 Dados Ambientais:</h4>         <p><b>Risco Ambiental:</b> 3.289 (Muito Baixo)</p><p><b>Contaminação do Solo:</b> 0.075</p><p><b>Qualidade do Ar:</b> 0.295</p><p><b>Metais no Solo:</b></p><p><b>Cd:</b> 0.23 mg/kg</p><p><b>Pb:</b> 17.00 mg/kg</p><p><b>Cu:</b> 10.82 mg/kg</p><p><b>Zn:</b> 36.71 mg/kg</p></div>             <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-top: 10px;">                 <h4 style="color: #2980b9; margin: 0 0 10px 0;">🏙️ Dados Socioeconômicos:</h4>             <p><b>Risco Socioeconômico:</b> 0.203 (Muito Baixo)</p><p><b>GDP Regional:</b> 161,074 M€</p><p><b>Expectativa de Vida:</b> 81.5 anos</p><p><b>Mortes PM2.5:</b> 2049</p></div>         <div style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">             <i>Dados integrados de análises de exposoma urbano</i>         </div>         </div>         </div>`)[0];
+                popup_33d7eeee51f7f212a77dc783eb76e4ce.setContent(html_123aca2de6ee747fe09d0f8f321a0f08);
+            
+        
+
+        circle_marker_40b717307af2eb02f23e5cb96092bb16.bindPopup(popup_33d7eeee51f7f212a77dc783eb76e4ce)
+        ;
+
+        
+    
+    
+            var circle_marker_98c096bee97ba8559501366174d8f686 = L.circleMarker(
+                [53.2194, 6.5665],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 2}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+        var popup_d41e2ce8bd2e554469d8c00aa1c94b45 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_c618b4f1164eee8e743d25b25fd06c73 = $(`<div id="html_c618b4f1164eee8e743d25b25fd06c73" style="width: 100.0%; height: 100.0%;">         <div style="font-family: Arial, sans-serif; width: 300px;">             <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">                 Groningen             </h3>                      <h4 style="color: #e74c3c; margin-top: 10px;">                 ⚠ Risco Total: 2.288             </h4>                      <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">             <h4 style="color: #27ae60; margin: 0 0 10px 0;">🌿 Dados Ambientais:</h4>         <p><b>Risco Ambiental:</b> 4.002 (Baixo)</p><p><b>Contaminação do Solo:</b> 0.219</p><p><b>Qualidade do Ar:</b> 0.433</p><p><b>Metais no Solo:</b></p><p><b>Cd:</b> 0.38 mg/kg</p><p><b>Pb:</b> 41.00 mg/kg</p><p><b>Cu:</b> 13.88 mg/kg</p><p><b>Zn:</b> 53.05 mg/kg</p></div>             <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-top: 10px;">                 <h4 style="color: #2980b9; margin: 0 0 10px 0;">🏙️ Dados Socioeconômicos:</h4>             <p><b>Risco Socioeconômico:</b> 0.575 (Alto)</p><p><b>GDP Regional:</b> 33,229 M€</p><p><b>Expectativa de Vida:</b> 81.7 anos</p><p><b>Mortes PM2.5:</b> 8546</p></div>         <div style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">             <i>Dados integrados de análises de exposoma urbano</i>         </div>         </div>         </div>`)[0];
+                popup_d41e2ce8bd2e554469d8c00aa1c94b45.setContent(html_c618b4f1164eee8e743d25b25fd06c73);
+            
+        
+
+        circle_marker_98c096bee97ba8559501366174d8f686.bindPopup(popup_d41e2ce8bd2e554469d8c00aa1c94b45)
+        ;
+
+        
+    
+    
+            var circle_marker_ade8f064f0d6b627b50a40a764d8205a = L.circleMarker(
+                [49.3988, 8.6724],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 2}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+        var popup_dabceb16077cd4b50e3922b91ffbf08f = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0ce89202304ba0c9d75952757e19b36d = $(`<div id="html_0ce89202304ba0c9d75952757e19b36d" style="width: 100.0%; height: 100.0%;">         <div style="font-family: Arial, sans-serif; width: 300px;">             <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">                 Heidelberg             </h3>                      <h4 style="color: #e74c3c; margin-top: 10px;">                 ⚠ Risco Total: 2.635             </h4>                      <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">             <h4 style="color: #27ae60; margin: 0 0 10px 0;">🌿 Dados Ambientais:</h4>         <p><b>Risco Ambiental:</b> 4.369 (Alto)</p><p><b>Contaminação do Solo:</b> 0.175</p><p><b>Qualidade do Ar:</b> 0.374</p><p><b>Metais no Solo:</b></p><p><b>Cd:</b> 0.32 mg/kg</p><p><b>Pb:</b> 29.00 mg/kg</p><p><b>Cu:</b> 15.12 mg/kg</p><p><b>Zn:</b> 46.94 mg/kg</p></div>             <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-top: 10px;">                 <h4 style="color: #2980b9; margin: 0 0 10px 0;">🏙️ Dados Socioeconômicos:</h4>             <p><b>Risco Socioeconômico:</b> 0.900 (Muito Alto)</p><p><b>GDP Regional:</b> 153,121 M€</p><p><b>Expectativa de Vida:</b> 81.0 anos</p><p><b>Mortes PM2.5:</b> 49760</p></div>         <div style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">             <i>Dados integrados de análises de exposoma urbano</i>         </div>         </div>         </div>`)[0];
+                popup_dabceb16077cd4b50e3922b91ffbf08f.setContent(html_0ce89202304ba0c9d75952757e19b36d);
+            
+        
+
+        circle_marker_ade8f064f0d6b627b50a40a764d8205a.bindPopup(popup_dabceb16077cd4b50e3922b91ffbf08f)
+        ;
+
+        
+    
+    
+            var circle_marker_4233170ab2cbed4dcf06b3a9b8932494 = L.circleMarker(
+                [60.1699, 24.9384],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 2}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+        var popup_f1e1131447ea74f2f68d53476e03ef9d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_7db478bb366cfe9bd2c7ad864d2326f8 = $(`<div id="html_7db478bb366cfe9bd2c7ad864d2326f8" style="width: 100.0%; height: 100.0%;">         <div style="font-family: Arial, sans-serif; width: 300px;">             <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">                 Helsinki             </h3>                      <h4 style="color: #e74c3c; margin-top: 10px;">                 ⚠ Risco Total: 2.420             </h4>                      <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">             <h4 style="color: #27ae60; margin: 0 0 10px 0;">🌿 Dados Ambientais:</h4>         <p><b>Risco Ambiental:</b> 4.693 (Muito Alto)</p><p><b>Contaminação do Solo:</b> 0.093</p><p><b>Qualidade do Ar:</b> 0.466</p><p><b>Metais no Solo:</b></p><p><b>Cd:</b> 0.21 mg/kg</p><p><b>Pb:</b> 12.00 mg/kg</p><p><b>Cu:</b> 15.44 mg/kg</p><p><b>Zn:</b> 41.52 mg/kg</p></div>             <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-top: 10px;">                 <h4 style="color: #2980b9; margin: 0 0 10px 0;">🏙️ Dados Socioeconômicos:</h4>             <p><b>Risco Socioeconômico:</b> 0.146 (Muito Baixo)</p><p><b>GDP Regional:</b> 106,660 M€</p><p><b>Expectativa de Vida:</b> 81.8 anos</p><p><b>Mortes PM2.5:</b> 555</p></div>         <div style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">             <i>Dados integrados de análises de exposoma urbano</i>         </div>         </div>         </div>`)[0];
+                popup_f1e1131447ea74f2f68d53476e03ef9d.setContent(html_7db478bb366cfe9bd2c7ad864d2326f8);
+            
+        
+
+        circle_marker_4233170ab2cbed4dcf06b3a9b8932494.bindPopup(popup_f1e1131447ea74f2f68d53476e03ef9d)
+        ;
+
+        
+    
+    
+            var circle_marker_7d05c72d32a6766072790a16b88c68db = L.circleMarker(
+                [40.4168, -3.7038],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 2}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+        var popup_e702a59b64ed61341f58f98d0990795b = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_1d624eb18ee8180f0042e658b8f5c606 = $(`<div id="html_1d624eb18ee8180f0042e658b8f5c606" style="width: 100.0%; height: 100.0%;">         <div style="font-family: Arial, sans-serif; width: 300px;">             <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">                 Madrid             </h3>                      <h4 style="color: #e74c3c; margin-top: 10px;">                 ⚠ Risco Total: 2.199             </h4>                      <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">             <h4 style="color: #27ae60; margin: 0 0 10px 0;">🌿 Dados Ambientais:</h4>         <p><b>Risco Ambiental:</b> 4.254 (Baixo)</p><p><b>Contaminação do Solo:</b> 0.005</p><p><b>Qualidade do Ar:</b> 0.086</p><p><b>Metais no Solo:</b></p><p><b>Cd:</b> 0.13 mg/kg</p><p><b>Pb:</b> 16.00 mg/kg</p><p><b>Cu:</b> 9.59 mg/kg</p><p><b>Zn:</b> 28.08 mg/kg</p></div>             <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-top: 10px;">                 <h4 style="color: #2980b9; margin: 0 0 10px 0;">🏙️ Dados Socioeconômicos:</h4>             <p><b>Risco Socioeconômico:</b> 0.144 (Muito Baixo)</p><p><b>GDP Regional:</b> 293,069 M€</p><p><b>Expectativa de Vida:</b> 83.4 anos</p><p><b>Mortes PM2.5:</b> 20335</p></div>         <div style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">             <i>Dados integrados de análises de exposoma urbano</i>         </div>         </div>         </div>`)[0];
+                popup_e702a59b64ed61341f58f98d0990795b.setContent(html_1d624eb18ee8180f0042e658b8f5c606);
+            
+        
+
+        circle_marker_7d05c72d32a6766072790a16b88c68db.bindPopup(popup_e702a59b64ed61341f58f98d0990795b)
+        ;
+
+        
+    
+    
+            var circle_marker_1844c0d2aa9fcb7ac1a0847bcadc97f4 = L.circleMarker(
+                [45.4642, 9.19],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 2}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+        var popup_2dbdbaa1d2b592826c35ef6fa0b5a1b5 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_fba25625bf8c2f999dc65a5ddaeb5532 = $(`<div id="html_fba25625bf8c2f999dc65a5ddaeb5532" style="width: 100.0%; height: 100.0%;">         <div style="font-family: Arial, sans-serif; width: 300px;">             <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">                 Milan             </h3>                      <h4 style="color: #e74c3c; margin-top: 10px;">                 ⚠ Risco Total: 2.548             </h4>                      <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">             <h4 style="color: #27ae60; margin: 0 0 10px 0;">🌿 Dados Ambientais:</h4>         <p><b>Risco Ambiental:</b> 4.519 (Alto)</p><p><b>Contaminação do Solo:</b> 0.232</p><p><b>Qualidade do Ar:</b> 0.449</p><p><b>Metais no Solo:</b></p><p><b>Cd:</b> 0.30 mg/kg</p><p><b>Pb:</b> 24.00 mg/kg</p><p><b>Cu:</b> 25.31 mg/kg</p><p><b>Zn:</b> 56.40 mg/kg</p></div>             <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-top: 10px;">                 <h4 style="color: #2980b9; margin: 0 0 10px 0;">🏙️ Dados Socioeconômicos:</h4>             <p><b>Risco Socioeconômico:</b> 0.577 (Muito Alto)</p><p><b>GDP Regional:</b> 137,819 M€</p><p><b>Expectativa de Vida:</b> 83.0 anos</p><p><b>Mortes PM2.5:</b> 54650</p></div>         <div style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">             <i>Dados integrados de análises de exposoma urbano</i>         </div>         </div>         </div>`)[0];
+                popup_2dbdbaa1d2b592826c35ef6fa0b5a1b5.setContent(html_fba25625bf8c2f999dc65a5ddaeb5532);
+            
+        
+
+        circle_marker_1844c0d2aa9fcb7ac1a0847bcadc97f4.bindPopup(popup_2dbdbaa1d2b592826c35ef6fa0b5a1b5)
+        ;
+
+        
+    
+    
+            var circle_marker_e2f97a594c49512dcb51fc066da2ebad = L.circleMarker(
+                [48.8566, 2.3522],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 2}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+        var popup_286871aa6cb2e0a4ffa6c23c25896c35 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_a9ba88451b40d713087d74dc919a009c = $(`<div id="html_a9ba88451b40d713087d74dc919a009c" style="width: 100.0%; height: 100.0%;">         <div style="font-family: Arial, sans-serif; width: 300px;">             <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">                 Paris             </h3>                      <h4 style="color: #e74c3c; margin-top: 10px;">                 ⚠ Risco Total: 2.358             </h4>                      <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">             <h4 style="color: #27ae60; margin: 0 0 10px 0;">🌿 Dados Ambientais:</h4>         <p><b>Risco Ambiental:</b> 4.324 (Moderado)</p><p><b>Contaminação do Solo:</b> 0.230</p><p><b>Qualidade do Ar:</b> 0.606</p><p><b>Metais no Solo:</b></p><p><b>Cd:</b> 0.35 mg/kg</p><p><b>Pb:</b> 64.00 mg/kg</p><p><b>Cu:</b> 15.95 mg/kg</p><p><b>Zn:</b> 39.45 mg/kg</p></div>             <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-top: 10px;">                 <h4 style="color: #2980b9; margin: 0 0 10px 0;">🏙️ Dados Socioeconômicos:</h4>             <p><b>Risco Socioeconômico:</b> 0.393 (Baixo)</p><p><b>GDP Regional:</b> 860,067 M€</p><p><b>Expectativa de Vida:</b> 82.6 anos</p><p><b>Mortes PM2.5:</b> 29169</p></div>         <div style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">             <i>Dados integrados de análises de exposoma urbano</i>         </div>         </div>         </div>`)[0];
+                popup_286871aa6cb2e0a4ffa6c23c25896c35.setContent(html_a9ba88451b40d713087d74dc919a009c);
+            
+        
+
+        circle_marker_e2f97a594c49512dcb51fc066da2ebad.bindPopup(popup_286871aa6cb2e0a4ffa6c23c25896c35)
+        ;
+
+        
+    
+    
+            var circle_marker_9710c7235de50d51b2bbbc2dbf7a2fdb = L.circleMarker(
+                [47.8095, 13.055],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 2}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+        var popup_315766f8ce47ec9e008d1df87b27e182 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_a1d933e7b2d72f5ff77a413b784e289c = $(`<div id="html_a1d933e7b2d72f5ff77a413b784e289c" style="width: 100.0%; height: 100.0%;">         <div style="font-family: Arial, sans-serif; width: 300px;">             <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">                 Salzburg             </h3>                      <h4 style="color: #e74c3c; margin-top: 10px;">                 ⚠ Risco Total: 2.935             </h4>                      <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">             <h4 style="color: #27ae60; margin: 0 0 10px 0;">🌿 Dados Ambientais:</h4>         <p><b>Risco Ambiental:</b> 5.579 (Muito Alto)</p><p><b>Contaminação do Solo:</b> 0.414</p><p><b>Qualidade do Ar:</b> 0.331</p><p><b>Metais no Solo:</b></p><p><b>Cd:</b> 0.60 mg/kg</p><p><b>Pb:</b> 39.00 mg/kg</p><p><b>Cu:</b> 22.57 mg/kg</p><p><b>Zn:</b> 79.64 mg/kg</p></div>             <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-top: 10px;">                 <h4 style="color: #2980b9; margin: 0 0 10px 0;">🏙️ Dados Socioeconômicos:</h4>             <p><b>Risco Socioeconômico:</b> 0.291 (Baixo)</p><p><b>GDP Regional:</b> 29,479 M€</p><p><b>Expectativa de Vida:</b> 81.6 anos</p><p><b>Mortes PM2.5:</b> 4988</p></div>         <div style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">             <i>Dados integrados de análises de exposoma urbano</i>         </div>         </div>         </div>`)[0];
+                popup_315766f8ce47ec9e008d1df87b27e182.setContent(html_a1d933e7b2d72f5ff77a413b784e289c);
+            
+        
+
+        circle_marker_9710c7235de50d51b2bbbc2dbf7a2fdb.bindPopup(popup_315766f8ce47ec9e008d1df87b27e182)
+        ;
+
+        
+    
+    
+            var circle_marker_130d69c25cf36933d450e076fde18853 = L.circleMarker(
+                [51.5074, -0.1278],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 2}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+        var popup_e059dcb0e60f8ec94849532014f25716 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_34399edc775a7776f53a5979b2a1c97c = $(`<div id="html_34399edc775a7776f53a5979b2a1c97c" style="width: 100.0%; height: 100.0%;">         <div style="font-family: Arial, sans-serif; width: 300px;">             <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">                 London             </h3>                      <h4 style="color: #e74c3c; margin-top: 10px;">                 ⚠ Risco Total: 0.500             </h4>                      <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">             <h4 style="color: #27ae60; margin: 0 0 10px 0;">🌿 Dados Ambientais:</h4>         </div>             <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-top: 10px;">                 <h4 style="color: #2980b9; margin: 0 0 10px 0;">🏙️ Dados Socioeconômicos:</h4>             </div>         <div style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">             <i>Dados integrados de análises de exposoma urbano</i>         </div>         </div>         </div>`)[0];
+                popup_e059dcb0e60f8ec94849532014f25716.setContent(html_34399edc775a7776f53a5979b2a1c97c);
+            
+        
+
+        circle_marker_130d69c25cf36933d450e076fde18853.bindPopup(popup_e059dcb0e60f8ec94849532014f25716)
+        ;
+
+        
+    
+    
+            var feature_group_bfb9accacb634cd76d53fc7c65a7ad39 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            feature_group_bfb9accacb634cd76d53fc7c65a7ad39.addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+            var feature_group_cdab8e7128fc74f85cc7bb11b3707383 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var feature_group_94fcac97fdd55d14bf6a81a2bf89d923 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_cluster_4fe4623e62c02c75ce328a3bf95dcd2f = L.markerClusterGroup(
+                {
+  "maxClusterRadius": 50,
+}
+            );
+        
+    
+            marker_cluster_4fe4623e62c02c75ce328a3bf95dcd2f.addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+            var layer_control_411960a27e58c78988424e57c582f104_layers = {
+                base_layers : {
+                    "openstreetmap" : tile_layer_084c93cfa6230c024c13c341ca14ffbf,
+                    "Light Map" : tile_layer_b09443a2a5a1271d6c1451b21482bc9c,
+                    "Dark Map" : tile_layer_44fbc9a3d5b06f690902f892134864c5,
+                },
+                overlays :  {
+                    "Risco Total" : feature_group_bfb9accacb634cd76d53fc7c65a7ad39,
+                    "Risco Ambiental" : feature_group_cdab8e7128fc74f85cc7bb11b3707383,
+                    "Risco Socioecon\u00f4mico" : feature_group_94fcac97fdd55d14bf6a81a2bf89d923,
+                    "Agrupamento de Cidades" : marker_cluster_4fe4623e62c02c75ce328a3bf95dcd2f,
+                    "Heatmap de Risco" : heat_map_497832593eb3ef5d2e80e8c5cbbbe9cb,
+                },
+            };
+            let layer_control_411960a27e58c78988424e57c582f104 = L.control.layers(
+                layer_control_411960a27e58c78988424e57c582f104_layers.base_layers,
+                layer_control_411960a27e58c78988424e57c582f104_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+
+        
+    
+            var tile_layer_abf2ee8e302571f39dd4c76f7e75a0d0 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detect_retina": false, "max_native_zoom": 19, "max_zoom": 19, "min_zoom": 0, "no_wrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+            var mini_map_06784a00d3eaa139ccda4af706adbfdb = new L.Control.MiniMap(
+                tile_layer_abf2ee8e302571f39dd4c76f7e75a0d0,
+                {
+  "position": "bottomright",
+  "width": 150,
+  "height": 150,
+  "collapsedWidth": 25,
+  "collapsedHeight": 25,
+  "zoomLevelOffset": -5,
+  "centerFixed": false,
+  "zoomAnimation": false,
+  "toggleDisplay": true,
+  "autoToggleDisplay": false,
+  "minimized": false,
+}
+            );
+            map_5dfe9192d45dc51c9f83625c558fae86.addControl(mini_map_06784a00d3eaa139ccda4af706adbfdb);
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+    
+            var measure_control_188c640b7b52358a502b10ae77fba046 = new L.Control.Measure(
+                {
+  "position": "topleft",
+  "primaryLengthUnit": "kilometers",
+  "secondaryLengthUnit": "miles",
+  "primaryAreaUnit": "sqmeters",
+  "secondaryAreaUnit": "acres",
+});
+            map_5dfe9192d45dc51c9f83625c558fae86.addControl(measure_control_188c640b7b52358a502b10ae77fba046);
+
+            // Workaround for using this plugin with Leaflet>=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+    
+            var heat_map_497832593eb3ef5d2e80e8c5cbbbe9cb = L.heatLayer(
+                [[52.3676, 4.9041, 2.0560963998828234], [55.6761, 12.5683, 1.746131979256375], [53.2194, 6.5665, 2.2883786342205226], [49.3988, 8.6724, 2.634526655743428], [60.1699, 24.9384, 2.4197870961561376], [40.4168, -3.7038, 2.1989237212922075], [45.4642, 9.19, 2.547904767009803], [48.8566, 2.3522, 2.3580599292854365], [47.8095, 13.055, 2.93532513775856], [51.5074, -0.1278, 0.5]],
+                {
+  "minOpacity": 0.3,
+  "maxZoom": 18,
+  "radius": 25,
+  "blur": 15,
+  "gradient": {
+  0.2: "green",
+  0.4: "yellow",
+  0.6: "orange",
+  0.8: "red",
+},
+  "maxOpacity": 0.8,
+}
+            );
+        
+    
+            heat_map_497832593eb3ef5d2e80e8c5cbbbe9cb.addTo(map_5dfe9192d45dc51c9f83625c558fae86);
+        
+</script>
+</html>
