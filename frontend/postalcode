@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postal Code Coordinate Finder - OpenStreetMap</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary-blue: #4890c6;
+            --primary-blue-dark: #3a7cb0;
+            --accent-green: #10b981;
+            --accent-green-dark: #0da271;
+            --dark-bg: #1e293b;
+            --light-bg: #f8fafc;
+            --text-dark: #334155;
+            --text-light: #f1f5f9;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--light-bg);
+            color: var(--text-dark);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            color: var(--text-light);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .search-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .search-box label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-dark);
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(72, 144, 198, 0.3);
+        }
+
+        .search-box input::placeholder {
+            color: #94a3b8;
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            height: fit-content;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        #map {
+            flex: 1;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .info-panel {
+            position: fixed;
+            top: 180px;
+            right: 20px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            width: 320px;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-panel h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-blue-dark);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--primary-blue);
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .info-value {
+            color: var(--text-dark);
+            word-break: break-word;
+            line-height: 1.5;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(30, 41, 59, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--accent-green);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .example-tag {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .example-tag:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: var(--border-color);
+            color: var(--text-dark);
+        }
+
+        .coordinate-display {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .copy-btn {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-green-dark);
+        }
+
+        .success-message {
+            background: var(--accent-green);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .map-controls {
+            position: absolute;
+            top: 120px;
+            left: 20px;
+            background: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .control-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--primary-blue-dark);
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .info-panel {
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                width: 100%;
+                border-radius: 12px 12px 0 0;
+                max-height: 50vh;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .map-controls {
+                top: 100px;
+                left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Postal Code Coordinate Finder</h1>
+            <p>Enter a postal code + country code to navigate to exact coordinates on the world map</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <label for="postalCode">Postal Code</label>
+                    <input type="text" 
+                           id="postalCode" 
+                           placeholder="e.g., 1000-001, 90210, M5V 3L9"
+                           autocomplete="off">
+                </div>
+                
+                <div class="search-box">
+                    <label for="countryCode">Country Code</label>
+                    <input type="text" 
+                           id="countryCode" 
+                           placeholder="e.g., PT, US, CA, FR, DE, GB, BR"
+                           autocomplete="off">
+                </div>
+                
+                <button class="btn-primary" id="searchBtn">
+                    Find Coordinates
+                </button>
+            </div>
+            
+            <div class="examples">
+                <small style="color: rgba(255,255,255,0.8); margin-right: 0.5rem;">Quick test:</small>
+                <span class="example-tag" data-postal="1000" data-country="PT">1000 (Portugal)</span>
+                <span class="example-tag" data-postal="90210" data-country="US">90210 (USA)</span>
+                <span class="example-tag" data-postal="M5V 3L9" data-country="CA">M5V 3L9 (Canada)</span>
+                <span class="example-tag" data-postal="10117" data-country="DE">10117 (Germany)</span>
+                <span class="example-tag" data-postal="75001" data-country="FR">75001 (France)</span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="map"></div>
+    
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Searching for location...</p>
+    </div>
+    
+    <div class="info-panel" id="infoPanel">
+        <button class="close-btn" id="closePanel">×</button>
+        <h3>Location Information</h3>
+        
+        <div class="info-item">
+            <span class="info-label">Postal Code:</span>
+            <span class="info-value" id="infoPostalCode">-</span>
+        </div>
+        
+        <div class="info-item">
+            <span class="info-label">Country:</span>
+            <span class="info-value" id="infoCountry">-</span>
+        </div>
+        
+        <div class="info-item">
+            <span class="info-label">Address:</span>
+            <span class="info-value" id="infoAddress">-</span>
+        </div>
+        
+        <div class="info-item">
+            <span class="info-label">Coordinates:</span>
+            <div class="coordinate-display">
+                Latitude: <span id="infoLatitude">0.000000</span><br>
+                Longitude: <span id="infoLongitude">0.000000</span>
+            </div>
+        </div>
+        
+        <button class="copy-btn" id="copyCoords">
+            Copy Coordinates
+        </button>
+        
+        <div class="success-message" id="successMessage">
+            Coordinates copied to clipboard!
+        </div>
+        
+        <div class="info-item">
+            <span class="info-label">Location Type:</span>
+            <span class="info-value" id="infoType">-</span>
+        </div>
+        
+        <div class="info-item">
+            <span class="info-label">Importance Score:</span>
+            <span class="info-value" id="infoImportance">-</span>
+        </div>
+    </div>
+    
+    <div class="map-controls">
+        <button class="control-btn" id="zoomIn" title="Zoom In">+</button>
+        <button class="control-btn" id="zoomOut" title="Zoom Out">−</button>
+        <button class="control-btn" id="locateMe" title="My Location">📍</button>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        let map = null;
+        let marker = null;
+        let circle = null;
+        let currentLocation = null;
+        
+        function initWorldMap() {
+            map = L.map('map').setView([20, 0], 2);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19,
+                minZoom: 2
+            }).addTo(map);
+            
+            L.control.scale({imperial: false}).addTo(map);
+        }
+        
+        async function findPostalCode() {
+            const postalCode = document.getElementById('postalCode').value.trim();
+            const countryCode = document.getElementById('countryCode').value.trim().toUpperCase();
+            
+            if (!postalCode) {
+                alert('Please enter a postal code!');
+                return;
+            }
+            
+            document.getElementById('loading').style.display = 'flex';
+            
+            try {
+                let query = postalCode;
+                if (countryCode) {
+                    query = postalCode + ', ' + countryCode;
+                }
+                
+                const url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query) + '&limit=1&addressdetails=1';
+                
+                const response = await fetch(url, {
+                    headers: {
+                        'User-Agent': 'PostalCodeFinder/1.0',
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('HTTP error: ' + response.status);
+                }
+                
+                const data = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data && data.length > 0) {
+                    const location = data[0];
+                    displayLocation(location, postalCode, countryCode);
+                } else {
+                    alert('Location not found! Try checking the postal code and country code.');
+                    document.getElementById('loading').style.display = 'none';
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loading').style.display = 'none';
+                alert('Error connecting to server. Check your internet connection.');
+            }
+        }
+        
+        function displayLocation(location, postalCode, countryCode) {
+            const lat = parseFloat(location.lat);
+            const lng = parseFloat(location.lon);
+            
+            updateInfoPanel(location, postalCode, countryCode);
+            
+            map.setView([lat, lng], 14);
+            
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            if (circle) {
+                map.removeLayer(circle);
+            }
+            
+            marker = L.marker([lat, lng], {
+                title: location.display_name,
+                alt: 'Location: ' + location.display_name,
+                riseOnHover: true
+            }).addTo(map);
+            
+            marker.bindPopup(
+                '<div style="font-size: 14px; min-width: 250px;">' +
+                '<strong style="color: #4890c6;">📍 ' + location.display_name + '</strong><br><br>' +
+                '<strong>Postal Code:</strong> ' + postalCode + '<br>' +
+                '<strong>Country:</strong> ' + (countryCode || (location.address && location.address.country) || 'N/A') + '<br>' +
+                '<strong>Coordinates:</strong> ' + lat.toFixed(6) + ', ' + lng.toFixed(6) + '<br>' +
+                '<strong>Type:</strong> ' + (location.type || 'N/A') +
+                '</div>'
+            ).openPopup();
+            
+            circle = L.circle([lat, lng], {
+                color: '#4890c6',
+                fillColor: '#10b981',
+                fillOpacity: 0.1,
+                radius: 300
+            }).addTo(map);
+            
+            currentLocation = {
+                lat: lat,
+                lng: lng,
+                address: location.display_name,
+                postalCode: postalCode,
+                countryCode: countryCode
+            };
+        }
+        
+        function updateInfoPanel(location, postalCode, countryCode) {
+            document.getElementById('infoPostalCode').textContent = postalCode;
+            document.getElementById('infoCountry').textContent = countryCode || (location.address && location.address.country) || 'Not specified';
+            document.getElementById('infoAddress').textContent = location.display_name;
+            document.getElementById('infoLatitude').textContent = parseFloat(location.lat).toFixed(6);
+            document.getElementById('infoLongitude').textContent = parseFloat(location.lon).toFixed(6);
+            document.getElementById('infoType').textContent = location.type || 'N/A';
+            document.getElementById('infoImportance').textContent = parseFloat(location.importance).toFixed(3) || 'N/A';
+            
+            document.getElementById('infoPanel').style.display = 'block';
+        }
+        
+        function copyCoordinates() {
+            if (currentLocation) {
+                const coords = currentLocation.lat.toFixed(6) + ', ' + currentLocation.lng.toFixed(6);
+                
+                navigator.clipboard.writeText(coords)
+                    .then(function() {
+                        const successMsg = document.getElementById('successMessage');
+                        successMsg.style.display = 'block';
+                        
+                        setTimeout(function() {
+                            successMsg.style.display = 'none';
+                        }, 3000);
+                    })
+                    .catch(function(err) {
+                        console.error('Copy error:', err);
+                        alert('Error copying to clipboard');
+                    });
+            }
+        }
+        
+        function setupExamples() {
+            document.querySelectorAll('.example-tag').forEach(function(tag) {
+                tag.addEventListener('click', function() {
+                    const postal = this.getAttribute('data-postal');
+                    const country = this.getAttribute('data-country');
+                    
+                    document.getElementById('postalCode').value = postal;
+                    document.getElementById('countryCode').value = country;
+                    
+                    setTimeout(findPostalCode, 100);
+                });
+            });
+        }
+        
+        function locateUser() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser');
+                return;
+            }
+            
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    map.setView([lat, lng], 13);
+                    
+                    if (marker) {
+                        map.removeLayer(marker);
+                    }
+                    
+                    marker = L.marker([lat, lng], {
+                        title: 'Your Location'
+                    }).addTo(map);
+                    
+                    marker.bindPopup('<strong>Your Current Location</strong>').openPopup();
+                    
+                    document.getElementById('infoPostalCode').textContent = 'Current Location';
+                    document.getElementById('infoCountry').textContent = 'GPS';
+                    document.getElementById('infoAddress').textContent = 'Your current GPS location';
+                    document.getElementById('infoLatitude').textContent = lat.toFixed(6);
+                    document.getElementById('infoLongitude').textContent = lng.toFixed(6);
+                    document.getElementById('infoPanel').style.display = 'block';
+                },
+                function(error) {
+                    alert('Unable to retrieve your location. Please enable location services.');
+                    console.error('Geolocation error:', error);
+                }
+            );
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initWorldMap();
+            
+            setupExamples();
+            
+            document.getElementById('searchBtn').addEventListener('click', findPostalCode);
+            
+            document.getElementById('postalCode').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    findPostalCode();
+                }
+            });
+            
+            document.getElementById('countryCode').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    findPostalCode();
+                }
+            });
+            
+            document.getElementById('closePanel').addEventListener('click', function() {
+                document.getElementById('infoPanel').style.display = 'none';
+            });
+            
+            document.getElementById('copyCoords').addEventListener('click', copyCoordinates);
+            
+            document.getElementById('zoomIn').addEventListener('click', function() {
+                map.zoomIn();
+            });
+            
+            document.getElementById('zoomOut').addEventListener('click', function() {
+                map.zoomOut();
+            });
+            
+            document.getElementById('locateMe').addEventListener('click', locateUser);
+            
+            document.getElementById('postalCode').focus();
+        });
+    </script>
+</body>
+</html>
